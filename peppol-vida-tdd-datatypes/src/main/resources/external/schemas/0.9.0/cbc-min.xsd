@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+           xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+	<!-- Simple basic types used in sample (names live in CBC namespace) -->
+		<xs:simpleType name="cbc-string">
+			<xs:restriction base="xs:string"/>
+		</xs:simpleType>
+		<xs:simpleType name="cbc-amount">
+			<xs:restriction base="xs:decimal"/>
+		</xs:simpleType>
+		<xs:simpleType name="cbc-date">
+			<xs:restriction base="xs:date"/>
+		</xs:simpleType>
+		<xs:simpleType name="cbc-time">
+			<xs:restriction base="xs:time"/>
+		</xs:simpleType>
+		<xs:complexType name="IdentifierType">
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<!-- optional globally; we'll require it only in PartyIdentification below -->
+						<xs:attribute name="schemeID" type="xs:string" use="optional"/>
+					</xs:extension>
+				</xs:simpleContent>
+			</xs:complexType>
+			<!-- Elements (referencing the types using the cbc: prefix) -->
+				<xs:element name="CustomizationID" type="cbc:cbc-string"/>
+				<xs:element name="ProfileID" type="cbc:cbc-string"/>
+				<xs:element name="IssueDate" type="cbc:cbc-date"/>
+				<xs:element name="TaxPointDate" type="cbc:cbc-date"/>
+				<xs:element name="IssueTime" type="cbc:cbc-time"/>
+				<xs:element name="ID" type="cbc:IdentifierType"/>
+				<xs:element name="UUID" type="cbc:cbc-string"/>
+				<xs:element name="Name" type="cbc:cbc-string"/>
+				<xs:element name="Value" type="cbc:cbc-string"/>
+				<xs:element name="IdentificationCode" type="cbc:cbc-string"/>
+				<xs:element name="EndpointID">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-string">
+								<xs:attribute name="schemeID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DocumentCurrencyCode" type="cbc:cbc-string"/>
+				<xs:element name="Note" type="cbc:cbc-string"/>
+				<xs:element name="TaxCurrencyCode" type="cbc:cbc-string"/>
+				<xs:element name="CompanyID" type="cbc:cbc-string"/>
+				<xs:element name="ActualDeliveryDate" type="cbc:cbc-date"/>
+				<xs:element name="PaymentMeansCode">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-string">
+								<xs:attribute name="name" type="xs:string" use="optional"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PaymentID" type="cbc:cbc-string"/>
+				<xs:element name="ChargeIndicator" type="xs:boolean"/>
+				<xs:element name="AllowanceChargeReasonCode" type="cbc:cbc-string"/>
+				<xs:element name="AllowanceChargeReason" type="cbc:cbc-string"/>
+				<xs:element name="MultiplierFactorNumeric" type="cbc:cbc-amount"/>
+				<xs:element name="Amount">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-amount">
+								<xs:attribute name="currencyID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="BaseAmount">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-amount">
+								<xs:attribute name="currencyID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="TaxAmount">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-amount">
+								<xs:attribute name="currencyID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+        <xs:element name="TaxableAmount">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-amount">
+								<xs:attribute name="currencyID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Percent" type="xs:decimal"/>
+				<xs:element name="LineExtensionAmount">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-amount">
+								<xs:attribute name="currencyID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InvoicedQuantity">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:decimal">
+								<xs:attribute name="unitCode" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Description" type="cbc:cbc-string"/>
+				<xs:element name="PriceAmount">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-amount">
+								<xs:attribute name="currencyID" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ItemClassificationCode">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="cbc:cbc-string">
+								<xs:attribute name="listID" type="xs:string" use="required"/>
+								<xs:attribute name="listVersionID" type="xs:string" use="optional"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<!-- Added StartDate / EndDate used by InvoicePeriod -->
+					<xs:element name="StartDate" type="cbc:cbc-date"/>
+					<xs:element name="EndDate" type="cbc:cbc-date"/>
+					<xs:element name="DescriptionCode" type="cbc:cbc-string"/>
+					<xs:element name="PrimaryAccountNumberID" type="cbc:cbc-string"/>
+					<xs:element name="NetworkID" type="cbc:cbc-string"/>
+					<xs:element name="HolderName" type="cbc:cbc-string"/>
+					<!-- Additional elements referenced in pxs MonetaryTotal -->
+						<xs:element name="TaxExclusiveAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="TaxInclusiveAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="AllowanceTotalAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ChargeTotalAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="PrepaidAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="PayableRoundingAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="PayableAmount">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="cbc:cbc-amount">
+										<xs:attribute name="currencyID" type="xs:string" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<!-- Tax exemption fields -->
+							<xs:element name="TaxExemptionReasonCode" type="cbc:cbc-string"/>
+							<xs:element name="TaxExemptionReason" type="cbc:cbc-string"/>
+						</xs:schema>

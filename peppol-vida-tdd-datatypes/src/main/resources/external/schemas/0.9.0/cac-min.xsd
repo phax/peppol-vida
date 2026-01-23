@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+           xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+           xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+	<!-- Import CBC schema -->
+		<xs:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" schemaLocation="cbc-min.xsd"/>
+		<!-- PartyIdentification -->
+			<xs:element name="PartyIdentification">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PostalAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cac:Country" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Country">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cbc:IdentificationCode" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- TaxScheme -->
+				<xs:element name="TaxScheme">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- PartyTaxScheme -->
+					<xs:element name="PartyTaxScheme">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element ref="cbc:CompanyID" minOccurs="1" maxOccurs="1"/>
+								<xs:element ref="cac:TaxScheme" minOccurs="1" maxOccurs="1"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<!-- Party -->
+						<xs:element name="Party">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="cac:PostalAddress" minOccurs="0" maxOccurs="unbounded"/>
+									<xs:element ref="cac:PartyTaxScheme" minOccurs="0" maxOccurs="1"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<!-- InvoicePeriod -->
+							<xs:element name="InvoicePeriod">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="cbc:StartDate" minOccurs="0" maxOccurs="1"/>
+										<xs:element ref="cbc:EndDate" minOccurs="0" maxOccurs="1"/>
+										<xs:element ref="cbc:DescriptionCode" minOccurs="0" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="InvoiceDocumentReference">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+										<xs:element ref="cbc:IssueDate" minOccurs="0" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="BillingReference">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="cac:InvoiceDocumentReference" minOccurs="0" maxOccurs="1"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<!-- AccountingSupplierParty / AccountingCustomerParty wrappers -->
+								<xs:element name="AccountingSupplierParty">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cac:Party" minOccurs="1" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="AccountingCustomerParty">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cac:Party" minOccurs="1" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TaxRepresentativeParty">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cac:PostalAddress" minOccurs="0" maxOccurs="unbounded"/>
+											<xs:element ref="cac:PartyTaxScheme" minOccurs="0" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Delivery">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cbc:ActualDeliveryDate" minOccurs="0" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="CardAccount">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cbc:PrimaryAccountNumberID" minOccurs="1" maxOccurs="1"/>
+											<xs:element ref="cbc:NetworkID" minOccurs="1" maxOccurs="1"/>
+											<xs:element ref="cbc:HolderName" minOccurs="0" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="FinancialInstitutionBranch">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="PayerFinancialAccount">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="PaymentMandate">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element ref="cbc:ID" minOccurs="0" maxOccurs="1"/>
+											<xs:element ref="cac:PayerFinancialAccount" minOccurs="0" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<!-- PaymentMeans -->
+									<xs:element name="PaymentMeans">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element ref="cbc:PaymentMeansCode" minOccurs="1" maxOccurs="1"/>
+												<xs:element ref="cbc:PaymentID" minOccurs="0" maxOccurs="1"/>
+												<xs:element ref="cac:CardAccount" minOccurs="0" maxOccurs="1"/>
+												<xs:element name="PayeeFinancialAccount" minOccurs="0" maxOccurs="1">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+															<xs:element ref="cac:FinancialInstitutionBranch" minOccurs="0" maxOccurs="1"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="PaymentMandate" minOccurs="0" maxOccurs="1"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="TaxCategory">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element ref="cbc:ID" minOccurs="01" maxOccurs="1"/>
+												<xs:element ref="cbc:Percent" minOccurs="0" maxOccurs="1"/>
+												<xs:element ref="cac:TaxScheme" minOccurs="1" maxOccurs="1"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<!-- AllowanceCharge -->
+										<xs:element name="AllowanceCharge">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="cbc:ChargeIndicator" minOccurs="1" maxOccurs="1"/>
+													<xs:element ref="cbc:AllowanceChargeReasonCode" minOccurs="0" maxOccurs="1"/>
+													<xs:element ref="cbc:AllowanceChargeReason" minOccurs="0" maxOccurs="1"/>
+													<xs:element ref="cbc:MultiplierFactorNumeric" minOccurs="0" maxOccurs="1"/>
+													<xs:element ref="cbc:Amount" minOccurs="1" maxOccurs="1"/>
+													<xs:element ref="cbc:BaseAmount" minOccurs="0" maxOccurs="1"/>
+													<xs:element name="TaxCategory" minOccurs="0" maxOccurs="1"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<!-- TaxTotal -->
+											<xs:element name="TaxTotal">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element ref="cbc:TaxAmount" minOccurs="1" maxOccurs="1"/>
+														<xs:element name="TaxSubtotal" minOccurs="0" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element ref="cbc:TaxableAmount" minOccurs="1" maxOccurs="1"/>
+																	<xs:element ref="cbc:TaxAmount" minOccurs="1" maxOccurs="1"/>
+																	<xs:element name="TaxCategory" minOccurs="1" maxOccurs="1">
+																		<xs:complexType>
+																			<xs:sequence>
+																				<xs:element ref="cbc:ID" minOccurs="1" maxOccurs="1"/>
+																				<xs:element ref="cbc:Percent" minOccurs="0" maxOccurs="1"/>
+																				<xs:element ref="cbc:TaxExemptionReasonCode" minOccurs="0" maxOccurs="1"/>
+																				<xs:element ref="cbc:TaxExemptionReason" minOccurs="0" maxOccurs="1"/>
+																				<xs:element ref="cac:TaxScheme" minOccurs="1" maxOccurs="1"/>
+																			</xs:sequence>
+																		</xs:complexType>
+																	</xs:element>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="CommodityClassification">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element ref="cbc:ItemClassificationCode" minOccurs="1" maxOccurs="1"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="ClassifiedTaxCategory">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element ref="cbc:ID" minOccurs="01" maxOccurs="1"/>
+														<xs:element ref="cbc:Percent" minOccurs="0" maxOccurs="1"/>
+														<xs:element ref="cac:TaxScheme" minOccurs="1" maxOccurs="1"/>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<!-- Item -->
+												<xs:element name="Item">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element ref="cbc:Description" minOccurs="0" maxOccurs="1"/>
+															<xs:element ref="cbc:Name" minOccurs="1" maxOccurs="1"/>
+															<xs:element ref="cac:CommodityClassification" minOccurs="0" maxOccurs="unbounded"/>
+															<xs:element ref="cac:ClassifiedTaxCategory" minOccurs="1" maxOccurs="1"/>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<!-- Price -->
+													<xs:element name="Price">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="cbc:PriceAmount" minOccurs="1" maxOccurs="1"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:schema>
