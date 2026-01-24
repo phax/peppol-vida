@@ -35,11 +35,11 @@ import com.helger.datetime.helper.PDTFactory;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.io.resource.inmemory.ReadableResourceString;
 import com.helger.peppol.uae.tdd.testfiles.PeppolViDATestFiles;
-import com.helger.peppol.vida.tdd.PeppolUAETDD10Builder;
+import com.helger.peppol.vida.tdd.PeppolViDATDD090Builder;
 import com.helger.peppol.vida.tdd.PeppolUAETDD10ReportedTransactionBuilder.CustomContent;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDDocumentScope;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDDocumentTypeCode;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDReporterRole;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentScope;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD090Marshaller;
 import com.helger.peppol.vida.tdd.v100.TaxDataType;
 import com.helger.peppol.vida.tdd.validate.PeppolUAETDDValidator;
@@ -57,7 +57,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
- * Test class for class {@link PeppolUAETDD10Builder}.
+ * Test class for class {@link PeppolViDATDD090Builder}.
  *
  * @author Philip Helger
  */
@@ -71,9 +71,9 @@ public final class PeppolUAETDD10BuilderTest
     final IIdentifierFactory aIF = PeppolIdentifierFactory.INSTANCE;
     final ISchematronResource aSCHRes = PeppolUAETDDValidator.getSchematronUAE_TDD_10 ();
 
-    final TaxDataType aTDD = new PeppolUAETDD10Builder ().documentTypeCode (EUAETDDDocumentTypeCode.SUBMIT)
-                                                         .documentScope (EUAETDDDocumentScope.DOMESTIC)
-                                                         .reporterRole (EUAETDDReporterRole.SENDER)
+    final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
+                                                         .documentScope (EViDATDDDocumentScope.DOMESTIC)
+                                                         .reporterRole (EViDATDDReporterRole.SENDER)
                                                          .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
                                                          .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                          .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
@@ -120,9 +120,9 @@ public final class PeppolUAETDD10BuilderTest
     final IIdentifierFactory aIF = PeppolIdentifierFactory.INSTANCE;
     final ISchematronResource aSCHRes = PeppolUAETDDValidator.getSchematronUAE_TDD_10 ();
 
-    final TaxDataType aTDD = new PeppolUAETDD10Builder ().documentTypeCode (EUAETDDDocumentTypeCode.SUBMIT)
-                                                         .documentScope (EUAETDDDocumentScope.DOMESTIC)
-                                                         .reporterRole (EUAETDDReporterRole.SENDER)
+    final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
+                                                         .documentScope (EViDATDDDocumentScope.DOMESTIC)
+                                                         .reporterRole (EViDATDDReporterRole.SENDER)
                                                          .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
                                                          .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                          .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
@@ -184,9 +184,9 @@ public final class PeppolUAETDD10BuilderTest
       final InvoiceType aInvoice = UBL21Marshaller.invoice ().read (aRes);
       assertNotNull (aInvoice);
 
-      final TaxDataType aTDD = new PeppolUAETDD10Builder ().documentTypeCode (EUAETDDDocumentTypeCode.SUBMIT)
-                                                           .documentScope (EUAETDDDocumentScope.DOMESTIC)
-                                                           .reporterRole (EUAETDDReporterRole.SENDER)
+      final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
+                                                           .documentScope (EViDATDDDocumentScope.DOMESTIC)
+                                                           .reporterRole (EViDATDDReporterRole.SENDER)
                                                            .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
@@ -223,9 +223,9 @@ public final class PeppolUAETDD10BuilderTest
       final CreditNoteType aCreditNote = UBL21Marshaller.creditNote ().read (aRes);
       assertNotNull (aCreditNote);
 
-      final TaxDataType aTDD = new PeppolUAETDD10Builder ().documentTypeCode (EUAETDDDocumentTypeCode.SUBMIT)
-                                                           .documentScope (EUAETDDDocumentScope.DOMESTIC)
-                                                           .reporterRole (EUAETDDReporterRole.SENDER)
+      final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
+                                                           .documentScope (EViDATDDDocumentScope.DOMESTIC)
+                                                           .reporterRole (EViDATDDReporterRole.SENDER)
                                                            .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
@@ -261,9 +261,9 @@ public final class PeppolUAETDD10BuilderTest
     final InvoiceType aInvoice = UBL21Marshaller.invoice ().read (aRes);
     assertNotNull (aInvoice);
 
-    final TaxDataType aTDD = new PeppolUAETDD10Builder ().documentTypeCode (EUAETDDDocumentTypeCode.FAILED)
-                                                         .documentScope (EUAETDDDocumentScope.DOMESTIC)
-                                                         .reporterRole (EUAETDDReporterRole.SENDER)
+    final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.FAILED)
+                                                         .documentScope (EViDATDDDocumentScope.DOMESTIC)
+                                                         .reporterRole (EViDATDDReporterRole.SENDER)
                                                          .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
                                                          .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                          .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
@@ -304,9 +304,9 @@ public final class PeppolUAETDD10BuilderTest
     // This one is special, because it is an XSD mandatory fields
     aInvoice.setID ((IDType) null);
 
-    final TaxDataType aTDD = new PeppolUAETDD10Builder ().documentTypeCode (EUAETDDDocumentTypeCode.FAILED)
-                                                         .documentScope (EUAETDDDocumentScope.DOMESTIC)
-                                                         .reporterRole (EUAETDDReporterRole.SENDER)
+    final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.FAILED)
+                                                         .documentScope (EViDATDDDocumentScope.DOMESTIC)
+                                                         .reporterRole (EViDATDDReporterRole.SENDER)
                                                          .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
                                                          .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                          .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))

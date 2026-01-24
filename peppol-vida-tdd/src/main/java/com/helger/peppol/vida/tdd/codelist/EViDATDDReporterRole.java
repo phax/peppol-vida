@@ -24,26 +24,24 @@ import com.helger.base.id.IHasID;
 import com.helger.base.lang.EnumHelper;
 
 /**
- * UAE TDD Document Scope.
+ * Peppol ViDA pilot TDD Document Scope.
  *
  * @author Philip Helger
  */
-public enum EUAETDDReporterRole implements IHasID <String>
+public enum EViDATDDReporterRole implements IHasID <String>
 {
   /**
-   * The party, usually the seller, who is issuing and sending the reported document such as Invoice
-   * or Credit Note.
+   * The sender, who is issuing or sending the reported document such as Invoice or Credit Note.
    */
-  SENDER ("01"),
+  SENDER ("C2"),
   /**
-   * The party, usually the buyer, who has received the reported document such as Invoice or Credit
-   * Note.
+   * The receiver, who has received the reported document such as Invoice or Credit Note.
    */
-  RECEIVER ("02");
+  RECEIVER ("C3");
 
   private final String m_sID;
 
-  EUAETDDReporterRole (@NonNull @Nonempty final String sID)
+  EViDATDDReporterRole (@NonNull @Nonempty final String sID)
   {
     m_sID = sID;
   }
@@ -56,8 +54,8 @@ public enum EUAETDDReporterRole implements IHasID <String>
   }
 
   @Nullable
-  public static EUAETDDReporterRole getFromIDOrNull (@Nullable final String sID)
+  public static EViDATDDReporterRole getFromIDOrNull (@Nullable final String sID)
   {
-    return EnumHelper.getFromIDOrNull (EUAETDDReporterRole.class, sID);
+    return EnumHelper.getFromIDOrNull (EViDATDDReporterRole.class, sID);
   }
 }

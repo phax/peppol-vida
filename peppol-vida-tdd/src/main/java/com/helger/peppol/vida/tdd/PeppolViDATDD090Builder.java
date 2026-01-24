@@ -19,6 +19,7 @@ package com.helger.peppol.vida.tdd;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
@@ -30,11 +31,18 @@ import com.helger.base.builder.IBuilder;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.string.StringHelper;
 import com.helger.datetime.helper.PDTFactory;
+import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDDocumentScope;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDDocumentTypeCode;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDReporterRole;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentScope;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.v090.TaxDataType;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReceivingParty;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportersRepresentative;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportingParty;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.TaxAuthority;
+import com.helger.peppol.vida.tdd.v090.cac.PartyIdentification;
 import com.helger.peppolid.IParticipantIdentifier;
 import com.helger.peppolid.factory.IIdentifierFactory;
 import com.helger.peppolid.factory.PeppolIdentifierFactory;
@@ -44,29 +52,33 @@ import com.helger.peppolid.factory.PeppolIdentifierFactory;
  *
  * @author Philip Helger
  */
-public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
+public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
 {
-  public static final String DEFAULT_CUSTOMIZATION_ID = "urn:peppol:taxdata:ae-1";
+  public static final String DEFAULT_CUSTOMIZATION_ID = "urn:peppol:taxdata:ViDA-1";
   public static final String DEFAULT_PROFILE_ID = "urn:peppol:taxreporting";
 
-  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolUAETDD10Builder.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090Builder.class);
 
   private String m_sCustomizationID;
   private String m_sProfileID;
+  private String m_sUUID;
   private LocalDate m_aIssueDate;
   private OffsetTime m_aIssueTime;
-  private EUAETDDDocumentTypeCode m_eDocumentTypeCode;
-  private EUAETDDDocumentScope m_eDocumentScope;
-  private EUAETDDReporterRole m_eReporterRole;
+  private EViDATDDDocumentTypeCode m_eDocumentTypeCode;
+  private EViDATDDDocumentScope m_eDocumentScope;
+  private EViDATDDReporterRole m_eReporterRole;
+  private String m_sTaxAuthorityID;
+  private String m_sTaxAuthorityName;
   private IParticipantIdentifier m_aReportingParty;
   private IParticipantIdentifier m_aReceivingParty;
   private IParticipantIdentifier m_aReportersRepresentative;
-  private TaxDataType.ReportedTransaction m_aReportedTransaction;
+  private ReportedTransaction m_aReportedTransaction;
 
-  public PeppolUAETDD10Builder ()
+  public PeppolViDATDD090Builder ()
   {
     customizationID (DEFAULT_CUSTOMIZATION_ID);
     profileID (DEFAULT_PROFILE_ID);
+    randomUUID ();
     issueDateTimeNow ();
   }
 
@@ -77,7 +89,7 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder customizationID (@Nullable final String s)
+  public PeppolViDATDD090Builder customizationID (@Nullable final String s)
   {
     m_sCustomizationID = s;
     return this;
@@ -90,10 +102,29 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder profileID (@Nullable final String s)
+  public PeppolViDATDD090Builder profileID (@Nullable final String s)
   {
     m_sProfileID = s;
     return this;
+  }
+
+  @Nullable
+  public String uuid ()
+  {
+    return m_sUUID;
+  }
+
+  @NonNull
+  public PeppolViDATDD090Builder uuid (@Nullable final String s)
+  {
+    m_sUUID = s;
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090Builder randomUUID ()
+  {
+    return uuid (UUID.randomUUID ().toString ());
   }
 
   @Nullable
@@ -103,13 +134,13 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder issueDateNow ()
+  public PeppolViDATDD090Builder issueDateNow ()
   {
     return issueDate (PDTFactory.getCurrentLocalDate ());
   }
 
   @NonNull
-  public PeppolUAETDD10Builder issueDate (@Nullable final LocalDate a)
+  public PeppolViDATDD090Builder issueDate (@Nullable final LocalDate a)
   {
     m_aIssueDate = a;
     return this;
@@ -122,13 +153,13 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder issueTimeNow ()
+  public PeppolViDATDD090Builder issueTimeNow ()
   {
     return issueTime (PDTFactory.getCurrentOffsetTime ());
   }
 
   @NonNull
-  public PeppolUAETDD10Builder issueTime (@Nullable final OffsetTime a)
+  public PeppolViDATDD090Builder issueTime (@Nullable final OffsetTime a)
   {
     // XSD can only handle milliseconds
     m_aIssueTime = PDTFactory.getWithMillisOnly (a);
@@ -136,7 +167,7 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder issueDateTime (@Nullable final OffsetDateTime a)
+  public PeppolViDATDD090Builder issueDateTime (@Nullable final OffsetDateTime a)
   {
     if (a == null)
       return issueDate (null).issueTime (null);
@@ -144,47 +175,73 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder issueDateTimeNow ()
+  public PeppolViDATDD090Builder issueDateTimeNow ()
   {
     return issueDateTime (PDTFactory.getCurrentOffsetDateTime ());
   }
 
   @Nullable
-  public EUAETDDDocumentTypeCode documentTypeCode ()
+  public EViDATDDDocumentTypeCode documentTypeCode ()
   {
     return m_eDocumentTypeCode;
   }
 
   @NonNull
-  public PeppolUAETDD10Builder documentTypeCode (@Nullable final EUAETDDDocumentTypeCode e)
+  public PeppolViDATDD090Builder documentTypeCode (@Nullable final EViDATDDDocumentTypeCode e)
   {
     m_eDocumentTypeCode = e;
     return this;
   }
 
   @Nullable
-  public EUAETDDDocumentScope documentScope ()
+  public EViDATDDDocumentScope documentScope ()
   {
     return m_eDocumentScope;
   }
 
   @NonNull
-  public PeppolUAETDD10Builder documentScope (@Nullable final EUAETDDDocumentScope e)
+  public PeppolViDATDD090Builder documentScope (@Nullable final EViDATDDDocumentScope e)
   {
     m_eDocumentScope = e;
     return this;
   }
 
   @Nullable
-  public EUAETDDReporterRole reporterRole ()
+  public EViDATDDReporterRole reporterRole ()
   {
     return m_eReporterRole;
   }
 
   @NonNull
-  public PeppolUAETDD10Builder reporterRole (@Nullable final EUAETDDReporterRole e)
+  public PeppolViDATDD090Builder reporterRole (@Nullable final EViDATDDReporterRole e)
   {
     m_eReporterRole = e;
+    return this;
+  }
+
+  @Nullable
+  public String taxAuthorityID ()
+  {
+    return m_sTaxAuthorityID;
+  }
+
+  @NonNull
+  public PeppolViDATDD090Builder taxAuthorityID (@Nullable final String s)
+  {
+    m_sTaxAuthorityID = s;
+    return this;
+  }
+
+  @Nullable
+  public String taxAuthorityName ()
+  {
+    return m_sTaxAuthorityName;
+  }
+
+  @NonNull
+  public PeppolViDATDD090Builder taxAuthorityName (@Nullable final String s)
+  {
+    m_sTaxAuthorityName = s;
     return this;
   }
 
@@ -200,7 +257,7 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
    * @return this for chaining
    */
   @NonNull
-  public PeppolUAETDD10Builder reportingParty (@Nullable final IParticipantIdentifier a)
+  public PeppolViDATDD090Builder reportingParty (@Nullable final IParticipantIdentifier a)
   {
     m_aReportingParty = a;
     return this;
@@ -218,7 +275,7 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
    * @return this for chaining
    */
   @NonNull
-  public PeppolUAETDD10Builder receivingParty (@Nullable final IParticipantIdentifier a)
+  public PeppolViDATDD090Builder receivingParty (@Nullable final IParticipantIdentifier a)
   {
     m_aReceivingParty = a;
     return this;
@@ -236,19 +293,20 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
    * @return this for chaining
    */
   @NonNull
-  public PeppolUAETDD10Builder reportersRepresentative (@Nullable final IParticipantIdentifier a)
+  public PeppolViDATDD090Builder reportersRepresentative (@Nullable final IParticipantIdentifier a)
   {
     m_aReportersRepresentative = a;
     return this;
   }
 
-  public TaxDataType.@Nullable ReportedTransaction reportedTransaction ()
+  @Nullable
+  public ReportedTransaction reportedTransaction ()
   {
     return m_aReportedTransaction;
   }
 
   @NonNull
-  public PeppolUAETDD10Builder reportedTransaction (@NonNull final Consumer <PeppolUAETDD10ReportedTransactionBuilder> aBuilderConsumer)
+  public PeppolViDATDD090Builder reportedTransaction (@NonNull final Consumer <PeppolUAETDD10ReportedTransactionBuilder> aBuilderConsumer)
   {
     if (m_eDocumentTypeCode == null)
       throw new IllegalStateException ("The ReportedTransaction can only be built, after the DocumentTypeCode is set!");
@@ -258,7 +316,7 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolUAETDD10Builder reportedTransaction (final TaxDataType.@Nullable ReportedTransaction a)
+  public PeppolViDATDD090Builder reportedTransaction (@Nullable final ReportedTransaction a)
   {
     m_aReportedTransaction = a;
     return this;
@@ -279,6 +337,11 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
     if (StringHelper.isEmpty (m_sProfileID))
     {
       aCondLog.error (sErrorPrefix + "ProfileID is missing");
+      nErrs++;
+    }
+    if (StringHelper.isEmpty (m_sUUID))
+    {
+      aCondLog.error (sErrorPrefix + "UUID is missing");
       nErrs++;
     }
     if (m_aIssueDate == null)
@@ -306,6 +369,13 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
       aCondLog.error (sErrorPrefix + "ReporterRole is missing");
       nErrs++;
     }
+
+    if (StringHelper.isEmpty (m_sTaxAuthorityID))
+    {
+      aCondLog.error (sErrorPrefix + "TaxAuthority ID is missing");
+      nErrs++;
+    }
+    // m_sTaxAuthorityName is optional
 
     if (m_aReportingParty == null)
     {
@@ -410,7 +480,7 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
           }
         }
 
-    // UAE must have exactly one reported transaction
+    // ViDA must have exactly one reported transaction
     if (m_aReportedTransaction == null)
     {
       aCondLog.error (sErrorPrefix + "ReportedTransaction is missing");
@@ -430,43 +500,40 @@ public class PeppolUAETDD10Builder implements IBuilder <TaxDataType>
     }
 
     final TaxDataType ret = new TaxDataType ();
-    ret.setCustomizationID (new CustomizationIDType (m_sCustomizationID));
-    ret.setProfileID (new ProfileIDType (m_sProfileID));
-    ret.setIssueDate (new IssueDateType (m_aIssueDate));
-    ret.setIssueTime (new IssueTimeType (XMLOffsetTime.of (m_aIssueTime)));
+    ret.setCustomizationID (m_sCustomizationID);
+    ret.setProfileID (m_sProfileID);
+    ret.setUUID (m_sUUID);
+    ret.setIssueDate (XMLOffsetDate.of (m_aIssueDate));
+    ret.setIssueTime (XMLOffsetTime.of (m_aIssueTime));
+    ret.setDocumentTypeCode (m_eDocumentTypeCode.getID ());
+    // Duplicate element
+    ret.setDocumentCurrencyCode (m_aReportedTransaction.getReportedDocument ().getDocumentCurrencyCode ());
+    ret.setDocumentScope (m_eDocumentScope.getID ());
+    ret.setReporterRole (m_eReporterRole.getID ());
     {
-      final TaxDataDocumentTypeCodeType a = new TaxDataDocumentTypeCodeType ();
-      a.setValue (m_eDocumentTypeCode.getID ());
-      ret.setDocumentTypeCode (a);
-    }
-    {
-      final TaxDataDocumentScopeType a = new TaxDataDocumentScopeType ();
-      a.setValue (m_eDocumentScope.getID ());
-      ret.setDocumentScope (a);
-    }
-    {
-      final TaxDataDocumentReporterRoleType a = new TaxDataDocumentReporterRoleType ();
-      a.setValue (m_eReporterRole.getID ());
-      ret.setReporterRole (a);
+      final TaxAuthority a = new TaxAuthority ();
+      a.setID (m_sTaxAuthorityID);
+      a.setName (m_sTaxAuthorityName);
+      ret.setTaxAuthority (a);
     }
     {
       final String [] aParts = StringHelper.getExplodedArray (':', m_aReportingParty.getValue (), 2);
-      final PartyType aParty = new PartyType ();
+      final ReportingParty aParty = new ReportingParty ();
       aParty.setEndpointID (aParts[1]).setSchemeID (aParts[0]);
       ret.setReportingParty (aParty);
     }
     {
       final String [] aParts = StringHelper.getExplodedArray (':', m_aReceivingParty.getValue (), 2);
-      final PartyType aParty = new PartyType ();
+      final ReceivingParty aParty = new ReceivingParty ();
       aParty.setEndpointID (aParts[1]).setSchemeID (aParts[0]);
       ret.setReceivingParty (aParty);
     }
     {
       final String [] aParts = StringHelper.getExplodedArray (':', m_aReportersRepresentative.getValue (), 2);
-      final PartyType aParty = new PartyType ();
-      final PartyIdentificationType aPID = new PartyIdentificationType ();
+      final ReportersRepresentative aParty = new ReportersRepresentative ();
+      final PartyIdentification aPID = new PartyIdentification ();
       aPID.setID (aParts[1]).setSchemeID (aParts[0]);
-      aParty.addPartyIdentification (aPID);
+      aParty.setPartyIdentification (aPID);
       ret.setReportersRepresentative (aParty);
     }
     ret.addReportedTransaction (m_aReportedTransaction);

@@ -41,47 +41,19 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.datetime.xml.XMLOffsetTime;
-import com.helger.peppol.vida.tdd.codelist.EUAETDDDocumentTypeCode;
-import com.helger.peppol.vida.tdd.v090.TaxDataType;
-import com.helger.peppol.vida.tdd.v100.CustomContentType;
-import com.helger.peppol.vida.tdd.v100.MonetaryTotalType;
-import com.helger.peppol.vida.tdd.v100.ReferencedDocumentTypeCodeType;
-import com.helger.peppol.vida.tdd.v100.ReportedDocumentType;
-import com.helger.peppol.vida.tdd.v100.ReportedTransactionType;
-import com.helger.peppol.vida.tdd.v100.TransportHeaderIDType;
-import com.helger.ubl21.UBL21Marshaller;
+import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction;
 import com.helger.xml.XMLHelper;
 import com.helger.xsds.bdxr.smp2.bc.IDType;
 import com.helger.xsds.bdxr.smp2.ec.ExtensionContentType;
 import com.helger.xsds.bdxr.smp2.udt.ValueType;
 
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentCurrencyCodeType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.EmbeddedDocumentBinaryObjectType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueDateType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueTimeType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxAmountType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxCurrencyCodeType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExclusiveAmountType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UUIDType;
-import oasis.names.specification.ubl.schema.xsd.commonextensioncomponents_21.UBLExtensionType;
-import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
-import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
-
 /**
- * Builder for Peppol UAE TDD 1.0 sub element called "ReportedTransaction".
+ * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "ReportedTransaction".
  *
  * @author Philip Helger
  */
-public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDataType.ReportedTransaction>
+public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <ReportedTransaction>
 {
   public static final class CustomContent
   {
@@ -115,7 +87,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDa
 
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolUAETDD10ReportedTransactionBuilder.class);
 
-  private final @NonNull EUAETDDDocumentTypeCode m_eDocumentTypeCode;
+  private final @NonNull EViDATDDDocumentTypeCode m_eDocumentTypeCode;
   private String m_sTransportHeaderID;
   private String m_sCustomizationID;
   private String m_sProfileID;
@@ -137,7 +109,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDa
   private final ICommonsList <CustomContent> m_aCustomContents = new CommonsArrayList <> ();
   private Element m_aSourceDocument;
 
-  public PeppolUAETDD10ReportedTransactionBuilder (@NonNull final EUAETDDDocumentTypeCode eDocumentTypeCode)
+  public PeppolUAETDD10ReportedTransactionBuilder (@NonNull final EViDATDDDocumentTypeCode eDocumentTypeCode)
   {
     ValueEnforcer.notNull (eDocumentTypeCode, "DocumentTypeCode");
     m_eDocumentTypeCode = eDocumentTypeCode;
@@ -722,7 +694,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDa
     }
 
     // Failed TDDs don't need this
-    if (m_eDocumentTypeCode != EUAETDDDocumentTypeCode.FAILED)
+    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.FAILED)
       nErrs += aReportedDocsErrs.intValue ();
 
     if (m_aSourceDocument == null)
@@ -751,7 +723,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDa
   }
 
   @Nullable
-  public ReportedTransactionType build ()
+  public ReportedTransaction build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -760,7 +732,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDa
       return null;
     }
 
-    final ReportedTransactionType ret = new ReportedTransactionType ();
+    final ReportedTransaction ret = new ReportedTransaction ();
 
     // TransportHeaderID
     if (StringHelper.isNotEmpty (m_sTransportHeaderID))
@@ -771,7 +743,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <TaxDa
     }
 
     // ReportedDocument - optional for FAILED state
-    if (m_eDocumentTypeCode != EUAETDDDocumentTypeCode.FAILED || aReportedDocErrs.is0 ())
+    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.FAILED || aReportedDocErrs.is0 ())
     {
       final ReportedDocumentType a = new ReportedDocumentType ();
       if (StringHelper.isNotEmpty (m_sCustomizationID))

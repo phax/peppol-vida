@@ -24,19 +24,22 @@ import com.helger.base.id.IHasID;
 import com.helger.base.lang.EnumHelper;
 
 /**
- * UAE TDD Document Scope.
+ * Peppol ViDA pilot TDD Document Type Code.
  *
  * @author Philip Helger
  */
-public enum EUAETDDDocumentScope implements IHasID <String>
+public enum EViDATDDDocumentTypeCode implements IHasID <String>
 {
-  DOMESTIC ("D"),
-  INTERNATIONAL_PEPPOL ("IP"),
-  INTERNATIONAL_NON_PEPPOL ("INP");
+  /** Submitting a Tax Data Document */
+  SUBMIT ("S"),
+  /** TDD is sent to revise a previously reported TDD. */
+  RESUBMIT ("R"),
+  /** Previously reported TDD is disregarded. */
+  DISREGARD ("D");
 
   private final String m_sID;
 
-  EUAETDDDocumentScope (@NonNull @Nonempty final String sID)
+  EViDATDDDocumentTypeCode (@NonNull @Nonempty final String sID)
   {
     m_sID = sID;
   }
@@ -49,8 +52,8 @@ public enum EUAETDDDocumentScope implements IHasID <String>
   }
 
   @Nullable
-  public static EUAETDDDocumentScope getFromIDOrNull (@Nullable final String sID)
+  public static EViDATDDDocumentTypeCode getFromIDOrNull (@Nullable final String sID)
   {
-    return EnumHelper.getFromIDOrNull (EUAETDDDocumentScope.class, sID);
+    return EnumHelper.getFromIDOrNull (EViDATDDDocumentTypeCode.class, sID);
   }
 }
