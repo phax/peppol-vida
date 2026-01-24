@@ -45,9 +45,15 @@ import com.helger.peppol.vida.tdd.v090.cac.Party;
 import com.helger.peppol.vida.tdd.v090.cac.PartyTaxScheme;
 import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
 import com.helger.peppol.vida.tdd.v090.cac.TaxTotal;
+import com.helger.peppol.vida.tdd.v090.cbc.AllowanceTotalAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.ChargeTotalAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.LineExtensionAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.PayableAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.PayableRoundingAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.PrepaidAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.TaxAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.TaxExclusiveAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.TaxInclusiveAmount;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
@@ -90,6 +96,12 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private BigDecimal m_aTaxTotalAmountTaxCurrency;
   private BigDecimal m_aLineExtensionAmount;
   private BigDecimal m_aTaxExclusiveTotalAmount;
+  private BigDecimal m_aTaxInclusiveTotalAmount;
+  private BigDecimal m_aAllowanceTotalAmount;
+  private BigDecimal m_aChargeTotalAmount;
+  private BigDecimal m_aPrepaidAmount;
+  private BigDecimal m_aPayableRoundingAmount;
+  private BigDecimal m_aPayableAmount;
 
   public PeppolViDATDD090ReportedTransactionBuilder (@NonNull final EViDATDDDocumentTypeCode eDocumentTypeCode)
   {
@@ -177,7 +189,14 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     final oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType aLegalMonetaryTotal = aInv.getLegalMonetaryTotal ();
     if (aLegalMonetaryTotal != null)
     {
+      lineExtensionAmount (aLegalMonetaryTotal.getLineExtensionAmountValue ());
       taxExclusiveTotalAmount (aLegalMonetaryTotal.getTaxExclusiveAmountValue ());
+      taxInclusiveTotalAmount (aLegalMonetaryTotal.getTaxInclusiveAmountValue ());
+      allowanceTotalAmount (aLegalMonetaryTotal.getAllowanceTotalAmountValue ());
+      chargeTotalAmount (aLegalMonetaryTotal.getChargeTotalAmountValue ());
+      prepaidAmount (aLegalMonetaryTotal.getPrepaidAmountValue ());
+      payableRoundingAmount (aLegalMonetaryTotal.getPayableRoundingAmountValue ());
+      payableAmount (aLegalMonetaryTotal.getPayableAmountValue ());
     }
 
     return this;
@@ -263,7 +282,14 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     final oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType aLegalMonetaryTotal = aCN.getLegalMonetaryTotal ();
     if (aLegalMonetaryTotal != null)
     {
+      lineExtensionAmount (aLegalMonetaryTotal.getLineExtensionAmountValue ());
       taxExclusiveTotalAmount (aLegalMonetaryTotal.getTaxExclusiveAmountValue ());
+      taxInclusiveTotalAmount (aLegalMonetaryTotal.getTaxInclusiveAmountValue ());
+      allowanceTotalAmount (aLegalMonetaryTotal.getAllowanceTotalAmountValue ());
+      chargeTotalAmount (aLegalMonetaryTotal.getChargeTotalAmountValue ());
+      prepaidAmount (aLegalMonetaryTotal.getPrepaidAmountValue ());
+      payableRoundingAmount (aLegalMonetaryTotal.getPayableRoundingAmountValue ());
+      payableAmount (aLegalMonetaryTotal.getPayableAmountValue ());
     }
 
     return this;
@@ -557,12 +583,89 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Nullable
+  public BigDecimal taxInclusiveTotalAmount ()
+  {
+    return m_aTaxInclusiveTotalAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder taxInclusiveTotalAmount (@Nullable final BigDecimal a)
+  {
+    m_aTaxInclusiveTotalAmount = a;
+    return this;
+  }
+
+  @Nullable
+  public BigDecimal allowanceTotalAmount ()
+  {
+    return m_aAllowanceTotalAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder allowanceTotalAmount (@Nullable final BigDecimal a)
+  {
+    m_aAllowanceTotalAmount = a;
+    return this;
+  }
+
+  @Nullable
+  public BigDecimal chargeTotalAmount ()
+  {
+    return m_aChargeTotalAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder chargeTotalAmount (@Nullable final BigDecimal a)
+  {
+    m_aChargeTotalAmount = a;
+    return this;
+  }
+
+  @Nullable
+  public BigDecimal prepaidAmount ()
+  {
+    return m_aPrepaidAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder prepaidAmount (@Nullable final BigDecimal a)
+  {
+    m_aPrepaidAmount = a;
+    return this;
+  }
+
+  @Nullable
+  public BigDecimal payableRoundingAmount ()
+  {
+    return m_aPayableRoundingAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder payableRoundingAmount (@Nullable final BigDecimal a)
+  {
+    m_aPayableRoundingAmount = a;
+    return this;
+  }
+
+  @Nullable
+  public BigDecimal payableAmount ()
+  {
+    return m_aPayableAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder payableAmount (@Nullable final BigDecimal a)
+  {
+    m_aPayableAmount = a;
+    return this;
+  }
+
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
   {
     int nErrs = 0;
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol UAE TDD 1.0 ReportedTransaction builder: ";
-    final String sWarnPrefix = "Warning in Peppol UAE TDD 1.0 ReportedTransaction builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 ReportedTransaction builder: ";
 
     // TransportHeaderID is optional
 
@@ -649,10 +752,25 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       aCondLog.error (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
       aReportedDocsErrs.inc ();
     }
+    if (m_aTaxInclusiveTotalAmount == null)
+    {
+      aCondLog.error (sErrorPrefix + "TaxInclusiveTotalAmount is missing");
+      aReportedDocsErrs.inc ();
+    }
+    // m_aAllowanceTotalAmount is optional
+    // m_aChargeTotalAmount is optional
+    // m_aPrepaidAmount is optional
+    // m_aPayableRoundingAmount is optional
+    if (m_aPayableAmount == null)
+    {
+      aCondLog.error (sErrorPrefix + "PayableAmount is missing");
+      aReportedDocsErrs.inc ();
+    }
 
     // Failed TDDs don't need this
-    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD)
-      nErrs += aReportedDocsErrs.intValue ();
+    // TODO missing in 0.9.0
+    // if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD)
+    nErrs += aReportedDocsErrs.intValue ();
 
     return nErrs == 0;
   }
@@ -767,14 +885,48 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       {
         final MonetaryTotal aMonetaryTotal = new MonetaryTotal ();
         {
-          final LineExtensionAmount aTaxEx = new LineExtensionAmount (m_aLineExtensionAmount);
-          aTaxEx.setCurrencyID (m_sDocumentCurrencyCode);
-          aMonetaryTotal.setLineExtensionAmount (aTaxEx);
+          final LineExtensionAmount aAmount = new LineExtensionAmount (m_aLineExtensionAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setLineExtensionAmount (aAmount);
         }
         {
-          final TaxExclusiveAmount aTaxEx = new TaxExclusiveAmount (m_aTaxExclusiveTotalAmount);
-          aTaxEx.setCurrencyID (m_sDocumentCurrencyCode);
-          aMonetaryTotal.setTaxExclusiveAmount (aTaxEx);
+          final TaxExclusiveAmount aAmount = new TaxExclusiveAmount (m_aTaxExclusiveTotalAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setTaxExclusiveAmount (aAmount);
+        }
+        {
+          final TaxInclusiveAmount aAmount = new TaxInclusiveAmount (m_aTaxInclusiveTotalAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setTaxInclusiveAmount (aAmount);
+        }
+        if (m_aAllowanceTotalAmount != null)
+        {
+          final AllowanceTotalAmount aAmount = new AllowanceTotalAmount (m_aAllowanceTotalAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setAllowanceTotalAmount (aAmount);
+        }
+        if (m_aChargeTotalAmount != null)
+        {
+          final ChargeTotalAmount aAmount = new ChargeTotalAmount (m_aChargeTotalAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setChargeTotalAmount (aAmount);
+        }
+        if (m_aPrepaidAmount != null)
+        {
+          final PrepaidAmount aAmount = new PrepaidAmount (m_aPrepaidAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setPrepaidAmount (aAmount);
+        }
+        if (m_aPayableRoundingAmount != null)
+        {
+          final PayableRoundingAmount aAmount = new PayableRoundingAmount (m_aPayableRoundingAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setPayableRoundingAmount (aAmount);
+        }
+        {
+          final PayableAmount aAmount = new PayableAmount (m_aPayableAmount);
+          aAmount.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setPayableAmount (aAmount);
         }
         a.setMonetaryTotal (aMonetaryTotal);
       }
