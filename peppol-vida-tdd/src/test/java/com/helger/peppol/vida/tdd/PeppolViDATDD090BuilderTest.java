@@ -35,7 +35,6 @@ import com.helger.datetime.helper.PDTFactory;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.io.resource.inmemory.ReadableResourceString;
 import com.helger.peppol.uae.tdd.testfiles.PeppolViDATestFiles;
-import com.helger.peppol.vida.tdd.PeppolUAETDD10ReportedTransactionBuilder.CustomContent;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentScope;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
@@ -47,8 +46,12 @@ import com.helger.peppolid.factory.PeppolIdentifierFactory;
 import com.helger.schematron.ISchematronResource;
 import com.helger.schematron.svrl.SVRLHelper;
 import com.helger.schematron.svrl.jaxb.SchematronOutputType;
-import com.helger.xml.serialize.read.DOMReader;
-import com.helger.xsds.bdxr.smp2.bc.IDType;
+import com.helger.ubl21.UBL21Marshaller;
+
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
+import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
  * Test class for class {@link PeppolViDATDD090Builder}.
@@ -68,12 +71,11 @@ public final class PeppolViDATDD090BuilderTest
     final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
                                                            .documentScope (EViDATDDDocumentScope.DOMESTIC)
                                                            .reporterRole (EViDATDDReporterRole.SENDER)
-                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
+                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            // Provide all fields manually
-                                                           .reportedTransaction (rt -> rt.transportHeaderID ("my-sbdh-uuid-12345678")
-                                                                                         .customizationID ("urn:peppol:pint:billing-1@ae-1")
+                                                           .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@ae-1")
                                                                                          .profileID ("urn:peppol:bis:billing")
                                                                                          .id ("invoice-1")
                                                                                          .uuid ("19e2c9a3-b000-4fb0-9bd5-a9c4ebda2358")
@@ -84,14 +86,9 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .documentCurrencyCode ("AED")
                                                                                          .sellerTaxID ("123456789")
                                                                                          .sellerTaxSchemeID ("VAT")
-                                                                                         .buyerID ("11223344")
-                                                                                         .buyerIDSchemeID ("AE:TIN")
                                                                                          .buyerTaxID ("987654321")
                                                                                          .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
-                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200"))
-                                                                                         .sourceDocument (DOMReader.readXMLDOM ("<Invoice xmlns='urn:oasis:names:specification:ubl:schema:xsd:Invoice-2'>" +
-                                                                                                                                "\n... omitted for brevity ...\n" +
-                                                                                                                                "</Invoice>")))
+                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200")))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -117,12 +114,11 @@ public final class PeppolViDATDD090BuilderTest
     final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
                                                            .documentScope (EViDATDDDocumentScope.DOMESTIC)
                                                            .reporterRole (EViDATDDReporterRole.SENDER)
-                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
+                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            // Provide all fields manually
-                                                           .reportedTransaction (rt -> rt.transportHeaderID ("my-sbdh-uuid-12345678")
-                                                                                         .customizationID ("urn:peppol:pint:billing-1@ae-1")
+                                                           .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@ae-1")
                                                                                          .profileID ("urn:peppol:bis:billing")
                                                                                          .id ("invoice-1")
                                                                                          .uuid ("19e2c9a3-b000-4fb0-9bd5-a9c4ebda2358")
@@ -138,17 +134,10 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .taxCurrencyCode ("EUR")
                                                                                          .sellerTaxID ("123456789")
                                                                                          .sellerTaxSchemeID ("VAT")
-                                                                                         .buyerID ("11223344")
-                                                                                         .buyerIDSchemeID ("AE:TIN")
                                                                                          .buyerTaxID ("987654321")
                                                                                          .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
                                                                                          .taxTotalAmountTaxCurrency (BigHelper.toBigDecimal ("500"))
-                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200"))
-                                                                                         .addCustomContent (new CustomContent ("ID1",
-                                                                                                                               "val1"))
-                                                                                         .sourceDocument (DOMReader.readXMLDOM ("<Invoice xmlns='urn:oasis:names:specification:ubl:schema:xsd:Invoice-2'>" +
-                                                                                                                                "\n... omitted for brevity ...\n" +
-                                                                                                                                "</Invoice>")))
+                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200")))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -181,12 +170,11 @@ public final class PeppolViDATDD090BuilderTest
       final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
                                                              .documentScope (EViDATDDDocumentScope.DOMESTIC)
                                                              .reporterRole (EViDATDDReporterRole.SENDER)
-                                                             .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
+                                                             .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                              .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                              // Read from pre-parsed UBL Invoice
-                                                             .reportedTransaction (rt -> rt.transportHeaderID ("my-sbdh-uuid-12345678")
-                                                                                           .initFromInvoice (aInvoice))
+                                                             .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
                                                              .build ();
       assertNotNull (aTDD);
 
@@ -220,12 +208,11 @@ public final class PeppolViDATDD090BuilderTest
       final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
                                                              .documentScope (EViDATDDDocumentScope.DOMESTIC)
                                                              .reporterRole (EViDATDDReporterRole.SENDER)
-                                                             .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
+                                                             .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                              .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                              // Read from pre-parsed UBL CreditNote
-                                                             .reportedTransaction (rt -> rt.transportHeaderID ("my-sbdh-uuid-12345678")
-                                                                                           .initFromCreditNote (aCreditNote))
+                                                             .reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote))
                                                              .build ();
       assertNotNull (aTDD);
 
@@ -255,15 +242,14 @@ public final class PeppolViDATDD090BuilderTest
     final InvoiceType aInvoice = UBL21Marshaller.invoice ().read (aRes);
     assertNotNull (aInvoice);
 
-    final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.FAILED)
+    final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.DISREGARD)
                                                            .documentScope (EViDATDDDocumentScope.DOMESTIC)
                                                            .reporterRole (EViDATDDReporterRole.SENDER)
-                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
+                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            // It's not really an invalid invoice
-                                                           .reportedTransaction (rt -> rt.transportHeaderID ("my-sbdh-uuid-12345678")
-                                                                                         .initFromInvoice (aInvoice))
+                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -294,19 +280,18 @@ public final class PeppolViDATDD090BuilderTest
     assertNotNull (aInvoice);
 
     // Explicitly sets a "null" CustomizationID to indicate an invalid source message
-    aInvoice.setCustomizationID (null);
+    aInvoice.setCustomizationID ((CustomizationIDType) null);
     // This one is special, because it is an XSD mandatory fields
     aInvoice.setID ((IDType) null);
 
     final TaxDataType aTDD = new PeppolViDATDD090Builder ().documentTypeCode (EViDATDDDocumentTypeCode.DISREGARD)
                                                            .documentScope (EViDATDDDocumentScope.DOMESTIC)
                                                            .reporterRole (EViDATDDReporterRole.SENDER)
-                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0235:c1id"))
+                                                           .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            // This Invoice is really broken
-                                                           .reportedTransaction (rt -> rt.transportHeaderID ("my-sbdh-uuid-12345678")
-                                                                                         .initFromInvoice (aInvoice))
+                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
                                                            .build ();
     assertNotNull (aTDD);
 

@@ -308,11 +308,11 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
-  public PeppolViDATDD090Builder reportedTransaction (@NonNull final Consumer <PeppolUAETDD10ReportedTransactionBuilder> aBuilderConsumer)
+  public PeppolViDATDD090Builder reportedTransaction (@NonNull final Consumer <PeppolViDATDD090ReportedTransactionBuilder> aBuilderConsumer)
   {
     if (m_eDocumentTypeCode == null)
       throw new IllegalStateException ("The ReportedTransaction can only be built, after the DocumentTypeCode is set!");
-    final PeppolUAETDD10ReportedTransactionBuilder aBuilder = new PeppolUAETDD10ReportedTransactionBuilder (m_eDocumentTypeCode);
+    final PeppolViDATDD090ReportedTransactionBuilder aBuilder = new PeppolViDATDD090ReportedTransactionBuilder (m_eDocumentTypeCode);
     aBuilderConsumer.accept (aBuilder);
     return reportedTransaction (aBuilder.build ());
   }

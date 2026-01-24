@@ -20,75 +20,55 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
-import java.util.Locale;
-
-import javax.xml.namespace.QName;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-import com.helger.annotation.Nonempty;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.collection.commons.CommonsArrayList;
-import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
+import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction;
-import com.helger.xml.XMLHelper;
-import com.helger.xsds.bdxr.smp2.bc.IDType;
-import com.helger.xsds.bdxr.smp2.ec.ExtensionContentType;
-import com.helger.xsds.bdxr.smp2.udt.ValueType;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument.MonetaryTotal;
+import com.helger.peppol.vida.tdd.v090.cac.AccountingCustomerParty;
+import com.helger.peppol.vida.tdd.v090.cac.AccountingSupplierParty;
+import com.helger.peppol.vida.tdd.v090.cac.InvoicePeriod;
+import com.helger.peppol.vida.tdd.v090.cac.Party;
+import com.helger.peppol.vida.tdd.v090.cac.PartyTaxScheme;
+import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
+import com.helger.peppol.vida.tdd.v090.cac.TaxTotal;
+import com.helger.peppol.vida.tdd.v090.cbc.LineExtensionAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.TaxAmount;
+import com.helger.peppol.vida.tdd.v090.cbc.TaxExclusiveAmount;
+
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
+import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
+import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "ReportedTransaction".
  *
  * @author Philip Helger
  */
-public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <ReportedTransaction>
+public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <ReportedTransaction>
 {
-  public static final class CustomContent
-  {
-    private final String m_sID;
-    private final String m_sValue;
+  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090ReportedTransactionBuilder.class);
 
-    public CustomContent (@NonNull @Nonempty final String sID, @NonNull @Nonempty final String sValue)
-    {
-      ValueEnforcer.notEmpty (sID, "ID");
-      ValueEnforcer.isTrue ( () -> sID.equals (sID.toUpperCase (Locale.ROOT)),
-                             () -> "ID '" + sID + "' must be all uppercase");
-      ValueEnforcer.notEmpty (sValue, "Value");
-      m_sID = sID;
-      m_sValue = sValue;
-    }
-
-    @NonNull
-    @Nonempty
-    public String getID ()
-    {
-      return m_sID;
-    }
-
-    @NonNull
-    @Nonempty
-    public String getValue ()
-    {
-      return m_sValue;
-    }
-  }
-
-  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolUAETDD10ReportedTransactionBuilder.class);
-
-  private final @NonNull EViDATDDDocumentTypeCode m_eDocumentTypeCode;
-  private String m_sTransportHeaderID;
+  private final EViDATDDDocumentTypeCode m_eDocumentTypeCode;
   private String m_sCustomizationID;
   private String m_sProfileID;
   private String m_sID;
@@ -96,54 +76,36 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   private LocalDate m_aIssueDate;
   private OffsetTime m_aIssueTime;
   private String m_sDocumentTypeCode;
+  private String m_sNote;
+  private LocalDate m_aTaxPointDate;
   private String m_sDocumentCurrencyCode;
   private String m_sTaxCurrencyCode;
+  private LocalDate m_aInvoicePeriodStart;
+  private LocalDate m_aInvoicePeriodEnd;
+  private String m_sInvoicePeriodDescriptionCode;
   private String m_sSellerTaxID;
   private String m_sSellerTaxSchemeID;
-  private String m_sBuyerID;
-  private String m_sBuyerIDSchemeID;
   private String m_sBuyerTaxID;
   private BigDecimal m_aTaxTotalAmountDocumentCurrency;
   private BigDecimal m_aTaxTotalAmountTaxCurrency;
+  private BigDecimal m_aLineExtensionAmount;
   private BigDecimal m_aTaxExclusiveTotalAmount;
-  private final ICommonsList <CustomContent> m_aCustomContents = new CommonsArrayList <> ();
-  private Element m_aSourceDocument;
 
-  public PeppolUAETDD10ReportedTransactionBuilder (@NonNull final EViDATDDDocumentTypeCode eDocumentTypeCode)
+  public PeppolViDATDD090ReportedTransactionBuilder (@NonNull final EViDATDDDocumentTypeCode eDocumentTypeCode)
   {
     ValueEnforcer.notNull (eDocumentTypeCode, "DocumentTypeCode");
     m_eDocumentTypeCode = eDocumentTypeCode;
   }
 
-  @NonNull
-  public static InvoiceType getWithoutEmbeddedDocumentBinaryObject (@NonNull final InvoiceType aInv)
-  {
-    final InvoiceType ret = aInv.clone ();
-    for (final var aAddDocRef : ret.getAdditionalDocumentReference ())
-      if (aAddDocRef.getAttachment () != null)
-        aAddDocRef.getAttachment ().setEmbeddedDocumentBinaryObject ((EmbeddedDocumentBinaryObjectType) null);
-    return ret;
-  }
-
-  @NonNull
-  public static CreditNoteType getWithoutEmbeddedDocumentBinaryObject (@NonNull final CreditNoteType aCN)
-  {
-    final CreditNoteType ret = aCN.clone ();
-    for (final var aAddDocRef : ret.getAdditionalDocumentReference ())
-      if (aAddDocRef.getAttachment () != null)
-        aAddDocRef.getAttachment ().setEmbeddedDocumentBinaryObject ((EmbeddedDocumentBinaryObjectType) null);
-    return ret;
-  }
-
   /**
-   * Set all fields except the TransportHeaderID from the provided UBL 2.1 Invoice
+   * Set all fields from the provided UBL 2.1 Invoice
    *
    * @param aInv
    *        The Invoice to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder initFromInvoice (@NonNull final InvoiceType aInv)
+  public PeppolViDATDD090ReportedTransactionBuilder initFromInvoice (@NonNull final InvoiceType aInv)
   {
     ValueEnforcer.notNull (aInv, "Invoice");
 
@@ -154,8 +116,19 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
     issueDate (aInv.getIssueDateValueLocal ());
     issueTime (aInv.getIssueTimeValue ());
     documentTypeCode (aInv.getInvoiceTypeCodeValue ());
+    if (aInv.hasNoteEntries ())
+      note (aInv.getNoteAtIndex (0).getValue ());
     documentCurrencyCode (aInv.getDocumentCurrencyCodeValue ());
     taxCurrencyCode (aInv.getTaxCurrencyCodeValue ());
+
+    if (aInv.hasInvoicePeriodEntries ())
+    {
+      final PeriodType aIP = aInv.getInvoicePeriodAtIndex (0);
+      invoicePeriodStart (aIP.getStartDateValueLocal ());
+      invoicePeriodEnd (aIP.getEndDateValueLocal ());
+      if (aIP.hasDescriptionCodeEntries ())
+        invoicePeriodDescriptionCode (aIP.getDescriptionAtIndex (0).getValue ());
+    }
 
     final SupplierPartyType aSupplier = aInv.getAccountingSupplierParty ();
     if (aSupplier != null)
@@ -177,17 +150,6 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
       final PartyType aParty = aCustomer.getParty ();
       if (aParty != null)
       {
-        if (aParty.hasPartyIdentificationEntries ())
-        {
-          final PartyIdentificationType aPID = aParty.getPartyIdentificationAtIndex (0);
-          final IDType aID = aPID.getID ();
-          if (aID != null)
-          {
-            buyerID (aID.getValue ());
-            buyerIDSchemeID (aID.getSchemeID ());
-          }
-        }
-
         if (aParty.hasPartyTaxSchemeEntries ())
         {
           final PartyTaxSchemeType aPTS = aParty.getPartyTaxSchemeAtIndex (0);
@@ -218,24 +180,18 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
       taxExclusiveTotalAmount (aLegalMonetaryTotal.getTaxExclusiveAmountValue ());
     }
 
-    // Make sure to disable Schema validation, so that invalid documents can also be serialized
-    // properly
-    sourceDocument (UBL21Marshaller.invoice ()
-                                   .setUseSchema (false)
-                                   .getAsElement (getWithoutEmbeddedDocumentBinaryObject (aInv)));
-
     return this;
   }
 
   /**
-   * Set all fields except the TransportHeaderID from the provided UBL 2.1 CreditNote
+   * Set all fields from the provided UBL 2.1 CreditNote
    *
    * @param aCN
    *        The CreditNote to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder initFromCreditNote (@NonNull final CreditNoteType aCN)
+  public PeppolViDATDD090ReportedTransactionBuilder initFromCreditNote (@NonNull final CreditNoteType aCN)
   {
     ValueEnforcer.notNull (aCN, "Invoice");
 
@@ -246,8 +202,19 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
     issueDate (aCN.getIssueDateValueLocal ());
     issueTime (aCN.getIssueTimeValue ());
     documentTypeCode (aCN.getCreditNoteTypeCodeValue ());
+    if (aCN.hasNoteEntries ())
+      note (aCN.getNoteAtIndex (0).getValue ());
     documentCurrencyCode (aCN.getDocumentCurrencyCodeValue ());
     taxCurrencyCode (aCN.getTaxCurrencyCodeValue ());
+
+    if (aCN.hasInvoicePeriodEntries ())
+    {
+      final PeriodType aIP = aCN.getInvoicePeriodAtIndex (0);
+      invoicePeriodStart (aIP.getStartDateValueLocal ());
+      invoicePeriodEnd (aIP.getEndDateValueLocal ());
+      if (aIP.hasDescriptionCodeEntries ())
+        invoicePeriodDescriptionCode (aIP.getDescriptionAtIndex (0).getValue ());
+    }
 
     final SupplierPartyType aSupplier = aCN.getAccountingSupplierParty ();
     if (aSupplier != null)
@@ -269,17 +236,6 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
       final PartyType aParty = aCustomer.getParty ();
       if (aParty != null)
       {
-        if (aParty.hasPartyIdentificationEntries ())
-        {
-          final PartyIdentificationType aPID = aParty.getPartyIdentificationAtIndex (0);
-          final IDType aID = aPID.getID ();
-          if (aID != null)
-          {
-            buyerID (aID.getValue ());
-            buyerIDSchemeID (aID.getSchemeID ());
-          }
-        }
-
         if (aParty.hasPartyTaxSchemeEntries ())
         {
           final PartyTaxSchemeType aPTS = aParty.getPartyTaxSchemeAtIndex (0);
@@ -310,24 +266,6 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
       taxExclusiveTotalAmount (aLegalMonetaryTotal.getTaxExclusiveAmountValue ());
     }
 
-    // Make sure to disable Schema validation, so that invalid documents can also be serialized
-    // properly
-    sourceDocument (UBL21Marshaller.creditNote ()
-                                   .setUseSchema (false)
-                                   .getAsElement (getWithoutEmbeddedDocumentBinaryObject (aCN)));
-    return this;
-  }
-
-  @Nullable
-  public String transportHeaderID ()
-  {
-    return m_sTransportHeaderID;
-  }
-
-  @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder transportHeaderID (@Nullable final String s)
-  {
-    m_sTransportHeaderID = s;
     return this;
   }
 
@@ -338,7 +276,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder customizationID (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder customizationID (@Nullable final String s)
   {
     m_sCustomizationID = s;
     return this;
@@ -351,7 +289,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder profileID (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder profileID (@Nullable final String s)
   {
     m_sProfileID = s;
     return this;
@@ -364,7 +302,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder id (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder id (@Nullable final String s)
   {
     m_sID = s;
     return this;
@@ -377,7 +315,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder uuid (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder uuid (@Nullable final String s)
   {
     m_sUUID = s;
     return this;
@@ -390,7 +328,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder issueDate (@Nullable final LocalDate a)
+  public PeppolViDATDD090ReportedTransactionBuilder issueDate (@Nullable final LocalDate a)
   {
     m_aIssueDate = a;
     return this;
@@ -403,13 +341,13 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder issueTime (@Nullable final XMLOffsetTime a)
+  public PeppolViDATDD090ReportedTransactionBuilder issueTime (@Nullable final XMLOffsetTime a)
   {
     return issueTime (a == null ? null : a.toOffsetTime ());
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder issueTime (@Nullable final OffsetTime a)
+  public PeppolViDATDD090ReportedTransactionBuilder issueTime (@Nullable final OffsetTime a)
   {
     // XSD can only handle milliseconds
     m_aIssueTime = PDTFactory.getWithMillisOnly (a);
@@ -417,7 +355,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder issueDateTime (@Nullable final OffsetDateTime a)
+  public PeppolViDATDD090ReportedTransactionBuilder issueDateTime (@Nullable final OffsetDateTime a)
   {
     if (a == null)
       return issueDate (null).issueTime ((OffsetTime) null);
@@ -431,9 +369,35 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder documentTypeCode (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder documentTypeCode (@Nullable final String s)
   {
     m_sDocumentTypeCode = s;
+    return this;
+  }
+
+  @Nullable
+  public String note ()
+  {
+    return m_sNote;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder note (@Nullable final String s)
+  {
+    m_sNote = s;
+    return this;
+  }
+
+  @Nullable
+  public LocalDate taxPointDate ()
+  {
+    return m_aTaxPointDate;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder taxPointDate (@Nullable final LocalDate a)
+  {
+    m_aTaxPointDate = a;
     return this;
   }
 
@@ -444,7 +408,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder documentCurrencyCode (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder documentCurrencyCode (@Nullable final String s)
   {
     m_sDocumentCurrencyCode = s;
     return this;
@@ -457,9 +421,48 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder taxCurrencyCode (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder taxCurrencyCode (@Nullable final String s)
   {
     m_sTaxCurrencyCode = s;
+    return this;
+  }
+
+  @Nullable
+  public LocalDate invoicePeriodStart ()
+  {
+    return m_aInvoicePeriodStart;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder invoicePeriodStart (@Nullable final LocalDate a)
+  {
+    m_aInvoicePeriodStart = a;
+    return this;
+  }
+
+  @Nullable
+  public LocalDate invoicePeriodEnd ()
+  {
+    return m_aInvoicePeriodEnd;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder invoicePeriodEnd (@Nullable final LocalDate a)
+  {
+    m_aInvoicePeriodEnd = a;
+    return this;
+  }
+
+  @Nullable
+  public String invoicePeriodDescriptionCode ()
+  {
+    return m_sInvoicePeriodDescriptionCode;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder invoicePeriodDescriptionCode (@Nullable final String s)
+  {
+    m_sInvoicePeriodDescriptionCode = s;
     return this;
   }
 
@@ -470,7 +473,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder sellerTaxID (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder sellerTaxID (@Nullable final String s)
   {
     m_sSellerTaxID = s;
     return this;
@@ -483,35 +486,9 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder sellerTaxSchemeID (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder sellerTaxSchemeID (@Nullable final String s)
   {
     m_sSellerTaxSchemeID = s;
-    return this;
-  }
-
-  @Nullable
-  public String buyerID ()
-  {
-    return m_sBuyerID;
-  }
-
-  @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder buyerID (@Nullable final String s)
-  {
-    m_sBuyerID = s;
-    return this;
-  }
-
-  @Nullable
-  public String buyerIDSchemeID ()
-  {
-    return m_sBuyerIDSchemeID;
-  }
-
-  @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder buyerIDSchemeID (@Nullable final String s)
-  {
-    m_sBuyerIDSchemeID = s;
     return this;
   }
 
@@ -522,7 +499,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder buyerTaxID (@Nullable final String s)
+  public PeppolViDATDD090ReportedTransactionBuilder buyerTaxID (@Nullable final String s)
   {
     m_sBuyerTaxID = s;
     return this;
@@ -535,7 +512,7 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder taxTotalAmountDocumentCurrency (@Nullable final BigDecimal a)
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalAmountDocumentCurrency (@Nullable final BigDecimal a)
   {
     m_aTaxTotalAmountDocumentCurrency = a;
     return this;
@@ -548,9 +525,22 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder taxTotalAmountTaxCurrency (@Nullable final BigDecimal a)
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalAmountTaxCurrency (@Nullable final BigDecimal a)
   {
     m_aTaxTotalAmountTaxCurrency = a;
+    return this;
+  }
+
+  @Nullable
+  public BigDecimal lineExtensionAmount ()
+  {
+    return m_aLineExtensionAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder lineExtensionAmount (@Nullable final BigDecimal a)
+  {
+    m_aLineExtensionAmount = a;
     return this;
   }
 
@@ -561,42 +551,9 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
   }
 
   @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder taxExclusiveTotalAmount (@Nullable final BigDecimal a)
+  public PeppolViDATDD090ReportedTransactionBuilder taxExclusiveTotalAmount (@Nullable final BigDecimal a)
   {
     m_aTaxExclusiveTotalAmount = a;
-    return this;
-  }
-
-  @Nullable
-  public ICommonsList <CustomContent> customContents ()
-  {
-    return m_aCustomContents;
-  }
-
-  @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder addCustomContent (@Nullable final CustomContent a)
-  {
-    if (a != null)
-      m_aCustomContents.add (a);
-    return this;
-  }
-
-  @Nullable
-  public Element sourceDocument ()
-  {
-    return m_aSourceDocument;
-  }
-
-  @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder sourceDocument (@Nullable final Document a)
-  {
-    return sourceDocument (a == null ? null : a.getDocumentElement ());
-  }
-
-  @NonNull
-  public PeppolUAETDD10ReportedTransactionBuilder sourceDocument (@Nullable final Element a)
-  {
-    m_aSourceDocument = a;
     return this;
   }
 
@@ -641,11 +598,14 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
       aCondLog.error (sErrorPrefix + "DocumentTypeCode is missing");
       aReportedDocsErrs.inc ();
     }
+    // Note is optional
+    // TaxPointDate is optional
     if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
     {
       aCondLog.error (sErrorPrefix + "DocumentCurrencyCode is missing");
       aReportedDocsErrs.inc ();
     }
+    // InvoicePeriod is optional
     if (StringHelper.isEmpty (m_sSellerTaxID))
     {
       aCondLog.error (sErrorPrefix + "SellerTaxID is missing");
@@ -655,14 +615,6 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
     {
       aCondLog.error (sErrorPrefix + "SellerTaxSchemeID is missing");
       aReportedDocsErrs.inc ();
-    }
-    if (StringHelper.isNotEmpty (m_sBuyerIDSchemeID))
-    {
-      if (StringHelper.isEmpty (m_sBuyerID))
-      {
-        // Warning only
-        aCondLog.warn (sWarnPrefix + "BuyerIDSchemeID can only be used if BuyerID is also present");
-      }
     }
     if (m_aTaxTotalAmountDocumentCurrency == null)
     {
@@ -687,6 +639,11 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
         aReportedDocsErrs.inc ();
       }
     }
+    if (m_aLineExtensionAmount == null)
+    {
+      aCondLog.error (sErrorPrefix + "LineExtensionAmount is missing");
+      aReportedDocsErrs.inc ();
+    }
     if (m_aTaxExclusiveTotalAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
@@ -694,24 +651,8 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
     }
 
     // Failed TDDs don't need this
-    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.FAILED)
+    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD)
       nErrs += aReportedDocsErrs.intValue ();
-
-    if (m_aSourceDocument == null)
-    {
-      aCondLog.error (sErrorPrefix + "SourceDocument is missing");
-      nErrs++;
-    }
-    else
-    {
-      final QName aQName = XMLHelper.getQName (m_aSourceDocument);
-      if (!aQName.equals (UBL21Marshaller.invoice ().getRootElementQName ()) &&
-          !aQName.equals (UBL21Marshaller.creditNote ().getRootElementQName ()))
-      {
-        aCondLog.error (sErrorPrefix + "SourceDocument must be a UBL 2.1 Invoice or CreditNote");
-        nErrs++;
-      }
-    }
 
     return nErrs == 0;
   }
@@ -734,87 +675,81 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
 
     final ReportedTransaction ret = new ReportedTransaction ();
 
-    // TransportHeaderID
-    if (StringHelper.isNotEmpty (m_sTransportHeaderID))
-    {
-      final TransportHeaderIDType a = new TransportHeaderIDType ();
-      a.setValue (m_sTransportHeaderID);
-      ret.setTransportHeaderID (a);
-    }
-
     // ReportedDocument - optional for FAILED state
-    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.FAILED || aReportedDocErrs.is0 ())
+    if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD || aReportedDocErrs.is0 ())
     {
-      final ReportedDocumentType a = new ReportedDocumentType ();
+      final ReportedDocument a = new ReportedDocument ();
       if (StringHelper.isNotEmpty (m_sCustomizationID))
-        a.setCustomizationID (new CustomizationIDType (m_sCustomizationID));
+        a.setCustomizationID (m_sCustomizationID);
       if (StringHelper.isNotEmpty (m_sProfileID))
-        a.setProfileID (new ProfileIDType (m_sProfileID));
-      a.setID (new IDType (m_sID));
+        a.setProfileID (m_sProfileID);
+      a.setID (m_sID);
       if (StringHelper.isNotEmpty (m_sUUID))
-        a.setUUID (new UUIDType (m_sUUID));
+        a.setUUID (m_sUUID);
       if (m_aIssueDate != null)
-        a.setIssueDate (new IssueDateType (m_aIssueDate));
+        a.setIssueDate (XMLOffsetDate.of (m_aIssueDate));
       if (m_aIssueTime != null)
-        a.setIssueTime (new IssueTimeType (XMLOffsetTime.of (m_aIssueTime)));
+        a.setIssueTime (XMLOffsetTime.of (m_aIssueTime));
       if (StringHelper.isNotEmpty (m_sDocumentTypeCode))
-      {
-        final ReferencedDocumentTypeCodeType a2 = new ReferencedDocumentTypeCodeType ();
-        a2.setValue (m_sDocumentTypeCode);
-        a.setDocumentTypeCode (a2);
-      }
+        a.setDocumentTypeCode (m_sDocumentTypeCode);
+      if (StringHelper.isNotEmpty (m_sNote))
+        a.setNote (m_sNote);
+      if (m_aTaxPointDate != null)
+        a.setTaxPointDate (XMLOffsetDate.of (m_aTaxPointDate));
       if (StringHelper.isNotEmpty (m_sDocumentCurrencyCode))
-        a.setDocumentCurrencyCode (new DocumentCurrencyCodeType (m_sDocumentCurrencyCode));
+        a.setDocumentCurrencyCode (m_sDocumentCurrencyCode);
       if (StringHelper.isNotEmpty (m_sTaxCurrencyCode))
-        a.setTaxCurrencyCode (new TaxCurrencyCodeType (m_sTaxCurrencyCode));
+        a.setTaxCurrencyCode (m_sTaxCurrencyCode);
+
+      if (m_aInvoicePeriodStart != null ||
+          m_aInvoicePeriodEnd != null ||
+          StringHelper.isNotEmpty (m_sInvoicePeriodDescriptionCode))
       {
-        final SupplierPartyType a2 = new SupplierPartyType ();
+        final InvoicePeriod aIP = new InvoicePeriod ();
+        if (m_aInvoicePeriodStart != null)
+          aIP.setStartDate (XMLOffsetDate.of (m_aInvoicePeriodStart));
+        if (m_aInvoicePeriodEnd != null)
+          aIP.setEndDate (XMLOffsetDate.of (m_aInvoicePeriodEnd));
+        if (StringHelper.isNotEmpty (m_sInvoicePeriodDescriptionCode))
+          aIP.setDescriptionCode (m_sInvoicePeriodDescriptionCode);
+        a.setInvoicePeriod (aIP);
+      }
+
+      {
+        final AccountingSupplierParty a2 = new AccountingSupplierParty ();
         {
-          final PartyType aParty = new PartyType ();
+          final Party aParty = new Party ();
           {
-            final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
+            final PartyTaxScheme aPTS = new PartyTaxScheme ();
             {
               aPTS.setCompanyID (m_sSellerTaxID);
-              final TaxSchemeType aTS = new TaxSchemeType ();
+              final TaxScheme aTS = new TaxScheme ();
               aTS.setID (m_sSellerTaxSchemeID);
               aPTS.setTaxScheme (aTS);
             }
-            aParty.addPartyTaxScheme (aPTS);
+            aParty.setPartyTaxScheme (aPTS);
           }
           a2.setParty (aParty);
         }
         a.setAccountingSupplierParty (a2);
       }
       {
-        final CustomerPartyType aAccountingCustomer = new CustomerPartyType ();
+        final AccountingCustomerParty aAccountingCustomer = new AccountingCustomerParty ();
         {
-          final PartyType aParty = new PartyType ();
-          if (StringHelper.isNotEmpty (m_sBuyerID))
-          {
-            final PartyIdentificationType aPI = new PartyIdentificationType ();
-            final IDType aID = new IDType (m_sBuyerID);
-            if (StringHelper.isNotEmpty (m_sBuyerIDSchemeID))
-              aID.setSchemeID (m_sBuyerIDSchemeID);
-            aPI.setID (aID);
-            aParty.addPartyIdentification (aPI);
-          }
+          final Party aParty = new Party ();
           if (StringHelper.isNotEmpty (m_sBuyerTaxID))
           {
-            final PartyTaxSchemeType aPTS = new PartyTaxSchemeType ();
-            {
-              aPTS.setCompanyID (m_sBuyerTaxID);
-              // TaxScheme is mandatory
-              aPTS.setTaxScheme (new TaxSchemeType ());
-            }
-            aParty.addPartyTaxScheme (aPTS);
+            final PartyTaxScheme aPTS = new PartyTaxScheme ();
+            aPTS.setCompanyID (m_sBuyerTaxID);
+            aParty.setPartyTaxScheme (aPTS);
           }
           aAccountingCustomer.setParty (aParty);
         }
         a.setAccountingCustomerParty (aAccountingCustomer);
       }
       {
-        final TaxTotalType aTaxTotal = new TaxTotalType ();
-        final TaxAmountType aTaxAmount = new TaxAmountType ();
+        final TaxTotal aTaxTotal = new TaxTotal ();
+        final TaxAmount aTaxAmount = new TaxAmount ();
         aTaxAmount.setValue (m_aTaxTotalAmountDocumentCurrency);
         aTaxAmount.setCurrencyID (m_sDocumentCurrencyCode);
         aTaxTotal.setTaxAmount (aTaxAmount);
@@ -822,39 +757,28 @@ public class PeppolUAETDD10ReportedTransactionBuilder implements IBuilder <Repor
       }
       if (m_aTaxTotalAmountTaxCurrency != null)
       {
-        final TaxTotalType aTaxTotal = new TaxTotalType ();
-        final TaxAmountType aTaxAmount = new TaxAmountType ();
+        final TaxTotal aTaxTotal = new TaxTotal ();
+        final TaxAmount aTaxAmount = new TaxAmount ();
         aTaxAmount.setValue (m_aTaxTotalAmountTaxCurrency);
         aTaxAmount.setCurrencyID (m_sTaxCurrencyCode);
         aTaxTotal.setTaxAmount (aTaxAmount);
         a.addTaxTotal (aTaxTotal);
       }
       {
-        final MonetaryTotalType aMonetaryTotal = new MonetaryTotalType ();
+        final MonetaryTotal aMonetaryTotal = new MonetaryTotal ();
         {
-          final TaxExclusiveAmountType aTaxEx = new TaxExclusiveAmountType (m_aTaxExclusiveTotalAmount);
+          final LineExtensionAmount aTaxEx = new LineExtensionAmount (m_aLineExtensionAmount);
+          aTaxEx.setCurrencyID (m_sDocumentCurrencyCode);
+          aMonetaryTotal.setLineExtensionAmount (aTaxEx);
+        }
+        {
+          final TaxExclusiveAmount aTaxEx = new TaxExclusiveAmount (m_aTaxExclusiveTotalAmount);
           aTaxEx.setCurrencyID (m_sDocumentCurrencyCode);
           aMonetaryTotal.setTaxExclusiveAmount (aTaxEx);
         }
-        a.addMonetaryTotal (aMonetaryTotal);
+        a.setMonetaryTotal (aMonetaryTotal);
       }
       ret.setReportedDocument (a);
-    }
-
-    for (final CustomContent aCC : m_aCustomContents)
-    {
-      final CustomContentType a = new CustomContentType ();
-      a.setID (new IDType (aCC.m_sID));
-      a.setValue (new ValueType (aCC.m_sValue));
-      ret.addCustomContent (a);
-    }
-
-    {
-      final UBLExtensionType aUBLExt = new UBLExtensionType ();
-      final ExtensionContentType aExtContent = new ExtensionContentType ();
-      aExtContent.setAny (m_aSourceDocument);
-      aUBLExt.setExtensionContent (aExtContent);
-      ret.setSourceDocument (aUBLExt);
     }
 
     return ret;

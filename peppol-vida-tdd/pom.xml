@@ -69,6 +69,11 @@
       <groupId>com.helger.schematron</groupId>
       <artifactId>ph-schematron-xslt</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.helger.ubl</groupId>
+      <artifactId>ph-ubl21</artifactId>
+      <version>${ph-ubl.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
