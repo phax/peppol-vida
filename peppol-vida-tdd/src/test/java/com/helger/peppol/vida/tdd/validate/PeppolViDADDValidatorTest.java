@@ -32,27 +32,26 @@ import com.helger.io.file.FilenameHelper;
 import com.helger.io.resource.IReadableResource;
 import com.helger.peppol.uae.tdd.testfiles.PeppolViDATestFiles;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD090Marshaller;
-import com.helger.peppol.vida.tdd.v100.TaxDataType;
-import com.helger.peppol.vida.tdd.validate.PeppolUAETDDValidator;
+import com.helger.peppol.vida.tdd.v090.TaxDataType;
 import com.helger.schematron.ISchematronResource;
 import com.helger.schematron.svrl.SVRLHelper;
 import com.helger.schematron.svrl.SVRLMarshaller;
 import com.helger.schematron.svrl.jaxb.SchematronOutputType;
 
 /**
- * Test class for class {@link PeppolUAETDDValidator}.
+ * Test class for class {@link PeppolViDATDDValidator}.
  *
  * @author Philip Helger
  */
-public final class PeppolUAETDDValidatorTest
+public final class PeppolViDADDValidatorTest
 {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolUAETDDValidatorTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDADDValidatorTest.class);
 
   @Test
-  public void testReadTDD10Good () throws Exception
+  public void testReadTDD090Good () throws Exception
   {
-    final ISchematronResource aSCHRes = PeppolUAETDDValidator.getSchematronUAE_TDD_10 ();
+    final ISchematronResource aSCHRes = PeppolViDATDDValidator.getSchematronViDA_TDD_090 ();
     assertNotNull (aSCHRes);
 
     final PeppolViDATDD090Marshaller aMarshaller = new PeppolViDATDD090Marshaller ();
@@ -74,9 +73,9 @@ public final class PeppolUAETDDValidatorTest
   }
 
   @Test
-  public void testReadTDD10Bad () throws Exception
+  public void testReadTDD090Bad () throws Exception
   {
-    final ISchematronResource aSCHRes = PeppolUAETDDValidator.getSchematronUAE_TDD_10 ();
+    final ISchematronResource aSCHRes = PeppolViDATDDValidator.getSchematronViDA_TDD_090 ();
     assertNotNull (aSCHRes);
 
     final PeppolViDATDD090Marshaller aMarshaller = new PeppolViDATDD090Marshaller ();
@@ -103,5 +102,4 @@ public final class PeppolUAETDDValidatorTest
                   aAllErrorIDs.contains (sBaseName.substring (sBaseName.indexOf ('-') + 1)));
     }
   }
-
 }

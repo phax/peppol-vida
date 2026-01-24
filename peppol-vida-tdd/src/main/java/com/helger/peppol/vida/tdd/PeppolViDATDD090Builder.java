@@ -54,7 +54,9 @@ import com.helger.peppolid.factory.PeppolIdentifierFactory;
  */
 public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
 {
-  public static final String DEFAULT_CUSTOMIZATION_ID = "urn:peppol:taxdata:ViDA-1";
+  // TODO bug in the 0.9.0 specification
+  public static final String DEFAULT_CUSTOMIZATION_ID = true ? "urn:peppol:schema:taxdata:1.0::TaxData##urn:peppol:taxdata:ViDA-1::1.0"
+                                                             : "urn:peppol:taxdata:ViDA-1";
   public static final String DEFAULT_PROFILE_ID = "urn:peppol:taxreporting";
 
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090Builder.class);
