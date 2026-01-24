@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.peppol.uae.tdd.testfiles;
+package com.helger.peppol.vida.tdd.testfiles;
 
 import static org.junit.Assert.assertTrue;
 
@@ -32,6 +32,8 @@ public final class PeppolViDATestFilesTest
   @Test
   public void testExists ()
   {
+    assertTrue (PeppolViDATestFiles.getAllGoodBillingInvoiceFiles ().stream ().allMatch (ClassPathResource::exists));
+    assertTrue (PeppolViDATestFiles.getAllGoodBillingCreditNoteFiles ().stream ().allMatch (ClassPathResource::exists));
     assertTrue (PeppolViDATestFiles.getAllGoodTDD090Files ().stream ().allMatch (ClassPathResource::exists));
     assertTrue (PeppolViDATestFiles.getAllSchematronBadTDD090Files ().stream ().allMatch (ClassPathResource::exists));
     assertTrue (PeppolViDATestFiles.getAllPayloadBadTDD090Files ().stream ().allMatch (ClassPathResource::exists));

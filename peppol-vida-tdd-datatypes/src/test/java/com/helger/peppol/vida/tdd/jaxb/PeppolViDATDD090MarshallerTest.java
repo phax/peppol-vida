@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.helger.io.resource.ClassPathResource;
-import com.helger.peppol.uae.tdd.testfiles.PeppolViDATestFiles;
+import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
 
 /**
  * Test class for class {@link PeppolViDATDD090Marshaller}.

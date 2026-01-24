@@ -34,11 +34,11 @@ import com.helger.collection.commons.CommonsArrayList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.io.resource.inmemory.ReadableResourceString;
-import com.helger.peppol.uae.tdd.testfiles.PeppolViDATestFiles;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentScope;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD090Marshaller;
+import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
 import com.helger.peppol.vida.tdd.v090.TaxDataType;
 import com.helger.peppol.vida.tdd.validate.PeppolViDATDDValidator;
 import com.helger.peppolid.factory.IIdentifierFactory;
@@ -85,7 +85,6 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .documentTypeCode ("380")
                                                                                          .documentCurrencyCode ("AED")
                                                                                          .sellerTaxID ("123456789")
-                                                                                         .sellerTaxSchemeID ("VAT")
                                                                                          .buyerTaxID ("987654321")
                                                                                          .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
                                                                                          .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200")))
@@ -133,7 +132,6 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .documentCurrencyCode ("AED")
                                                                                          .taxCurrencyCode ("EUR")
                                                                                          .sellerTaxID ("123456789")
-                                                                                         .sellerTaxSchemeID ("VAT")
                                                                                          .buyerTaxID ("987654321")
                                                                                          .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
                                                                                          .taxTotalAmountTaxCurrency (BigHelper.toBigDecimal ("500"))

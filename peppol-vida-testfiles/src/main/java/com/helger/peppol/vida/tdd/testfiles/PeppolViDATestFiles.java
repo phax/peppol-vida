@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.peppol.uae.tdd.testfiles;
+package com.helger.peppol.vida.tdd.testfiles;
 
 import org.jspecify.annotations.NonNull;
 
@@ -49,6 +49,30 @@ public final class PeppolViDATestFiles
     for (final String s : aFilenames)
       ret.add (new ClassPathResource ("external/" + sPrefix + s, _getCL ()));
     return ret;
+  }
+
+  @NonNull
+  @Nonempty
+  @ReturnsMutableCopy
+  public static ICommonsList <@NonNull ClassPathResource> getAllGoodBillingInvoiceFiles ()
+  {
+    return _getAll ("invoice/good/",
+                    "Allowance-example.xml",
+                    "base-example.xml",
+                    "base-negative-inv-correction.xml",
+                    "sales-order-example.xml",
+                    "vat-category-E.xml",
+                    "vat-category-O.xml",
+                    "Vat-category-S.xml",
+                    "vat-category-Z.xml");
+  }
+
+  @NonNull
+  @Nonempty
+  @ReturnsMutableCopy
+  public static ICommonsList <@NonNull ClassPathResource> getAllGoodBillingCreditNoteFiles ()
+  {
+    return _getAll ("creditnote/good/", "base-creditnote-correction.xml");
   }
 
   @NonNull
