@@ -26,17 +26,21 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument;
+import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument.DocumentLine;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument.MonetaryTotal;
 import com.helger.peppol.vida.tdd.v090.cac.AccountingCustomerParty;
 import com.helger.peppol.vida.tdd.v090.cac.AccountingSupplierParty;
@@ -122,7 +126,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private BigDecimal m_aPrepaidAmount;
   private BigDecimal m_aPayableRoundingAmount;
   private BigDecimal m_aPayableAmount;
-  // TODO DocumentLine
+  private final ICommonsList <DocumentLine> m_aDocumentLines = new CommonsArrayList <> ();
 
   public PeppolViDATDD090ReportedTransactionBuilder (@NonNull final EViDATDDDocumentTypeCode eDocumentTypeCode)
   {
@@ -245,6 +249,9 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       payableAmount (aLegalMonetaryTotal.getPayableAmountValue ());
     }
 
+    for (final var aLine : aInv.getInvoiceLine ())
+      addDocumentLine (new PeppolViDATDD090DocumentLineBuilder (documentCurrencyCode ()).initFromInvoice (aLine));
+
     return this;
   }
 
@@ -362,6 +369,9 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       payableRoundingAmount (aLegalMonetaryTotal.getPayableRoundingAmountValue ());
       payableAmount (aLegalMonetaryTotal.getPayableAmountValue ());
     }
+
+    for (final var aLine : aCN.getCreditNoteLine ())
+      addDocumentLine (new PeppolViDATDD090DocumentLineBuilder (documentCurrencyCode ()).initFromCreditNote (aLine));
 
     return this;
   }
@@ -784,6 +794,34 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @NonNull
+  @ReturnsMutableObject
+  public ICommonsList <DocumentLine> documentLines ()
+  {
+    return m_aDocumentLines;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder documentLines (@Nullable final ICommonsList <DocumentLine> a)
+  {
+    m_aDocumentLines.setAll (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addDocumentLine (@Nullable final DocumentLine a)
+  {
+    if (a != null)
+      m_aDocumentLines.add (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addDocumentLine (@Nullable final PeppolViDATDD090DocumentLineBuilder a)
+  {
+    return addDocumentLine (a == null ? null : a.build ());
+  }
+
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
   {
     int nErrs = 0;
@@ -890,6 +928,11 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     if (m_aPayableAmount == null)
     {
       aCondLog.error (sErrorPrefix + "PayableAmount is missing");
+      aReportedDocsErrs.inc ();
+    }
+    if (m_aDocumentLines.isEmpty ())
+    {
+      aCondLog.error (sErrorPrefix + "At least one DocumentLine is needed");
       aReportedDocsErrs.inc ();
     }
 
@@ -1113,6 +1156,8 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
         }
         a.setMonetaryTotal (aMonetaryTotal);
       }
+      // Set all lines
+      a.setDocumentLine (m_aDocumentLines);
       ret.setReportedDocument (a);
     }
 
