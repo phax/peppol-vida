@@ -171,6 +171,7 @@ public final class PeppolViDATDD090BuilderTest
                                                              .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                              .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
+                                                             .taxAuthorityID ("XX")
                                                              // Read from pre-parsed UBL Invoice
                                                              .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
                                                              .build ();

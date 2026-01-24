@@ -1007,6 +1007,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
             aPTS.setCompanyID (m_sBuyerTaxID);
             final TaxScheme aTS = new TaxScheme ();
             aTS.setID ("VAT");
+            aPTS.setTaxScheme (aTS);
             aParty.setPartyTaxScheme (aPTS);
           }
           aAccountingCustomer.setParty (aParty);
@@ -1032,6 +1033,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
           aPTS.setCompanyID (m_sTaxRepresentativeID);
           final TaxScheme aTS = new TaxScheme ();
           aTS.setID ("VAT");
+          aPTS.setTaxScheme (aTS);
           aTaxRep.setPartyTaxScheme (aPTS);
         }
         a.setTaxRepresentativeParty (aTaxRep);
