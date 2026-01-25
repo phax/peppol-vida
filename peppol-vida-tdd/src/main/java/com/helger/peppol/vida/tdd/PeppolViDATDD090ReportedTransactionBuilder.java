@@ -45,6 +45,7 @@ import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedD
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument.MonetaryTotal;
 import com.helger.peppol.vida.tdd.v090.cac.AccountingCustomerParty;
 import com.helger.peppol.vida.tdd.v090.cac.AccountingSupplierParty;
+import com.helger.peppol.vida.tdd.v090.cac.AllowanceCharge;
 import com.helger.peppol.vida.tdd.v090.cac.Country;
 import com.helger.peppol.vida.tdd.v090.cac.Delivery;
 import com.helger.peppol.vida.tdd.v090.cac.InvoicePeriod;
@@ -115,7 +116,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private String m_sTaxRepresentativeCountryCode;
   private LocalDate m_aDeliveryDate;
   // TODO PaymentMeans
-  // TODO AllowanceCharge
+  private final ICommonsList <AllowanceCharge> m_aAllowanceCharges = new CommonsArrayList <> ();
   // TODO TaxTotal complex
   private BigDecimal m_aTaxTotalAmountDocumentCurrency;
   private BigDecimal m_aTaxTotalAmountTaxCurrency;
@@ -665,6 +666,42 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @NonNull
+  @ReturnsMutableObject
+  public ICommonsList <AllowanceCharge> allowanceCharges ()
+  {
+    return m_aAllowanceCharges;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder allowanceCharges (@Nullable final ICommonsList <AllowanceCharge> a)
+  {
+    m_aAllowanceCharges.setAll (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addAllowanceCharge (@Nullable final AllowanceCharge a)
+  {
+    if (a != null)
+      m_aAllowanceCharges.add (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addAllowanceCharge (@Nullable final PeppolViDATDD090AllowanceChargeBuilder a)
+  {
+    return addAllowanceCharge (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addAllowanceCharge (@NonNull final Consumer <PeppolViDATDD090AllowanceChargeBuilder> aBuilderConsumer)
+  {
+    final PeppolViDATDD090AllowanceChargeBuilder aBuilder = new PeppolViDATDD090AllowanceChargeBuilder (m_sDocumentCurrencyCode);
+    aBuilderConsumer.accept (aBuilder);
+    return addAllowanceCharge (aBuilder);
+  }
+
   @Nullable
   public BigDecimal taxTotalAmountDocumentCurrency ()
   {
@@ -894,6 +931,8 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
 
     // m_aDeliveryDate is optional
 
+    // m_aAllowanceCharges may be empty
+
     if (m_aTaxTotalAmountDocumentCurrency == null)
     {
       aCondLog.error (sErrorPrefix + "TaxTotalAmountDocumentCurrency is missing");
@@ -1099,6 +1138,8 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
         aDel.setActualDeliveryDate (XMLOffsetDate.of (m_aDeliveryDate));
         a.setDelivery (aDel);
       }
+
+      a.setAllowanceCharge (m_aAllowanceCharges);
 
       {
         final TaxTotal aTaxTotal = new TaxTotal ();

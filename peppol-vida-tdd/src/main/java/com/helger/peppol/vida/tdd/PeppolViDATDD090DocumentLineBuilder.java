@@ -321,6 +321,7 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     // m_aInvoicePeriodStart is optional
     // m_aInvoicePeriodEnd is optional
     // m_sInvoicePeriodDescriptionCode is optional
+    // m_aAllowanceCharges may be empty
 
     return aReportedDocsErrs.intValue () == 0;
   }
@@ -366,6 +367,8 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
         aIP.setDescriptionCode (m_sInvoicePeriodDescriptionCode);
       ret.setInvoicePeriod (aIP);
     }
+
+    ret.setAllowanceCharge (m_aAllowanceCharges);
 
     return ret;
   }
