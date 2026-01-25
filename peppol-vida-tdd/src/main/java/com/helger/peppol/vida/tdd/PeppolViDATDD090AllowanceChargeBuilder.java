@@ -17,6 +17,7 @@
 package com.helger.peppol.vida.tdd;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -76,7 +77,7 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
     amount (aAC.getAmountValue ());
     baseAmount (aAC.getBaseAmountValue ());
     if (aAC.hasTaxCategoryEntries ())
-      taxCategory (new PeppolViDATDD090TaxCategoryBuilder ().initFromUBL (aAC.getTaxCategoryAtIndex (0)));
+      taxCategory (x -> x.initFromUBL (aAC.getTaxCategoryAtIndex (0)));
 
     return this;
   }
@@ -175,6 +176,14 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
   public PeppolViDATDD090AllowanceChargeBuilder taxCategory (@Nullable final PeppolViDATDD090TaxCategoryBuilder a)
   {
     return taxCategory (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090AllowanceChargeBuilder taxCategory (@NonNull final Consumer <PeppolViDATDD090TaxCategoryBuilder> aBuilderConsumer)
+  {
+    final PeppolViDATDD090TaxCategoryBuilder aBuilder = new PeppolViDATDD090TaxCategoryBuilder ();
+    aBuilderConsumer.accept (aBuilder);
+    return taxCategory (aBuilder);
   }
 
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)

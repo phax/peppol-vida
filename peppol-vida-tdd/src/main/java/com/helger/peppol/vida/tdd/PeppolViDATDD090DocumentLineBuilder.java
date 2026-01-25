@@ -18,6 +18,7 @@ package com.helger.peppol.vida.tdd;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -106,7 +107,7 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     }
 
     for (final var aAC : aLine.getAllowanceCharge ())
-      addAllowanceCharge (new PeppolViDATDD090AllowanceChargeBuilder (m_sDocumentCurrencyCode).initFromUBL (aAC));
+      addAllowanceCharge (x -> x.initFromUBL (aAC));
 
     return this;
   }
@@ -146,7 +147,7 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     }
 
     for (final var aAC : aLine.getAllowanceCharge ())
-      addAllowanceCharge (new PeppolViDATDD090AllowanceChargeBuilder (m_sDocumentCurrencyCode).initFromUBL (aAC));
+      addAllowanceCharge (x -> x.initFromUBL (aAC));
 
     return this;
   }
@@ -281,6 +282,14 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
   public PeppolViDATDD090DocumentLineBuilder addAllowanceCharge (@Nullable final PeppolViDATDD090AllowanceChargeBuilder a)
   {
     return addAllowanceCharge (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090DocumentLineBuilder addAllowanceCharge (@NonNull final Consumer <PeppolViDATDD090AllowanceChargeBuilder> aBuilderConsumer)
+  {
+    final PeppolViDATDD090AllowanceChargeBuilder aBuilder = new PeppolViDATDD090AllowanceChargeBuilder (m_sDocumentCurrencyCode);
+    aBuilderConsumer.accept (aBuilder);
+    return addAllowanceCharge (aBuilder);
   }
 
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)

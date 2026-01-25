@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -250,7 +251,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     }
 
     for (final var aLine : aInv.getInvoiceLine ())
-      addDocumentLine (new PeppolViDATDD090DocumentLineBuilder (documentCurrencyCode ()).initFromInvoice (aLine));
+      addDocumentLine (x -> x.initFromInvoice (aLine));
 
     return this;
   }
@@ -371,7 +372,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     }
 
     for (final var aLine : aCN.getCreditNoteLine ())
-      addDocumentLine (new PeppolViDATDD090DocumentLineBuilder (documentCurrencyCode ()).initFromCreditNote (aLine));
+      addDocumentLine (x -> x.initFromCreditNote (aLine));
 
     return this;
   }
@@ -820,6 +821,16 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   public PeppolViDATDD090ReportedTransactionBuilder addDocumentLine (@Nullable final PeppolViDATDD090DocumentLineBuilder a)
   {
     return addDocumentLine (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addDocumentLine (@NonNull final Consumer <PeppolViDATDD090DocumentLineBuilder> aBuilderConsumer)
+  {
+    if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
+      throw new IllegalStateException ("The DocumentLine can only be built, after the DocumentCurrencyCode is set!");
+    final PeppolViDATDD090DocumentLineBuilder aBuilder = new PeppolViDATDD090DocumentLineBuilder (m_sDocumentCurrencyCode);
+    aBuilderConsumer.accept (aBuilder);
+    return addDocumentLine (aBuilder);
   }
 
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)

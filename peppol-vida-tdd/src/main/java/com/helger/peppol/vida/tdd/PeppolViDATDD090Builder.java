@@ -308,20 +308,26 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
   }
 
   @NonNull
+  public PeppolViDATDD090Builder reportedTransaction (@Nullable final ReportedTransaction a)
+  {
+    m_aReportedTransaction = a;
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090Builder reportedTransaction (@Nullable final PeppolViDATDD090ReportedTransactionBuilder a)
+  {
+    return reportedTransaction (a == null ? null : a.build ());
+  }
+
+  @NonNull
   public PeppolViDATDD090Builder reportedTransaction (@NonNull final Consumer <PeppolViDATDD090ReportedTransactionBuilder> aBuilderConsumer)
   {
     if (m_eDocumentTypeCode == null)
       throw new IllegalStateException ("The ReportedTransaction can only be built, after the DocumentTypeCode is set!");
     final PeppolViDATDD090ReportedTransactionBuilder aBuilder = new PeppolViDATDD090ReportedTransactionBuilder (m_eDocumentTypeCode);
     aBuilderConsumer.accept (aBuilder);
-    return reportedTransaction (aBuilder.build ());
-  }
-
-  @NonNull
-  public PeppolViDATDD090Builder reportedTransaction (@Nullable final ReportedTransaction a)
-  {
-    m_aReportedTransaction = a;
-    return this;
+    return reportedTransaction (aBuilder);
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
