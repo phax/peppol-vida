@@ -51,16 +51,16 @@ public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder 
   /**
    * Set all fields from the provided UBL 2.1 object
    *
-   * @param aItem
+   * @param aObj
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolViDATDD090CommodityClassificationBuilder initFromUBL (@NonNull final CommodityClassificationType aItem)
+  public PeppolViDATDD090CommodityClassificationBuilder initFromUBL (@NonNull final CommodityClassificationType aObj)
   {
-    ValueEnforcer.notNull (aItem, "Item");
+    ValueEnforcer.notNull (aObj, "Item");
 
-    final ItemClassificationCodeType aICC = aItem.getItemClassificationCode ();
+    final ItemClassificationCodeType aICC = aObj.getItemClassificationCode ();
     if (aICC != null)
     {
       itemClassification (aICC.getValue ());

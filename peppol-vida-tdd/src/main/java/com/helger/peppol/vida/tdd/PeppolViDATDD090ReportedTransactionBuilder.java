@@ -52,6 +52,7 @@ import com.helger.peppol.vida.tdd.v090.cac.Delivery;
 import com.helger.peppol.vida.tdd.v090.cac.InvoicePeriod;
 import com.helger.peppol.vida.tdd.v090.cac.Party;
 import com.helger.peppol.vida.tdd.v090.cac.PartyTaxScheme;
+import com.helger.peppol.vida.tdd.v090.cac.PaymentMeans;
 import com.helger.peppol.vida.tdd.v090.cac.PostalAddress;
 import com.helger.peppol.vida.tdd.v090.cac.TaxRepresentativeParty;
 import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
@@ -88,14 +89,6 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090ReportedTransactionBuilder.class);
 
-  // TODO await clarifications
-  public static final class ViDADocumentReference
-  {
-    private String m_sIDScheme;
-    private String m_sID;
-    private LocalDate m_aIssueDate;
-  }
-
   private final EViDATDDDocumentTypeCode m_eDocumentTypeCode;
   private String m_sCustomizationID;
   private String m_sProfileID;
@@ -119,7 +112,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private String m_sTaxRepresentativeID;
   private String m_sTaxRepresentativeCountryCode;
   private LocalDate m_aDeliveryDate;
-  // TODO PaymentMeans
+  private final ICommonsList <PaymentMeans> m_aPaymentMeans = new CommonsArrayList <> ();
   private final ICommonsList <AllowanceCharge> m_aAllowanceCharges = new CommonsArrayList <> ();
   // TODO TaxTotal complex
   private BigDecimal m_aTaxTotalAmountDocumentCurrency;
@@ -239,6 +232,9 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       final DeliveryType aDelivery = aInv.getDeliveryAtIndex (0);
       deliveryDate (aDelivery.getActualDeliveryDateValueLocal ());
     }
+
+    for (final var aPM : aInv.getPaymentMeans ())
+      addPaymentMeans (x -> x.initFromUBL (aPM));
 
     for (final var aAC : aInv.getAllowanceCharge ())
       addAllowanceCharge (x -> x.initFromUBL (aAC));
@@ -376,6 +372,9 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       final DeliveryType aDelivery = aCN.getDeliveryAtIndex (0);
       deliveryDate (aDelivery.getActualDeliveryDateValueLocal ());
     }
+
+    for (final var aPM : aCN.getPaymentMeans ())
+      addPaymentMeans (x -> x.initFromUBL (aPM));
 
     for (final var aAC : aCN.getAllowanceCharge ())
       addAllowanceCharge (x -> x.initFromUBL (aAC));
@@ -738,6 +737,42 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   {
     m_aDeliveryDate = a;
     return this;
+  }
+
+  @NonNull
+  @ReturnsMutableObject
+  public ICommonsList <PaymentMeans> paymentMeans ()
+  {
+    return m_aPaymentMeans;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder paymentMeans (@Nullable final ICommonsList <PaymentMeans> a)
+  {
+    m_aPaymentMeans.setAll (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addPaymentMeans (@Nullable final PaymentMeans a)
+  {
+    if (a != null)
+      m_aPaymentMeans.add (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addPaymentMeans (@Nullable final PeppolViDATDD090PaymentMeansBuilder a)
+  {
+    return addPaymentMeans (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addPaymentMeans (@NonNull final Consumer <PeppolViDATDD090PaymentMeansBuilder> aBuilderConsumer)
+  {
+    final PeppolViDATDD090PaymentMeansBuilder aBuilder = new PeppolViDATDD090PaymentMeansBuilder ();
+    aBuilderConsumer.accept (aBuilder);
+    return addPaymentMeans (aBuilder);
   }
 
   @NonNull

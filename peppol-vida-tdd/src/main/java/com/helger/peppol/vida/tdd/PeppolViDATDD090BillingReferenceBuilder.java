@@ -55,16 +55,16 @@ public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <Billin
   /**
    * Set all fields from the provided UBL 2.1 object
    *
-   * @param aTC
+   * @param aObj
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolViDATDD090BillingReferenceBuilder initFromUBL (@NonNull final BillingReferenceType aTC)
+  public PeppolViDATDD090BillingReferenceBuilder initFromUBL (@NonNull final BillingReferenceType aObj)
   {
-    ValueEnforcer.notNull (aTC, "BillingReference");
+    ValueEnforcer.notNull (aObj, "BillingReference");
 
-    final DocumentReferenceType aIDR = aTC.getInvoiceDocumentReference ();
+    final DocumentReferenceType aIDR = aObj.getInvoiceDocumentReference ();
     if (aIDR != null)
     {
       final IDType aID = aIDR.getID ();

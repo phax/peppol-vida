@@ -57,24 +57,24 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <Item>
   /**
    * Set all fields from the provided UBL 2.1 object
    *
-   * @param aItem
+   * @param aObj
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolViDATDD090ItemBuilder initFromUBL (@NonNull final ItemType aItem)
+  public PeppolViDATDD090ItemBuilder initFromUBL (@NonNull final ItemType aObj)
   {
-    ValueEnforcer.notNull (aItem, "Item");
+    ValueEnforcer.notNull (aObj, "Item");
 
-    if (aItem.hasDescriptionEntries ())
-      description (aItem.getDescriptionAtIndex (0).getValue ());
-    name (aItem.getNameValue ());
+    if (aObj.hasDescriptionEntries ())
+      description (aObj.getDescriptionAtIndex (0).getValue ());
+    name (aObj.getNameValue ());
 
-    for (final var aCC : aItem.getCommodityClassification ())
+    for (final var aCC : aObj.getCommodityClassification ())
       addCommodityClassification (x -> x.initFromUBL (aCC));
 
-    if (aItem.hasClassifiedTaxCategoryEntries ())
-      classifiedTaxCategory (x -> x.initFromUBL (aItem.getClassifiedTaxCategoryAtIndex (0)));
+    if (aObj.hasClassifiedTaxCategoryEntries ())
+      classifiedTaxCategory (x -> x.initFromUBL (aObj.getClassifiedTaxCategoryAtIndex (0)));
 
     return this;
   }

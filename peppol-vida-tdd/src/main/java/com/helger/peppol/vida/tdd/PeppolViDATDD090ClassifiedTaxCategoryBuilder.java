@@ -53,18 +53,18 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
   /**
    * Set all fields from the provided UBL 2.1 object
    *
-   * @param aTC
+   * @param aObj
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolViDATDD090ClassifiedTaxCategoryBuilder initFromUBL (@NonNull final TaxCategoryType aTC)
+  public PeppolViDATDD090ClassifiedTaxCategoryBuilder initFromUBL (@NonNull final TaxCategoryType aObj)
   {
-    ValueEnforcer.notNull (aTC, "TaxCategory");
+    ValueEnforcer.notNull (aObj, "TaxCategory");
 
-    id (aTC.getIDValue ());
-    percentage (aTC.getPercentValue ());
-    final TaxSchemeType aTS = aTC.getTaxScheme ();
+    id (aObj.getIDValue ());
+    percentage (aObj.getPercentValue ());
+    final TaxSchemeType aTS = aObj.getTaxScheme ();
     if (aTS != null)
       taxSchemeID (aTS.getIDValue ());
 

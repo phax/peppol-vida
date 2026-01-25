@@ -59,25 +59,25 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
   /**
    * Set all fields from the provided UBL 2.1 object
    *
-   * @param aAC
+   * @param aObj
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
   @NonNull
-  public PeppolViDATDD090AllowanceChargeBuilder initFromUBL (@NonNull final AllowanceChargeType aAC)
+  public PeppolViDATDD090AllowanceChargeBuilder initFromUBL (@NonNull final AllowanceChargeType aObj)
   {
-    ValueEnforcer.notNull (aAC, "AllowanceCharge");
+    ValueEnforcer.notNull (aObj, "AllowanceCharge");
 
-    if (aAC.getChargeIndicator () != null)
-      charge (aAC.getChargeIndicator ().isValue ());
-    reasonCode (aAC.getAllowanceChargeReasonCodeValue ());
-    if (aAC.hasAllowanceChargeReasonEntries ())
-      reason (aAC.getAllowanceChargeReasonAtIndex (0).getValue ());
-    multiplicationFactor (aAC.getMultiplierFactorNumericValue ());
-    amount (aAC.getAmountValue ());
-    baseAmount (aAC.getBaseAmountValue ());
-    if (aAC.hasTaxCategoryEntries ())
-      taxCategory (x -> x.initFromUBL (aAC.getTaxCategoryAtIndex (0)));
+    if (aObj.getChargeIndicator () != null)
+      charge (aObj.getChargeIndicator ().isValue ());
+    reasonCode (aObj.getAllowanceChargeReasonCodeValue ());
+    if (aObj.hasAllowanceChargeReasonEntries ())
+      reason (aObj.getAllowanceChargeReasonAtIndex (0).getValue ());
+    multiplicationFactor (aObj.getMultiplierFactorNumericValue ());
+    amount (aObj.getAmountValue ());
+    baseAmount (aObj.getBaseAmountValue ());
+    if (aObj.hasTaxCategoryEntries ())
+      taxCategory (x -> x.initFromUBL (aObj.getTaxCategoryAtIndex (0)));
 
     return this;
   }
