@@ -229,7 +229,8 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
     ret.setAmount (m_aAmount).setCurrencyID (m_sDocumentCurrencyCode);
     if (m_aBaseAmount != null)
       ret.setBaseAmount (m_aBaseAmount).setCurrencyID (m_sDocumentCurrencyCode);
-    ret.setTaxCategory (m_aTaxCategory);
+    // XXX the TaxCategory element has no type in XSD
+    // ret.setTaxCategory (m_aTaxCategory);
 
     return ret;
   }

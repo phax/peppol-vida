@@ -67,6 +67,7 @@ import com.helger.peppol.vida.tdd.v090.cbc.TaxInclusiveAmount;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
@@ -221,6 +222,15 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
         taxRepresentativeCountryCode (aPA.getCountry ().getIdentificationCodeValue ());
     }
 
+    if (aInv.hasDeliveryEntries ())
+    {
+      final DeliveryType aDelivery = aInv.getDeliveryAtIndex (0);
+      deliveryDate (aDelivery.getActualDeliveryDateValueLocal ());
+    }
+
+    for (final var aAC : aInv.getAllowanceCharge ())
+      addAllowanceCharge (x -> x.initFromUBL (aAC));
+
     if (m_sDocumentCurrencyCode != null)
       taxTotalAmountDocumentCurrency (aInv.getTaxTotal ()
                                           .stream ()
@@ -341,6 +351,15 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       if (aPA != null && aPA.getCountry () != null)
         taxRepresentativeCountryCode (aPA.getCountry ().getIdentificationCodeValue ());
     }
+
+    if (aCN.hasDeliveryEntries ())
+    {
+      final DeliveryType aDelivery = aCN.getDeliveryAtIndex (0);
+      deliveryDate (aDelivery.getActualDeliveryDateValueLocal ());
+    }
+
+    for (final var aAC : aCN.getAllowanceCharge ())
+      addAllowanceCharge (x -> x.initFromUBL (aAC));
 
     if (m_sDocumentCurrencyCode != null)
       taxTotalAmountDocumentCurrency (aCN.getTaxTotal ()

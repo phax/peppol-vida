@@ -37,6 +37,8 @@ import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument.DocumentLine;
 import com.helger.peppol.vida.tdd.v090.cac.AllowanceCharge;
 import com.helger.peppol.vida.tdd.v090.cac.InvoicePeriod;
+import com.helger.peppol.vida.tdd.v090.cac.Item;
+import com.helger.peppol.vida.tdd.v090.cac.Price;
 import com.helger.peppol.vida.tdd.v090.cbc.InvoicedQuantity;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
@@ -64,8 +66,8 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
   private LocalDate m_aInvoicePeriodEnd;
   private String m_sInvoicePeriodDescriptionCode;
   private final ICommonsList <AllowanceCharge> m_aAllowanceCharges = new CommonsArrayList <> ();
-  // TODO Item
-  // TODO Price
+  private Item m_aItem;
+  private BigDecimal m_aPriceAmount;
 
   public PeppolViDATDD090DocumentLineBuilder (@Nullable final String sDocumentCurrencyCode)
   {
@@ -109,6 +111,12 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     for (final var aAC : aLine.getAllowanceCharge ())
       addAllowanceCharge (x -> x.initFromUBL (aAC));
 
+    if (aLine.getItem () != null)
+      item (x -> x.initFromUBL (aLine.getItem ()));
+
+    if (aLine.getPrice () != null)
+      priceAmount (aLine.getPrice ().getPriceAmountValue ());
+
     return this;
   }
 
@@ -148,6 +156,12 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
 
     for (final var aAC : aLine.getAllowanceCharge ())
       addAllowanceCharge (x -> x.initFromUBL (aAC));
+
+    if (aLine.getItem () != null)
+      item (x -> x.initFromUBL (aLine.getItem ()));
+
+    if (aLine.getPrice () != null)
+      priceAmount (aLine.getPrice ().getPriceAmountValue ());
 
     return this;
   }
@@ -292,6 +306,46 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     return addAllowanceCharge (aBuilder);
   }
 
+  @Nullable
+  public Item item ()
+  {
+    return m_aItem;
+  }
+
+  @NonNull
+  public PeppolViDATDD090DocumentLineBuilder item (@Nullable final Item a)
+  {
+    m_aItem = a;
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090DocumentLineBuilder item (@Nullable final PeppolViDATDD090ItemBuilder a)
+  {
+    return item (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090DocumentLineBuilder item (@NonNull final Consumer <PeppolViDATDD090ItemBuilder> aBuilderConsumer)
+  {
+    final PeppolViDATDD090ItemBuilder aBuilder = new PeppolViDATDD090ItemBuilder ();
+    aBuilderConsumer.accept (aBuilder);
+    return item (aBuilder);
+  }
+
+  @Nullable
+  public BigDecimal priceAmount ()
+  {
+    return m_aPriceAmount;
+  }
+
+  @NonNull
+  public PeppolViDATDD090DocumentLineBuilder priceAmount (@Nullable final BigDecimal a)
+  {
+    m_aPriceAmount = a;
+    return this;
+  }
+
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
@@ -322,6 +376,16 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     // m_aInvoicePeriodEnd is optional
     // m_sInvoicePeriodDescriptionCode is optional
     // m_aAllowanceCharges may be empty
+    if (m_aItem == null)
+    {
+      aCondLog.error (sErrorPrefix + "Item is missing");
+      aReportedDocsErrs.inc ();
+    }
+    if (m_aPriceAmount == null)
+    {
+      aCondLog.error (sErrorPrefix + "PriceAmount is missing");
+      aReportedDocsErrs.inc ();
+    }
 
     return aReportedDocsErrs.intValue () == 0;
   }
@@ -369,6 +433,12 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     }
 
     ret.setAllowanceCharge (m_aAllowanceCharges);
+    ret.setItem (m_aItem);
+    {
+      final Price a = new Price ();
+      a.setPriceAmount (m_aPriceAmount).setCurrencyID (m_sDocumentCurrencyCode);
+      ret.setPrice (a);
+    }
 
     return ret;
   }
