@@ -90,7 +90,7 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .documentCurrencyCode ("AED")
                                                                                          .sellerTaxID ("123456789")
                                                                                          .buyerTaxID ("987654321")
-                                                                                         .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal (240))
+                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (BigHelper.toBigDecimal (240)))
                                                                                          .lineExtensionAmount (BigHelper.toBigDecimal (1200))
                                                                                          .taxExclusiveTotalAmount (BigHelper.toBigDecimal (1200))
                                                                                          .taxInclusiveTotalAmount (BigHelper.toBigDecimal (1440))
@@ -153,8 +153,8 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .buyerCountryCode ("AT")
                                                                                          .taxRepresentativeID ("any123")
                                                                                          .taxRepresentativeCountryCode ("CH")
-                                                                                         .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
-                                                                                         .taxTotalAmountTaxCurrency (BigHelper.toBigDecimal (500))
+                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (BigHelper.toBigDecimal (200)))
+                                                                                         .taxTotalTaxCurrency (x -> x.taxAmount (BigHelper.toBigDecimal (500)))
                                                                                          .lineExtensionAmount (BigHelper.toBigDecimal (1200))
                                                                                          .taxExclusiveTotalAmount (BigHelper.toBigDecimal (1200))
                                                                                          .taxInclusiveTotalAmount (BigHelper.toBigDecimal (1700))
@@ -365,7 +365,7 @@ public final class PeppolViDATDD090BuilderTest
       assertNotNull (sXML);
       assertFalse (sXML.contains ("<pxs:ReportedDocument>"));
 
-      if (true)
+      if (false)
         LOGGER.info (sXML);
 
       // Schematron validation

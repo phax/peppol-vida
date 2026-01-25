@@ -63,7 +63,6 @@ import com.helger.peppol.vida.tdd.v090.cbc.LineExtensionAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.PayableAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.PayableRoundingAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.PrepaidAmount;
-import com.helger.peppol.vida.tdd.v090.cbc.TaxAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.TaxExclusiveAmount;
 import com.helger.peppol.vida.tdd.v090.cbc.TaxInclusiveAmount;
 
@@ -75,7 +74,6 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Par
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
@@ -114,9 +112,8 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private LocalDate m_aDeliveryDate;
   private final ICommonsList <PaymentMeans> m_aPaymentMeans = new CommonsArrayList <> ();
   private final ICommonsList <AllowanceCharge> m_aAllowanceCharges = new CommonsArrayList <> ();
-  // TODO TaxTotal complex
-  private BigDecimal m_aTaxTotalAmountDocumentCurrency;
-  private BigDecimal m_aTaxTotalAmountTaxCurrency;
+  private TaxTotal m_aTaxTotalDocumentCurrency;
+  private TaxTotal m_aTaxTotalTaxCurrency;
 
   private BigDecimal m_aLineExtensionAmount;
   private BigDecimal m_aTaxExclusiveTotalAmount;
@@ -240,21 +237,26 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       addAllowanceCharge (x -> x.initFromUBL (aAC));
 
     if (m_sDocumentCurrencyCode != null)
-      taxTotalAmountDocumentCurrency (aInv.getTaxTotal ()
-                                          .stream ()
-                                          .filter (x -> m_sDocumentCurrencyCode.equals (x.getTaxAmount ()
-                                                                                         .getCurrencyID ()))
-                                          .map (TaxTotalType::getTaxAmountValue)
-                                          .findFirst ()
-                                          .orElse (null));
+    {
+      final var aTT = aInv.getTaxTotal ()
+                          .stream ()
+                          .filter (x -> m_sDocumentCurrencyCode.equals (x.getTaxAmount ().getCurrencyID ()))
+                          .findFirst ()
+                          .orElse (null);
+      if (aTT != null)
+        taxTotalDocumentCurrency (x -> x.initFromUBL (aTT));
+    }
 
     if (m_sTaxCurrencyCode != null)
-      taxTotalAmountTaxCurrency (aInv.getTaxTotal ()
-                                     .stream ()
-                                     .filter (x -> m_sTaxCurrencyCode.equals (x.getTaxAmount ().getCurrencyID ()))
-                                     .map (TaxTotalType::getTaxAmountValue)
-                                     .findFirst ()
-                                     .orElse (null));
+    {
+      final var aTT = aInv.getTaxTotal ()
+                          .stream ()
+                          .filter (x -> m_sTaxCurrencyCode.equals (x.getTaxAmount ().getCurrencyID ()))
+                          .findFirst ()
+                          .orElse (null);
+      if (aTT != null)
+        taxTotalTaxCurrency (x -> x.initFromUBL (aTT));
+    }
 
     final oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType aLegalMonetaryTotal = aInv.getLegalMonetaryTotal ();
     if (aLegalMonetaryTotal != null)
@@ -380,21 +382,26 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       addAllowanceCharge (x -> x.initFromUBL (aAC));
 
     if (m_sDocumentCurrencyCode != null)
-      taxTotalAmountDocumentCurrency (aCN.getTaxTotal ()
-                                         .stream ()
-                                         .filter (x -> m_sDocumentCurrencyCode.equals (x.getTaxAmount ()
-                                                                                        .getCurrencyID ()))
-                                         .map (TaxTotalType::getTaxAmountValue)
-                                         .findFirst ()
-                                         .orElse (null));
+    {
+      final var aTT = aCN.getTaxTotal ()
+                         .stream ()
+                         .filter (x -> m_sDocumentCurrencyCode.equals (x.getTaxAmount ().getCurrencyID ()))
+                         .findFirst ()
+                         .orElse (null);
+      if (aTT != null)
+        taxTotalDocumentCurrency (x -> x.initFromUBL (aTT));
+    }
 
     if (m_sTaxCurrencyCode != null)
-      taxTotalAmountTaxCurrency (aCN.getTaxTotal ()
-                                    .stream ()
-                                    .filter (x -> m_sTaxCurrencyCode.equals (x.getTaxAmount ().getCurrencyID ()))
-                                    .map (TaxTotalType::getTaxAmountValue)
-                                    .findFirst ()
-                                    .orElse (null));
+    {
+      final var aTT = aCN.getTaxTotal ()
+                         .stream ()
+                         .filter (x -> m_sTaxCurrencyCode.equals (x.getTaxAmount ().getCurrencyID ()))
+                         .findFirst ()
+                         .orElse (null);
+      if (aTT != null)
+        taxTotalTaxCurrency (x -> x.initFromUBL (aTT));
+    }
 
     final oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.MonetaryTotalType aLegalMonetaryTotal = aCN.getLegalMonetaryTotal ();
     if (aLegalMonetaryTotal != null)
@@ -641,10 +648,10 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder addBillingReference (@NonNull final Consumer <PeppolViDATDD090BillingReferenceBuilder> aBuilderConsumer)
+  public PeppolViDATDD090ReportedTransactionBuilder addBillingReference (@NonNull final Consumer <PeppolViDATDD090BillingReferenceBuilder> a)
   {
     final PeppolViDATDD090BillingReferenceBuilder aBuilder = new PeppolViDATDD090BillingReferenceBuilder ();
-    aBuilderConsumer.accept (aBuilder);
+    a.accept (aBuilder);
     return addBillingReference (aBuilder);
   }
 
@@ -768,10 +775,10 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder addPaymentMeans (@NonNull final Consumer <PeppolViDATDD090PaymentMeansBuilder> aBuilderConsumer)
+  public PeppolViDATDD090ReportedTransactionBuilder addPaymentMeans (@NonNull final Consumer <PeppolViDATDD090PaymentMeansBuilder> a)
   {
     final PeppolViDATDD090PaymentMeansBuilder aBuilder = new PeppolViDATDD090PaymentMeansBuilder ();
-    aBuilderConsumer.accept (aBuilder);
+    a.accept (aBuilder);
     return addPaymentMeans (aBuilder);
   }
 
@@ -804,37 +811,69 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder addAllowanceCharge (@NonNull final Consumer <PeppolViDATDD090AllowanceChargeBuilder> aBuilderConsumer)
+  public PeppolViDATDD090ReportedTransactionBuilder addAllowanceCharge (@NonNull final Consumer <PeppolViDATDD090AllowanceChargeBuilder> a)
   {
     final PeppolViDATDD090AllowanceChargeBuilder aBuilder = new PeppolViDATDD090AllowanceChargeBuilder (m_sDocumentCurrencyCode);
-    aBuilderConsumer.accept (aBuilder);
+    a.accept (aBuilder);
     return addAllowanceCharge (aBuilder);
   }
 
   @Nullable
-  public BigDecimal taxTotalAmountDocumentCurrency ()
+  public TaxTotal taxTotalDocumentCurrency ()
   {
-    return m_aTaxTotalAmountDocumentCurrency;
+    return m_aTaxTotalDocumentCurrency;
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder taxTotalAmountDocumentCurrency (@Nullable final BigDecimal a)
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalDocumentCurrency (@Nullable final TaxTotal a)
   {
-    m_aTaxTotalAmountDocumentCurrency = a;
+    m_aTaxTotalDocumentCurrency = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalDocumentCurrency (@Nullable final PeppolViDATDD090TaxTotalBuilder a)
+  {
+    return taxTotalDocumentCurrency (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalDocumentCurrency (@Nullable final Consumer <PeppolViDATDD090TaxTotalBuilder> a)
+  {
+    if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
+      throw new IllegalStateException ("The TaxTotal can only be built, after the DocumentCurrencyCode is set!");
+    final PeppolViDATDD090TaxTotalBuilder aBuilder = new PeppolViDATDD090TaxTotalBuilder (m_sDocumentCurrencyCode);
+    a.accept (aBuilder);
+    return taxTotalDocumentCurrency (aBuilder);
   }
 
   @Nullable
-  public BigDecimal taxTotalAmountTaxCurrency ()
+  public TaxTotal taxTotalTaxCurrency ()
   {
-    return m_aTaxTotalAmountTaxCurrency;
+    return m_aTaxTotalTaxCurrency;
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder taxTotalAmountTaxCurrency (@Nullable final BigDecimal a)
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalTaxCurrency (@Nullable final TaxTotal a)
   {
-    m_aTaxTotalAmountTaxCurrency = a;
+    m_aTaxTotalTaxCurrency = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalTaxCurrency (@Nullable final PeppolViDATDD090TaxTotalBuilder a)
+  {
+    return taxTotalTaxCurrency (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalTaxCurrency (@Nullable final Consumer <PeppolViDATDD090TaxTotalBuilder> a)
+  {
+    if (StringHelper.isEmpty (m_sTaxCurrencyCode))
+      throw new IllegalStateException ("The TaxTotal can only be built, after the TaxCurrencyCode is set!");
+    final PeppolViDATDD090TaxTotalBuilder aBuilder = new PeppolViDATDD090TaxTotalBuilder (m_sTaxCurrencyCode);
+    a.accept (aBuilder);
+    return taxTotalTaxCurrency (aBuilder);
   }
 
   @Nullable
@@ -970,12 +1009,12 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder addDocumentLine (@NonNull final Consumer <PeppolViDATDD090DocumentLineBuilder> aBuilderConsumer)
+  public PeppolViDATDD090ReportedTransactionBuilder addDocumentLine (@NonNull final Consumer <PeppolViDATDD090DocumentLineBuilder> a)
   {
     if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
       throw new IllegalStateException ("The DocumentLine can only be built, after the DocumentCurrencyCode is set!");
     final PeppolViDATDD090DocumentLineBuilder aBuilder = new PeppolViDATDD090DocumentLineBuilder (m_sDocumentCurrencyCode);
-    aBuilderConsumer.accept (aBuilder);
+    a.accept (aBuilder);
     return addDocumentLine (aBuilder);
   }
 
@@ -1043,12 +1082,12 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
 
     // m_aAllowanceCharges may be empty
 
-    if (m_aTaxTotalAmountDocumentCurrency == null)
+    if (m_aTaxTotalDocumentCurrency == null)
     {
-      aCondLog.error (sErrorPrefix + "TaxTotalAmountDocumentCurrency is missing");
+      aCondLog.error (sErrorPrefix + "TaxTotalDocumentCurrency is missing");
       aReportedDocsErrs.inc ();
     }
-    if (m_aTaxTotalAmountTaxCurrency != null)
+    if (m_aTaxTotalTaxCurrency != null)
     {
       if (StringHelper.isEmpty (m_sTaxCurrencyCode))
       {
@@ -1253,24 +1292,9 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
 
       a.setAllowanceCharge (m_aAllowanceCharges);
 
-      {
-        final TaxTotal aTaxTotal = new TaxTotal ();
-        final TaxAmount aTaxAmount = new TaxAmount ();
-        aTaxAmount.setValue (m_aTaxTotalAmountDocumentCurrency);
-        aTaxAmount.setCurrencyID (m_sDocumentCurrencyCode);
-        aTaxTotal.setTaxAmount (aTaxAmount);
-        a.addTaxTotal (aTaxTotal);
-      }
-
-      if (m_aTaxTotalAmountTaxCurrency != null)
-      {
-        final TaxTotal aTaxTotal = new TaxTotal ();
-        final TaxAmount aTaxAmount = new TaxAmount ();
-        aTaxAmount.setValue (m_aTaxTotalAmountTaxCurrency);
-        aTaxAmount.setCurrencyID (m_sTaxCurrencyCode);
-        aTaxTotal.setTaxAmount (aTaxAmount);
-        a.addTaxTotal (aTaxTotal);
-      }
+      a.addTaxTotal (m_aTaxTotalDocumentCurrency);
+      if (m_aTaxTotalTaxCurrency != null)
+        a.addTaxTotal (m_aTaxTotalTaxCurrency);
 
       {
         final MonetaryTotal aMonetaryTotal = new MonetaryTotal ();
