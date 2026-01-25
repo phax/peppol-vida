@@ -46,6 +46,7 @@ import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedD
 import com.helger.peppol.vida.tdd.v090.cac.AccountingCustomerParty;
 import com.helger.peppol.vida.tdd.v090.cac.AccountingSupplierParty;
 import com.helger.peppol.vida.tdd.v090.cac.AllowanceCharge;
+import com.helger.peppol.vida.tdd.v090.cac.BillingReference;
 import com.helger.peppol.vida.tdd.v090.cac.Country;
 import com.helger.peppol.vida.tdd.v090.cac.Delivery;
 import com.helger.peppol.vida.tdd.v090.cac.InvoicePeriod;
@@ -68,11 +69,13 @@ import com.helger.peppol.vida.tdd.v090.cbc.TaxInclusiveAmount;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.SupplierPartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
@@ -108,7 +111,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private LocalDate m_aInvoicePeriodStart;
   private LocalDate m_aInvoicePeriodEnd;
   private String m_sInvoicePeriodDescriptionCode;
-  // TODO BillingReferences
+  private final ICommonsList <BillingReference> m_aBillingReferences = new CommonsArrayList <> ();
   private String m_sSellerTaxID;
   private String m_sSellerCountryCode;
   private String m_sBuyerTaxID;
@@ -121,6 +124,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   // TODO TaxTotal complex
   private BigDecimal m_aTaxTotalAmountDocumentCurrency;
   private BigDecimal m_aTaxTotalAmountTaxCurrency;
+
   private BigDecimal m_aLineExtensionAmount;
   private BigDecimal m_aTaxExclusiveTotalAmount;
   private BigDecimal m_aTaxInclusiveTotalAmount;
@@ -129,6 +133,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private BigDecimal m_aPrepaidAmount;
   private BigDecimal m_aPayableRoundingAmount;
   private BigDecimal m_aPayableAmount;
+
   private final ICommonsList <DocumentLine> m_aDocumentLines = new CommonsArrayList <> ();
 
   public PeppolViDATDD090ReportedTransactionBuilder (@NonNull final EViDATDDDocumentTypeCode eDocumentTypeCode)
@@ -170,7 +175,14 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
         invoicePeriodDescriptionCode (aIP.getDescriptionAtIndex (0).getValue ());
     }
 
-    // TODO BillingReference
+    for (final var aBR : aInv.getBillingReference ())
+    {
+      final DocumentReferenceType aDocRef = aBR.getInvoiceDocumentReference ();
+      final IDType aID = aDocRef.getID ();
+      addBillingReference (x -> x.id (aID == null ? null : aID.getValue ())
+                                 .idScheme (aID == null ? null : aID.getSchemeID ())
+                                 .issueDate (aDocRef.getIssueDateValueLocal ()));
+    }
 
     final SupplierPartyType aSupplier = aInv.getAccountingSupplierParty ();
     if (aSupplier != null)
@@ -300,7 +312,14 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
         invoicePeriodDescriptionCode (aIP.getDescriptionAtIndex (0).getValue ());
     }
 
-    // TODO BillingReference
+    for (final var aBR : aCN.getBillingReference ())
+    {
+      final DocumentReferenceType aDocRef = aBR.getInvoiceDocumentReference ();
+      final IDType aID = aDocRef.getID ();
+      addBillingReference (x -> x.id (aID == null ? null : aID.getValue ())
+                                 .idScheme (aID == null ? null : aID.getSchemeID ())
+                                 .issueDate (aDocRef.getIssueDateValueLocal ()));
+    }
 
     final SupplierPartyType aSupplier = aCN.getAccountingSupplierParty ();
     if (aSupplier != null)
@@ -592,6 +611,42 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   {
     m_sInvoicePeriodDescriptionCode = s;
     return this;
+  }
+
+  @NonNull
+  @ReturnsMutableObject
+  public ICommonsList <BillingReference> billingReferences ()
+  {
+    return m_aBillingReferences;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder billingReferences (@Nullable final ICommonsList <BillingReference> a)
+  {
+    m_aBillingReferences.setAll (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addBillingReference (@Nullable final BillingReference a)
+  {
+    if (a != null)
+      m_aBillingReferences.add (a);
+    return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addBillingReference (@Nullable final PeppolViDATDD090BillingReferenceBuilder a)
+  {
+    return addBillingReference (a == null ? null : a.build ());
+  }
+
+  @NonNull
+  public PeppolViDATDD090ReportedTransactionBuilder addBillingReference (@NonNull final Consumer <PeppolViDATDD090BillingReferenceBuilder> aBuilderConsumer)
+  {
+    final PeppolViDATDD090BillingReferenceBuilder aBuilder = new PeppolViDATDD090BillingReferenceBuilder ();
+    aBuilderConsumer.accept (aBuilder);
+    return addBillingReference (aBuilder);
   }
 
   @Nullable
@@ -937,7 +992,8 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       aReportedDocsErrs.inc ();
     }
     // InvoicePeriod is optional
-    // TODO BillingReference
+
+    // m_aBillingReferences may be empty
 
     // m_sSellerTaxID is optional
     // m_sSellerCountryCode is optional
@@ -1070,6 +1126,8 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
           aIP.setDescriptionCode (m_sInvoicePeriodDescriptionCode);
         a.setInvoicePeriod (aIP);
       }
+
+      a.setBillingReference (m_aBillingReferences);
 
       {
         final AccountingSupplierParty a2 = new AccountingSupplierParty ();
