@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.peppol.vida.tdd;
+package com.helger.peppol.vida.tddv090;
 
 import java.math.BigDecimal;
 
@@ -28,26 +28,26 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.peppol.vida.tdd.v090.cac.ClassifiedTaxCategory;
+import com.helger.peppol.vida.tdd.v090.cac.TaxCategory;
 import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "ClassifiedTaxCategory".
+ * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "TaxCategory".
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <ClassifiedTaxCategory>
+public class PeppolViDATDD090TaxCategoryBuilder implements IBuilder <TaxCategory>
 {
-  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090ClassifiedTaxCategoryBuilder.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090TaxCategoryBuilder.class);
 
   private String m_sID;
   private BigDecimal m_aPerc;
   private String m_sTaxSchemeID;
 
-  public PeppolViDATDD090ClassifiedTaxCategoryBuilder ()
+  public PeppolViDATDD090TaxCategoryBuilder ()
   {}
 
   /**
@@ -58,7 +58,7 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
    * @return this for chaining
    */
   @NonNull
-  public PeppolViDATDD090ClassifiedTaxCategoryBuilder initFromUBL (@NonNull final TaxCategoryType aObj)
+  public PeppolViDATDD090TaxCategoryBuilder initFromUBL (@NonNull final TaxCategoryType aObj)
   {
     ValueEnforcer.notNull (aObj, "TaxCategory");
 
@@ -78,7 +78,7 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
   }
 
   @NonNull
-  public PeppolViDATDD090ClassifiedTaxCategoryBuilder id (@Nullable final String s)
+  public PeppolViDATDD090TaxCategoryBuilder id (@Nullable final String s)
   {
     m_sID = s;
     return this;
@@ -91,7 +91,7 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
   }
 
   @NonNull
-  public PeppolViDATDD090ClassifiedTaxCategoryBuilder percentage (@Nullable final BigDecimal a)
+  public PeppolViDATDD090TaxCategoryBuilder percentage (@Nullable final BigDecimal a)
   {
     m_aPerc = a;
     return this;
@@ -104,7 +104,7 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
   }
 
   @NonNull
-  public PeppolViDATDD090ClassifiedTaxCategoryBuilder taxSchemeID (@Nullable final String s)
+  public PeppolViDATDD090TaxCategoryBuilder taxSchemeID (@Nullable final String s)
   {
     m_sTaxSchemeID = s;
     return this;
@@ -113,7 +113,7 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 ClassifiedTaxCategory builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 TaxCategory builder: ";
 
     if (StringHelper.isEmpty (m_sID))
     {
@@ -137,16 +137,16 @@ public class PeppolViDATDD090ClassifiedTaxCategoryBuilder implements IBuilder <C
   }
 
   @Nullable
-  public ClassifiedTaxCategory build ()
+  public TaxCategory build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
     {
-      LOGGER.error ("At least one mandatory field is not set and therefore the TDD ClassifiedTaxCategory cannot be build.");
+      LOGGER.error ("At least one mandatory field is not set and therefore the TDD TaxCategory cannot be build.");
       return null;
     }
 
-    final ClassifiedTaxCategory ret = new ClassifiedTaxCategory ();
+    final TaxCategory ret = new TaxCategory ();
     ret.setID (m_sID);
     ret.setPercent (m_aPerc);
     {

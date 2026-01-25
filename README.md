@@ -51,7 +51,7 @@ to build the solution.
 
 # News and noteworthy
 
-v0.1.0 - work in progress
+v0.1.0 - 2026-01-25
 * Initial version targeting Peppol ViDA pilot TDD specs v0.9.0
 
 ---

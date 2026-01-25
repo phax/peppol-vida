@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.peppol.vida.tdd;
+package com.helger.peppol.vida.tdd.v090;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -43,6 +43,7 @@ import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD090Marshaller;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
 import com.helger.peppol.vida.tdd.v090.TaxDataType;
 import com.helger.peppol.vida.tdd.validate.PeppolViDATDDValidator;
+import com.helger.peppol.vida.tddv090.PeppolViDATDD090Builder;
 import com.helger.peppolid.factory.IIdentifierFactory;
 import com.helger.peppolid.factory.PeppolIdentifierFactory;
 import com.helger.schematron.ISchematronResource;

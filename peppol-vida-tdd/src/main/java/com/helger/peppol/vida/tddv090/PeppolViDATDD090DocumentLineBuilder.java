@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.peppol.vida.tdd;
+package com.helger.peppol.vida.tddv090;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
