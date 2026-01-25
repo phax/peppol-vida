@@ -21,10 +21,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Month;
 import java.time.ZoneOffset;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +77,7 @@ public final class PeppolViDATDD090BuilderTest
                                                            .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
+                                                           .taxAuthorityID ("XX")
                                                            // Provide all fields manually
                                                            .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@ae-1")
                                                                                          .profileID ("urn:peppol:bis:billing")
@@ -87,8 +90,19 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .documentCurrencyCode ("AED")
                                                                                          .sellerTaxID ("123456789")
                                                                                          .buyerTaxID ("987654321")
-                                                                                         .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
-                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200")))
+                                                                                         .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal (240))
+                                                                                         .lineExtensionAmount (BigHelper.toBigDecimal (1200))
+                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal (1200))
+                                                                                         .taxInclusiveTotalAmount (BigHelper.toBigDecimal (1440))
+                                                                                         .payableAmount (BigHelper.toBigDecimal (1440))
+                                                                                         .addDocumentLine (x -> x.id ("1")
+                                                                                                                 .quantity (BigDecimal.TEN)
+                                                                                                                 .quantityUnit ("STK")
+                                                                                                                 .lineExtensionAmount (BigHelper.toBigDecimal (1200))
+                                                                                                                 .item (y -> y.name ("What")
+                                                                                                                              .classifiedTaxCategory (z -> z.id ("X")
+                                                                                                                                                            .taxSchemeID ("VAT")))
+                                                                                                                 .priceAmount (BigHelper.toBigDecimal (120))))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -117,8 +131,9 @@ public final class PeppolViDATDD090BuilderTest
                                                            .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
+                                                           .taxAuthorityID ("XX")
                                                            // Provide all fields manually
-                                                           .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@ae-1")
+                                                           .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@eu-1")
                                                                                          .profileID ("urn:peppol:bis:billing")
                                                                                          .id ("invoice-1")
                                                                                          .uuid ("19e2c9a3-b000-4fb0-9bd5-a9c4ebda2358")
@@ -133,10 +148,28 @@ public final class PeppolViDATDD090BuilderTest
                                                                                          .documentCurrencyCode ("AED")
                                                                                          .taxCurrencyCode ("EUR")
                                                                                          .sellerTaxID ("123456789")
+                                                                                         .sellerCountryCode ("DE")
                                                                                          .buyerTaxID ("987654321")
+                                                                                         .buyerCountryCode ("AT")
+                                                                                         .taxRepresentativeID ("any123")
+                                                                                         .taxRepresentativeCountryCode ("CH")
                                                                                          .taxTotalAmountDocumentCurrency (BigHelper.toBigDecimal ("123.45"))
-                                                                                         .taxTotalAmountTaxCurrency (BigHelper.toBigDecimal ("500"))
-                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal ("1200")))
+                                                                                         .taxTotalAmountTaxCurrency (BigHelper.toBigDecimal (500))
+                                                                                         .lineExtensionAmount (BigHelper.toBigDecimal (1200))
+                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal (1200))
+                                                                                         .taxInclusiveTotalAmount (BigHelper.toBigDecimal (1700))
+                                                                                         .allowanceTotalAmount (BigDecimal.ZERO)
+                                                                                         .chargeTotalAmount (BigDecimal.ZERO)
+                                                                                         .payableRoundingAmount (BigDecimal.ZERO)
+                                                                                         .payableAmount (BigHelper.toBigDecimal (1700))
+                                                                                         .addDocumentLine (x -> x.id ("1")
+                                                                                                                 .quantity (BigDecimal.TEN)
+                                                                                                                 .quantityUnit ("STK")
+                                                                                                                 .lineExtensionAmount (BigHelper.toBigDecimal (1200))
+                                                                                                                 .item (y -> y.name ("What")
+                                                                                                                              .classifiedTaxCategory (z -> z.id ("X")
+                                                                                                                                                            .taxSchemeID ("VAT")))
+                                                                                                                 .priceAmount (BigHelper.toBigDecimal (120))))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -182,13 +215,13 @@ public final class PeppolViDATDD090BuilderTest
       final String sXML = new PeppolViDATDD090Marshaller ().setFormattedOutput (true).getAsString (aTDD);
       assertNotNull (sXML);
 
-      if (true)
+      if (false)
         LOGGER.info (sXML);
 
       // Schematron validation
       final SchematronOutputType aSVRL = aSCHRes.applySchematronValidationToSVRL (aRes);
       assertNotNull (aSVRL);
-      if (true)
+      if (false)
         LOGGER.info (new SVRLMarshaller ().setFormattedOutput (true).getAsString (aSVRL));
       assertEquals (new CommonsArrayList <> (), SVRLHelper.getAllFailedAssertions (aSVRL));
     }
@@ -213,6 +246,7 @@ public final class PeppolViDATDD090BuilderTest
                                                              .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                              .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
+                                                             .taxAuthorityID ("XX")
                                                              // Read from pre-parsed UBL CreditNote
                                                              .reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote))
                                                              .build ();
@@ -250,6 +284,7 @@ public final class PeppolViDATDD090BuilderTest
                                                            .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
+                                                           .taxAuthorityID ("XX")
                                                            // It's not really an invalid invoice
                                                            .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
                                                            .build ();
@@ -270,6 +305,7 @@ public final class PeppolViDATDD090BuilderTest
   }
 
   @Test
+  @Ignore ("Not supported by v0.9.0")
   public void testCreateFailedInvoiceWithoutReportedDocument () throws Exception
   {
     final IIdentifierFactory aIF = PeppolIdentifierFactory.INSTANCE;
@@ -292,6 +328,7 @@ public final class PeppolViDATDD090BuilderTest
                                                            .reportingParty (aIF.createParticipantIdentifierWithDefaultScheme ("9915:c1id"))
                                                            .receivingParty (aIF.createParticipantIdentifierWithDefaultScheme ("0242:c5id"))
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
+                                                           .taxAuthorityID ("XX")
                                                            // This Invoice is really broken
                                                            .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
                                                            .build ();

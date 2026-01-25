@@ -31,7 +31,7 @@ import com.helger.schematron.sch.SchematronResourceSCH;
 @Immutable
 public final class PeppolViDATDDValidator
 {
-  public static final String SCH_VIDA_TDD_090_PATH = "external/schematron/0.9.0/Peppol-ViDA-TDD.sch";
+  public static final String SCH_VIDA_TDD_090_PATH = "external/schematron/0.9.0/Peppol-ViDA-TDD-ph.sch";
 
   private static final ISchematronResource VIDA_TDD_090 = SchematronResourceSCH.fromClassPath (SCH_VIDA_TDD_090_PATH);
 
