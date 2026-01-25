@@ -5,8 +5,6 @@
 
 Special support for Peppol ViDA (pilot right now).
 
-**This project is still work in progress**
-
 **This project does NOT (yet) contain an official data model of the European DRR as required by ViDA!**
 
 This contains a set of Java libraries.
