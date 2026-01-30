@@ -82,7 +82,6 @@ public final class PeppolViDATDD090BuilderTest
                                                            .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@ae-1")
                                                                                          .profileID ("urn:peppol:bis:billing")
                                                                                          .id ("invoice-1")
-                                                                                         .uuid ("19e2c9a3-b000-4fb0-9bd5-a9c4ebda2358")
                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
                                                                                                                                  Month.SEPTEMBER,
                                                                                                                                  20))
@@ -136,7 +135,6 @@ public final class PeppolViDATDD090BuilderTest
                                                            .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@eu-1")
                                                                                          .profileID ("urn:peppol:bis:billing")
                                                                                          .id ("invoice-1")
-                                                                                         .uuid ("19e2c9a3-b000-4fb0-9bd5-a9c4ebda2358")
                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
                                                                                                                                  Month.SEPTEMBER,
                                                                                                                                  20))

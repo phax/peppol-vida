@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
@@ -36,8 +37,10 @@ import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
+import com.helger.datetime.web.PDTWebDateHelper;
 import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
+import com.helger.peppol.vida.tdd.UUID5Helper;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction;
 import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument;
@@ -91,7 +94,6 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   private String m_sCustomizationID;
   private String m_sProfileID;
   private String m_sID;
-  private String m_sUUID;
   private LocalDate m_aIssueDate;
   private OffsetTime m_aIssueTime;
   private String m_sDocumentTypeCode;
@@ -147,7 +149,6 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     customizationID (aInv.getCustomizationIDValue ());
     profileID (aInv.getProfileIDValue ());
     id (aInv.getIDValue ());
-    uuid (aInv.getUUIDValue ());
     issueDate (aInv.getIssueDateValueLocal ());
     issueTime (aInv.getIssueTimeValue ());
     documentTypeCode (aInv.getInvoiceTypeCodeValue ());
@@ -292,7 +293,6 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     customizationID (aCN.getCustomizationIDValue ());
     profileID (aCN.getProfileIDValue ());
     id (aCN.getIDValue ());
-    uuid (aCN.getUUIDValue ());
     issueDate (aCN.getIssueDateValueLocal ());
     issueTime (aCN.getIssueTimeValue ());
     documentTypeCode (aCN.getCreditNoteTypeCodeValue ());
@@ -458,19 +458,6 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   public PeppolViDATDD090ReportedTransactionBuilder id (@Nullable final String s)
   {
     m_sID = s;
-    return this;
-  }
-
-  @Nullable
-  public String uuid ()
-  {
-    return m_sUUID;
-  }
-
-  @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder uuid (@Nullable final String s)
-  {
-    m_sUUID = s;
     return this;
   }
 
@@ -1042,11 +1029,6 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       aCondLog.error (sErrorPrefix + "ID is missing");
       aReportedDocsErrs.inc ();
     }
-    if (StringHelper.isEmpty (m_sUUID))
-    {
-      aCondLog.error (sErrorPrefix + "UUID is missing");
-      aReportedDocsErrs.inc ();
-    }
     if (m_aIssueDate == null)
     {
       aCondLog.error (sErrorPrefix + "IssueDate is missing");
@@ -1164,14 +1146,23 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     // ReportedDocument - optional for FAILED state
     if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD || aReportedDocErrs.is0 ())
     {
+      // The UUID is calculated based on rule ID-BDID-01
+      // TODO check if the concatenation is correct
+      final UUID aUUID = UUID5Helper.fromUTF8 (UUID5Helper.PEPPOL_VIDA_NAMESPACE,
+                                               StringHelper.getNotNull (m_sDocumentTypeCode, "") +
+                                                                                  StringHelper.getNotNull (m_sID, "") +
+                                                                                  StringHelper.getNotNull (PDTWebDateHelper.getAsStringXSD (m_aIssueDate),
+                                                                                                           "") +
+                                                                                  StringHelper.getNotNull (m_sSellerTaxID,
+                                                                                                           ""));
+
       final ReportedDocument a = new ReportedDocument ();
       if (StringHelper.isNotEmpty (m_sCustomizationID))
         a.setCustomizationID (m_sCustomizationID);
       if (StringHelper.isNotEmpty (m_sProfileID))
         a.setProfileID (m_sProfileID);
       a.setID (m_sID);
-      if (StringHelper.isNotEmpty (m_sUUID))
-        a.setUUID (m_sUUID);
+      a.setUUID (aUUID.toString ());
       if (m_aIssueDate != null)
         a.setIssueDate (XMLOffsetDate.of (m_aIssueDate));
       if (m_aIssueTime != null)
