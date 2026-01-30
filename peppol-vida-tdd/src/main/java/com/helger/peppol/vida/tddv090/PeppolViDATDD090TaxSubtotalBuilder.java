@@ -32,7 +32,9 @@ import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
 import com.helger.peppol.vida.tdd.v090.cac.TaxTotal.TaxSubtotal;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "TaxSubtotal".
@@ -73,21 +75,21 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     taxableAmount (aObj.getTaxableAmountValue ());
     taxAmount (aObj.getTaxAmountValue ());
 
-    final TaxCategoryType aTC = aObj.getTaxCategory ();
-    if (aTC != null)
+    final TaxCategoryType aTaxCategory = aObj.getTaxCategory ();
+    if (aTaxCategory != null)
     {
-      final var aID = aTC.getID ();
+      final IDType aID = aTaxCategory.getID ();
       if (aID != null)
       {
         taxCategoryID (aID.getValue ());
         taxCategoryIDScheme (aID.getSchemeID ());
       }
-      percentage (aTC.getPercentValue ());
-      taxExemptionReasonCode (aTC.getTaxExemptionReasonCodeValue ());
-      if (aTC.hasTaxExemptionReasonEntries ())
-        taxExemptionReason (aTC.getTaxExemptionReasonAtIndex (0).getValue ());
+      percentage (aTaxCategory.getPercentValue ());
+      taxExemptionReasonCode (aTaxCategory.getTaxExemptionReasonCodeValue ());
+      if (aTaxCategory.hasTaxExemptionReasonEntries ())
+        taxExemptionReason (aTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ());
 
-      final var aTS = aTC.getTaxScheme ();
+      final TaxSchemeType aTS = aTaxCategory.getTaxScheme ();
       if (aTS != null)
         taxSchemeID (aTS.getIDValue ());
     }
@@ -204,12 +206,12 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 TaxSubtotal builder: ";
 
-    if (m_aTaxableAmount != null)
+    if (m_aTaxableAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxableAmount is missing");
       aReportedDocsErrs.inc ();
     }
-    if (m_aTaxAmount != null)
+    if (m_aTaxAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxAmount is missing");
       aReportedDocsErrs.inc ();
