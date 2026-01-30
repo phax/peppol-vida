@@ -64,9 +64,9 @@ public class PeppolViDATDD090TaxCategoryBuilder implements IBuilder <TaxCategory
 
     id (aObj.getIDValue ());
     percentage (aObj.getPercentValue ());
-    final TaxSchemeType aTS = aObj.getTaxScheme ();
-    if (aTS != null)
-      taxSchemeID (aTS.getIDValue ());
+    final TaxSchemeType aTaxScheme = aObj.getTaxScheme ();
+    if (aTaxScheme != null)
+      taxSchemeID (aTaxScheme.getIDValue ());
 
     return this;
   }
