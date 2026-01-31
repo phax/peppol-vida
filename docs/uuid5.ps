@@ -1,0 +1,44 @@
+function New-UUIDv5 {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]$NamespaceUUID,
+
+        [Parameter(Mandatory)]
+        [string]$Name
+    )
+
+    # Parse namespace UUID
+    $nsGuid = [Guid]::Parse($NamespaceUUID)
+
+    # RFC 4122 requires the namespace UUID bytes in network order (big-endian).
+    # .NET Guid.ToByteArray() returns a mixed-endian layout, so we must fix it.
+    $nsBytes = $nsGuid.ToByteArray()
+
+    # Convert mixed-endian -> RFC 4122 big-endian for the first 3 fields
+    [Array]::Reverse($nsBytes, 0, 4)  # time_low
+    [Array]::Reverse($nsBytes, 4, 2)  # time_mid
+    [Array]::Reverse($nsBytes, 6, 2)  # time_hi_and_version
+
+    # Name as UTF-8 bytes
+    $nameBytes = [Text.Encoding]::UTF8.GetBytes($Name)
+
+    # SHA1(namespace_bytes + name_bytes)
+    $sha1 = [Security.Cryptography.SHA1]::Create()
+    $hash = $sha1.ComputeHash($nsBytes + $nameBytes)
+
+    # Take first 16 bytes
+    [byte[]]$uuidBytes = $hash[0..15]
+
+    # Set version (5) and variant (RFC 4122)
+    $uuidBytes[6] = ($uuidBytes[6] -band 0x0F) -bor 0x50
+    $uuidBytes[8] = ($uuidBytes[8] -band 0x3F) -bor 0x80
+
+    # Convert RFC 4122 big-endian bytes -> .NET Guid's mixed-endian byte layout
+    [Array]::Reverse($uuidBytes, 0, 4)
+    [Array]::Reverse($uuidBytes, 4, 2)
+    [Array]::Reverse($uuidBytes, 6, 2)
+
+    # Construct Guid
+    return [Guid]::new($uuidBytes)
+}

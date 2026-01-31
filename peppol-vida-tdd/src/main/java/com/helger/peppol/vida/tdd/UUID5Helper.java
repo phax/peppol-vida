@@ -16,7 +16,7 @@
  */
 package com.helger.peppol.vida.tdd;
 
-import java.nio.ByteOrder;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -67,59 +67,31 @@ public final class UUID5Helper
   {}
 
   /**
-   * A helper method for making UUID objects, which in java store longs not bytes
-   *
-   * @param aSrc
-   *        An array of bytes having at least offset+8 elements
-   * @param nOfs
-   *        Where to start extracting a long
-   * @param aByteOrder
-   *        either ByteOrder.BIG_ENDIAN or ByteOrder.LITTLE_ENDIAN
-   * @return a long, the specified endianness of which matches the bytes in src[offset,offset+8]
-   */
-  private static long _peekLong (final byte @NonNull [] aSrc, final int nOfs, @NonNull final ByteOrder aByteOrder)
-  {
-    long ret = 0;
-    if (aByteOrder == ByteOrder.BIG_ENDIAN)
-    {
-      for (int i = nOfs; i < nOfs + 8; i += 1)
-      {
-        ret <<= 8;
-        ret |= aSrc[i] & 0xffL;
-      }
-    }
-    else
-    {
-      for (int i = nOfs + 7; i >= nOfs; i -= 1)
-      {
-        ret <<= 8;
-        ret |= aSrc[i] & 0xffL;
-      }
-    }
-    return ret;
-  }
-
-  /**
    * A private method from UUID pulled out here so we have access to it.
    *
-   * @param hash
-   *        A 16 (or more) byte array to be the basis of the UUID
-   * @param version
-   *        The version number to replace 4 bits of the hash (the variant code will replace 2 more
-   *        bits))
+   * @param aHashBytes
+   *        A 20 byte array to be the basis of the UUID bits
    * @return A UUID object
    */
-  private static UUID _makeUUID (final byte [] hash, final int version)
+  @NonNull
+  private static UUID _makeUUID (final byte @NonNull [] aHashBytes)
   {
-    long msb = _peekLong (hash, 0, ByteOrder.BIG_ENDIAN);
-    long lsb = _peekLong (hash, 8, ByteOrder.BIG_ENDIAN);
-    // Set the version field
-    msb &= ~(0xfL << 12);
-    msb |= ((long) version) << 12;
-    // Set the variant field to 2
-    lsb &= ~(0x3L << 62);
-    lsb |= 2L << 62;
-    return new UUID (msb, lsb);
+    ValueEnforcer.notNull (aHashBytes, "HashBytes");
+    ValueEnforcer.isEqual (aHashBytes.length, 20, "Expected 20 bytes from SHA-1");
+
+    // clear version (00001111b)
+    aHashBytes[6] &= 0x0f;
+    // set to version 5 (01010000b)
+    aHashBytes[6] |= 0x50;
+    // clear variant (00111111b)
+    aHashBytes[8] &= 0x3f;
+    // set to IETF variant (10000000b)
+    aHashBytes[8] |= 0x80;
+
+    final ByteBuffer aBB = ByteBuffer.wrap (aHashBytes, 0, 16);
+    final long nMostSigBits = aBB.getLong ();
+    final long nLeastSigBits = aBB.getLong ();
+    return new UUID (nMostSigBits, nLeastSigBits);
   }
 
   /**
@@ -137,7 +109,7 @@ public final class UUID5Helper
     try
     {
       final MessageDigest aMD = MessageDigest.getInstance ("SHA-1");
-      return _makeUUID (aMD.digest (aNameBytes), 5);
+      return _makeUUID (aMD.digest (aNameBytes));
     }
     catch (final NoSuchAlgorithmException ex)
     {
@@ -146,67 +118,17 @@ public final class UUID5Helper
   }
 
   /**
-   * A helper method for writing uuid objects, which in java store longs not bytes
-   *
-   * @param nData
-   *        A long to write into the dest array
-   * @param aDest
-   *        An array of bytes having at least offset+8 elements
-   * @param nOfs
-   *        Where to start writing a long
-   * @param aByteOrder
-   *        either ByteOrder.BIG_ENDIAN or ByteOrder.LITTLE_ENDIAN
-   */
-  private static void _putLong (final long nData,
-                                final byte @NonNull [] aDest,
-                                final int nOfs,
-                                @NonNull final ByteOrder aByteOrder)
-  {
-    long nRealData = nData;
-    if (aByteOrder == ByteOrder.BIG_ENDIAN)
-    {
-      for (int i = nOfs + 7; i >= nOfs; i -= 1)
-      {
-        aDest[i] = (byte) (nRealData & 0xff);
-        nRealData >>= 8;
-      }
-    }
-    else
-    {
-      for (int i = nOfs; i < nOfs + 8; i += 1)
-      {
-        aDest[i] = (byte) (nRealData & 0xff);
-        nRealData >>= 8;
-      }
-    }
-  }
-
-  /**
-   * A helper method for reading uuid objects, which in java store longs not bytes
-   *
-   * @param nData
-   *        a long to convert to bytes
-   * @param aByteOrder
-   *        either ByteOrder.BIG_ENDIAN or ByteOrder.LITTLE_ENDIAN
-   * @return an array of 8 bytes
-   */
-  private static byte [] _asBytes (final long nData, final ByteOrder aByteOrder)
-  {
-    final byte [] ans = new byte [8];
-    _putLong (nData, ans, 0, aByteOrder);
-    return ans;
-  }
-
-  /**
    * Similar to UUID.nameUUIDFromBytes, but does version 5 (sha-1) not version 3 (md5) and uses a
    * namespace
    *
    * @param aNamespace
-   *        The namespace to use for this UUID. If null, uses 00000000-0000-0000-0000-000000000000
+   *        The namespace to use for this UUID. If <code>null</code>, uses
+   *        00000000-0000-0000-0000-000000000000
    * @param aNameBytes
-   *        The bytes to use as the "name" of this hash
-   * @return the UUID object
+   *        The bytes to use as the "name" of this hash. May not be <code>null</code>.
+   * @return the UUID object and never <code>null</code>.
    */
+  @NonNull
   public static UUID fromBytes (@Nullable final UUID aNamespace, final byte @NonNull [] aNameBytes)
   {
     ValueEnforcer.notNull (aNameBytes, "NameBytes");
@@ -216,18 +138,21 @@ public final class UUID5Helper
       final MessageDigest aMD = MessageDigest.getInstance ("SHA-1");
       if (aNamespace == null)
       {
+        // Use a 16-byte 0-array
         aMD.update (new byte [16]);
       }
       else
       {
-        aMD.update (_asBytes (aNamespace.getMostSignificantBits (), ByteOrder.BIG_ENDIAN));
-        aMD.update (_asBytes (aNamespace.getLeastSignificantBits (), ByteOrder.BIG_ENDIAN));
+        final ByteBuffer aBB = ByteBuffer.allocate (16);
+        aBB.putLong (aNamespace.getMostSignificantBits ());
+        aBB.putLong (aNamespace.getLeastSignificantBits ());
+        aMD.update (aBB.array ());
       }
-      return _makeUUID (aMD.digest (aNameBytes), 5);
+      return _makeUUID (aMD.digest (aNameBytes));
     }
     catch (final NoSuchAlgorithmException e)
     {
-      throw new AssertionError (e);
+      throw new IllegalStateException (e);
     }
   }
 
@@ -235,7 +160,8 @@ public final class UUID5Helper
    * Similar to UUID.nameUUIDFromBytes, but does version 5 (sha-1) not version 3 (md5)
    *
    * @param sName
-   *        The string to be encoded in utf-8 to get the bytes to hash
+   *        The string to be encoded in utf-8 to get the bytes to hash. May not be
+   *        <code>null</code>.
    * @return the UUID object
    */
   @NonNull
@@ -249,12 +175,15 @@ public final class UUID5Helper
    * namespace
    *
    * @param aNamespace
-   *        The namespace to use for this UUID. If null, uses 00000000-0000-0000-0000-000000000000
+   *        The namespace to use for this UUID. If <code>null</code>, uses
+   *        00000000-0000-0000-0000-000000000000
    * @param sName
-   *        The string to be encoded in utf-8 to get the bytes to hash
+   *        The string to be encoded in utf-8 to get the bytes to hash. May not be
+   *        <code>null</code>.
    * @return the UUID object
    */
-  public static UUID fromUTF8 (@Nullable final UUID aNamespace, final String sName)
+  @NonNull
+  public static UUID fromUTF8 (@Nullable final UUID aNamespace, @NonNull final String sName)
   {
     return fromBytes (aNamespace, sName.getBytes (StandardCharsets.UTF_8));
   }
