@@ -39,4 +39,23 @@ public final class UUID5HelperTest
     assertNotNull (aUUID5);
     assertEquals ("8aeba72d-2253-57fe-86f0-7c35648eb808", aUUID5.toString ());
   }
+
+  @Test
+  public void testSpecificCase2 ()
+  {
+    final UUID aNSUUID = UUID.fromString ("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
+    assertNotNull (aNSUUID);
+    final UUID aUUID5 = UUID5Helper.fromUTF8 (aNSUUID, "0088 5060012349998 380 33445566 2026-01-13");
+    assertNotNull (aUUID5);
+    assertEquals ("3fd00464-9f15-52ce-8cdc-6dd374d5ad42", aUUID5.toString ());
+  }
+
+  @Test
+  public void testSpecificCase2a ()
+  {
+    final UUID aUUID5 = UUID5Helper.fromUTF8 (UUID5Helper.PEPPOL_VIDA_NAMESPACE,
+                                              "0088 5060012349998 380 33445566 2026-01-13");
+    assertNotNull (aUUID5);
+    assertEquals ("1780de4f-a87c-50cc-9d8a-f982abe36912", aUUID5.toString ());
+  }
 }
