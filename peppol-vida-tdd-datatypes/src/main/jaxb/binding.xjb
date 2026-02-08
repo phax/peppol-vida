@@ -28,19 +28,9 @@
     <xjc:javaType name="com.helger.datetime.xml.XMLOffsetTime"     xmlType="xsd:time"     adapter="com.helger.jaxb.adapter.AdapterXMLOffsetTime" />
   </globalBindings>
   
-  <bindings schemaLocation="../resources/external/schemas/0.9.0/cbc-min.xsd">
+  <bindings schemaLocation="../resources/external/schemas/2026-02-08/ViDA-tdd-0.9.0.xsd">
     <schemaBindings>
-      <package name="com.helger.peppol.vida.tdd.v090.cbc" />
-    </schemaBindings>
-  </bindings>
-  <bindings schemaLocation="../resources/external/schemas/0.9.0/cac-min.xsd">
-    <schemaBindings>
-      <package name="com.helger.peppol.vida.tdd.v090.cac" />
-    </schemaBindings>
-  </bindings>
-  <bindings schemaLocation="../resources/external/schemas/0.9.0/pxs-taxdata.xsd">
-    <schemaBindings>
-      <package name="com.helger.peppol.vida.tdd.v090" />
+      <package name="com.helger.peppol.vida.tdd.v2026_02_08" />
     </schemaBindings>
   </bindings>
 </bindings>

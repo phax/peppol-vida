@@ -61,6 +61,10 @@
       <groupId>com.helger.commons</groupId>
       <artifactId>ph-jaxb-adapter</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.helger.ubl</groupId>
+      <artifactId>ph-ubl21</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -97,15 +101,16 @@
         <version>${jaxb-plugin.version}</version>
         <executions>
           <execution>
-            <id>0.9.0</id>
+            <id>current</id>
             <goals>
               <goal>generate</goal>
             </goals>
             <configuration>
-              <schemaDirectory>${basedir}/src/main/resources/external/schemas/0.9.0</schemaDirectory>
+              <schemaDirectory>${basedir}/src/main/resources/external/schemas/2026-02-08</schemaDirectory>
               <schemaIncludes>
-                <schemaInclude>pxs*.xsd</schemaInclude>
+                <schemaInclude>*.xsd</schemaInclude>
               </schemaIncludes>  
+              <catalog>${basedir}/src/main/jaxb/catalog-tdd.txt</catalog>
             </configuration>
           </execution>
         </executions>

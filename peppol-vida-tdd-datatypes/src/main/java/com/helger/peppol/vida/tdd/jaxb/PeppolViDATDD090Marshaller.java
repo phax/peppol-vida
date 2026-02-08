@@ -21,12 +21,13 @@ import org.jspecify.annotations.NonNull;
 import com.helger.annotation.Nonempty;
 import com.helger.annotation.concurrent.NotThreadSafe;
 import com.helger.annotation.style.ReturnsMutableCopy;
-import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.jaxb.GenericJAXBMarshaller;
-import com.helger.peppol.vida.tdd.v090.ObjectFactory;
-import com.helger.peppol.vida.tdd.v090.TaxDataType;
+import com.helger.peppol.vida.tdd.v2026_02_08.ObjectFactory;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxDataType;
+import com.helger.ubl21.UBL21Marshaller;
+import com.helger.ubl21.UBL21NamespaceContext;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 
 /**
@@ -42,9 +43,9 @@ public class PeppolViDATDD090Marshaller extends GenericJAXBMarshaller <TaxDataTy
   @ReturnsMutableCopy
   private static ICommonsList <ClassPathResource> _getAllXSDs ()
   {
-    return new CommonsArrayList <> (CPeppolViDATDD.TDD_XSD_0_9_0_CBC,
-                                    CPeppolViDATDD.TDD_XSD_0_9_0_CAC,
-                                    CPeppolViDATDD.TDD_XSD_0_9_0);
+    final ICommonsList <ClassPathResource> ret = UBL21Marshaller.getAllBaseXSDs ();
+    ret.add (CPeppolViDATDD.TDD_XSD_0_9_0);
+    return ret;
   }
 
   @NonNull
@@ -52,10 +53,8 @@ public class PeppolViDATDD090Marshaller extends GenericJAXBMarshaller <TaxDataTy
   @ReturnsMutableCopy
   public static MapBasedNamespaceContext createNamespaceContext ()
   {
-    final MapBasedNamespaceContext ret = new MapBasedNamespaceContext ();
+    final MapBasedNamespaceContext ret = UBL21NamespaceContext.getInstance ().getClone ();
     ret.addMapping ("pxs", CPeppolViDATDD.TDD_XSD_0_9_0_NS);
-    ret.addMapping ("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
-    ret.addMapping ("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
     return ret;
   }
 
