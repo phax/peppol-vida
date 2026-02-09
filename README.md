@@ -49,6 +49,9 @@ to build the solution.
 
 # News and noteworthy
 
+v0.1.2 - 2026-02-09
+* Updated to new XSD + Schematron from OpenPeppol
+
 v0.1.1 - 2026-01-30
 * Fixed comparison errors in `PeppolViDATDD090TaxSubtotalBuilder._isEveryRequiredFieldSet`
 * Removed `PeppolViDATDD090ReportedTransactionBuilder.uuid` and building a UUID v5 manually instead
