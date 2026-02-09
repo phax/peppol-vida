@@ -16,27 +16,20 @@
  */
 package com.helger.peppol.vida.tdd.jaxb;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.helger.io.resource.ClassPathResource;
-import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
-
 /**
- * Test class for class {@link PeppolViDATDD090Marshaller}.
+ * Test class for class {@link CPeppolViDATDD}.
  *
  * @author Philip Helger
  */
-public final class PeppolViDATDD090MarshallerTest
+public final class CPeppolViDATDDTest
 {
   @Test
-  public void testBasic10 ()
+  public void testBasic ()
   {
-    final PeppolViDATDD090Marshaller m = new PeppolViDATDD090Marshaller ();
-    for (final ClassPathResource aRes : PeppolViDATestFiles.getAllGoodTDD090Files ())
-      assertNotNull ("Failed to read " + aRes.getPath (), m.read (aRes));
-    for (final ClassPathResource aRes : PeppolViDATestFiles.getAllSchematronBadTDD090Files ())
-      assertNotNull ("Failed to read " + aRes.getPath (), m.read (aRes));
+    assertTrue (CPeppolViDATDD.TDD_XSD_0_9_0.exists ());
   }
 }

@@ -28,8 +28,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.peppol.vida.tdd.v090.cac.TaxCategory;
-import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
@@ -39,7 +37,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090TaxCategoryBuilder implements IBuilder <TaxCategory>
+public class PeppolViDATDD090TaxCategoryBuilder implements IBuilder <TaxCategoryType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090TaxCategoryBuilder.class);
 
@@ -137,7 +135,7 @@ public class PeppolViDATDD090TaxCategoryBuilder implements IBuilder <TaxCategory
   }
 
   @Nullable
-  public TaxCategory build ()
+  public TaxCategoryType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -146,11 +144,12 @@ public class PeppolViDATDD090TaxCategoryBuilder implements IBuilder <TaxCategory
       return null;
     }
 
-    final TaxCategory ret = new TaxCategory ();
+    final TaxCategoryType ret = new TaxCategoryType ();
     ret.setID (m_sID);
-    ret.setPercent (m_aPerc);
+    if (m_aPerc != null)
+      ret.setPercent (m_aPerc);
     {
-      final TaxScheme aTS = new TaxScheme ();
+      final TaxSchemeType aTS = new TaxSchemeType ();
       aTS.setID (m_sTaxSchemeID);
       ret.setTaxScheme (aTS);
     }

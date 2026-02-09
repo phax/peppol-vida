@@ -34,25 +34,27 @@ import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.xml.XMLOffsetDate;
-import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction.ReportedDocument.DocumentLine;
-import com.helger.peppol.vida.tdd.v090.cac.AllowanceCharge;
-import com.helger.peppol.vida.tdd.v090.cac.InvoicePeriod;
-import com.helger.peppol.vida.tdd.v090.cac.Item;
-import com.helger.peppol.vida.tdd.v090.cac.Price;
-import com.helger.peppol.vida.tdd.v090.cbc.InvoicedQuantity;
+import com.helger.peppol.vida.tdd.v2026_02_08.DocumentLineType;
 
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.InvoiceLineType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PeriodType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PriceType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CreditedQuantityType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.InvoicedQuantityType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.LineExtensionAmountType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "DocumentLine".
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLine>
+public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLineType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090DocumentLineBuilder.class);
 
@@ -65,8 +67,8 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
   private LocalDate m_aInvoicePeriodStart;
   private LocalDate m_aInvoicePeriodEnd;
   private String m_sInvoicePeriodDescriptionCode;
-  private final ICommonsList <AllowanceCharge> m_aAllowanceCharges = new CommonsArrayList <> ();
-  private Item m_aItem;
+  private final ICommonsList <AllowanceChargeType> m_aAllowanceCharges = new CommonsArrayList <> ();
+  private ItemType m_aItem;
   private BigDecimal m_aPriceAmount;
 
   public PeppolViDATDD090DocumentLineBuilder (@Nullable final String sDocumentCurrencyCode)
@@ -272,20 +274,20 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
 
   @NonNull
   @ReturnsMutableObject
-  public ICommonsList <AllowanceCharge> allowanceCharges ()
+  public ICommonsList <AllowanceChargeType> allowanceCharges ()
   {
     return m_aAllowanceCharges;
   }
 
   @NonNull
-  public PeppolViDATDD090DocumentLineBuilder allowanceCharges (@Nullable final ICommonsList <AllowanceCharge> a)
+  public PeppolViDATDD090DocumentLineBuilder allowanceCharges (@Nullable final ICommonsList <AllowanceChargeType> a)
   {
     m_aAllowanceCharges.setAll (a);
     return this;
   }
 
   @NonNull
-  public PeppolViDATDD090DocumentLineBuilder addAllowanceCharge (@Nullable final AllowanceCharge a)
+  public PeppolViDATDD090DocumentLineBuilder addAllowanceCharge (@Nullable final AllowanceChargeType a)
   {
     if (a != null)
       m_aAllowanceCharges.add (a);
@@ -307,13 +309,13 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
   }
 
   @Nullable
-  public Item item ()
+  public ItemType item ()
   {
     return m_aItem;
   }
 
   @NonNull
-  public PeppolViDATDD090DocumentLineBuilder item (@Nullable final Item a)
+  public PeppolViDATDD090DocumentLineBuilder item (@Nullable final ItemType a)
   {
     m_aItem = a;
     return this;
@@ -397,7 +399,7 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
   }
 
   @Nullable
-  public DocumentLine build ()
+  public DocumentLineType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -406,36 +408,40 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
       return null;
     }
 
-    final DocumentLine ret = new DocumentLine ();
-    ret.setID (m_sID);
+    final DocumentLineType ret = new DocumentLineType ();
+    ret.setID (new IDType (m_sID));
     if (StringHelper.isNotEmpty (m_sNote))
-      ret.setNote (m_sNote);
+      ret.setNote (new NoteType (m_sNote));
     {
-      final InvoicedQuantity a = new InvoicedQuantity ();
+      final InvoicedQuantityType a = new InvoicedQuantityType ();
       a.setValue (m_aQuantity);
       a.setUnitCode (m_sQuantityUnit);
       ret.setInvoicedQuantity (a);
     }
-    ret.setLineExtensionAmount (m_aLineExtensionAmount).setCurrencyID (m_sDocumentCurrencyCode);
+    {
+      final LineExtensionAmountType aLEA = new LineExtensionAmountType (m_aLineExtensionAmount);
+      aLEA.setCurrencyID (m_sDocumentCurrencyCode);
+      ret.setLineExtensionAmount (aLEA);
+    }
 
     if (m_aInvoicePeriodStart != null ||
         m_aInvoicePeriodEnd != null ||
         StringHelper.isNotEmpty (m_sInvoicePeriodDescriptionCode))
     {
-      final InvoicePeriod aIP = new InvoicePeriod ();
+      final PeriodType aIP = new PeriodType ();
       if (m_aInvoicePeriodStart != null)
         aIP.setStartDate (XMLOffsetDate.of (m_aInvoicePeriodStart));
       if (m_aInvoicePeriodEnd != null)
         aIP.setEndDate (XMLOffsetDate.of (m_aInvoicePeriodEnd));
       if (StringHelper.isNotEmpty (m_sInvoicePeriodDescriptionCode))
-        aIP.setDescriptionCode (m_sInvoicePeriodDescriptionCode);
+        aIP.addDescriptionCode (new DescriptionCodeType (m_sInvoicePeriodDescriptionCode));
       ret.setInvoicePeriod (aIP);
     }
 
     ret.setAllowanceCharge (m_aAllowanceCharges);
     ret.setItem (m_aItem);
     {
-      final Price a = new Price ();
+      final PriceType a = new PriceType ();
       a.setPriceAmount (m_aPriceAmount).setCurrencyID (m_sDocumentCurrencyCode);
       ret.setPrice (a);
     }

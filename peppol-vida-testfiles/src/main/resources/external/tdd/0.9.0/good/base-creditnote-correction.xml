@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pxs:TaxData xmlns:pxs="urn:peppol:schema:taxdata:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
-	<cbc:CustomizationID>urn:peppol:schema:taxdata:1.0::TaxData##urn:peppol:taxdata:ViDA-1::1.0</cbc:CustomizationID>
+<pxs:TaxData xmlns:pxs="urn:peppol:schema:vida-taxdata:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+	<cbc:CustomizationID>urn:peppol:taxdata:ViDA-1</cbc:CustomizationID>
 	<cbc:ProfileID>urn:peppol:taxreporting</cbc:ProfileID>
-	<pxs:UUID>123e4567-e89b-12d3-a456-426614174000</pxs:UUID>
+	<cbc:UUID>123e4567-e89b-12d3-a456-426614174000</cbc:UUID>
 	<cbc:IssueDate>2025-01-30</cbc:IssueDate>
 	<cbc:IssueTime>15:58:00.0Z</cbc:IssueTime>
 	<pxs:DocumentTypeCode>S</pxs:DocumentTypeCode>
-	<pxs:DocumentCurrencyCode>EUR</pxs:DocumentCurrencyCode>
+	
 	<pxs:DocumentScope>D</pxs:DocumentScope>
 	<pxs:ReporterRole>C2</pxs:ReporterRole>
 	<pxs:TaxAuthority>

@@ -32,7 +32,7 @@ import com.helger.io.file.FilenameHelper;
 import com.helger.io.resource.IReadableResource;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD090Marshaller;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
-import com.helger.peppol.vida.tdd.v090.TaxDataType;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxDataType;
 import com.helger.schematron.ISchematronResource;
 import com.helger.schematron.svrl.SVRLHelper;
 import com.helger.schematron.svrl.SVRLMarshaller;

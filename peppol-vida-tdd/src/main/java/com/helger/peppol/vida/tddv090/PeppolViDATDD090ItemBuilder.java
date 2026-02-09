@@ -31,25 +31,25 @@ import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-import com.helger.peppol.vida.tdd.v090.cac.ClassifiedTaxCategory;
-import com.helger.peppol.vida.tdd.v090.cac.CommodityClassification;
-import com.helger.peppol.vida.tdd.v090.cac.Item;
 
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CommodityClassificationType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.ItemType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "Item".
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090ItemBuilder implements IBuilder <Item>
+public class PeppolViDATDD090ItemBuilder implements IBuilder <ItemType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090ItemBuilder.class);
 
   private String m_sDescription;
   private String m_sName;
-  private final ICommonsList <CommodityClassification> m_aCommodityClassifications = new CommonsArrayList <> ();
-  private ClassifiedTaxCategory m_aClassifiedTaxCategory;
+  private final ICommonsList <CommodityClassificationType> m_aCommodityClassifications = new CommonsArrayList <> ();
+  private TaxCategoryType m_aClassifiedTaxCategory;
 
   public PeppolViDATDD090ItemBuilder ()
   {}
@@ -107,20 +107,20 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <Item>
 
   @NonNull
   @ReturnsMutableObject
-  public ICommonsList <CommodityClassification> commodityClassifications ()
+  public ICommonsList <CommodityClassificationType> commodityClassifications ()
   {
     return m_aCommodityClassifications;
   }
 
   @NonNull
-  public PeppolViDATDD090ItemBuilder commodityClassifications (@Nullable final ICommonsList <CommodityClassification> a)
+  public PeppolViDATDD090ItemBuilder commodityClassifications (@Nullable final ICommonsList <CommodityClassificationType> a)
   {
     m_aCommodityClassifications.setAll (a);
     return this;
   }
 
   @NonNull
-  public PeppolViDATDD090ItemBuilder addCommodityClassification (@Nullable final CommodityClassification a)
+  public PeppolViDATDD090ItemBuilder addCommodityClassification (@Nullable final CommodityClassificationType a)
   {
     if (a != null)
       m_aCommodityClassifications.add (a);
@@ -142,28 +142,28 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <Item>
   }
 
   @Nullable
-  public ClassifiedTaxCategory classifiedTaxCategory ()
+  public TaxCategoryType classifiedTaxCategory ()
   {
     return m_aClassifiedTaxCategory;
   }
 
   @NonNull
-  public PeppolViDATDD090ItemBuilder classifiedTaxCategory (@Nullable final ClassifiedTaxCategory a)
+  public PeppolViDATDD090ItemBuilder classifiedTaxCategory (@Nullable final TaxCategoryType a)
   {
     m_aClassifiedTaxCategory = a;
     return this;
   }
 
   @NonNull
-  public PeppolViDATDD090ItemBuilder classifiedTaxCategory (@Nullable final PeppolViDATDD090ClassifiedTaxCategoryBuilder a)
+  public PeppolViDATDD090ItemBuilder classifiedTaxCategory (@Nullable final PeppolViDATDD090TaxCategoryBuilder a)
   {
     return classifiedTaxCategory (a == null ? null : a.build ());
   }
 
   @NonNull
-  public PeppolViDATDD090ItemBuilder classifiedTaxCategory (@NonNull final Consumer <PeppolViDATDD090ClassifiedTaxCategoryBuilder> aBuilderConsumer)
+  public PeppolViDATDD090ItemBuilder classifiedTaxCategory (@NonNull final Consumer <PeppolViDATDD090TaxCategoryBuilder> aBuilderConsumer)
   {
-    final PeppolViDATDD090ClassifiedTaxCategoryBuilder aBuilder = new PeppolViDATDD090ClassifiedTaxCategoryBuilder ();
+    final PeppolViDATDD090TaxCategoryBuilder aBuilder = new PeppolViDATDD090TaxCategoryBuilder ();
     aBuilderConsumer.accept (aBuilder);
     return classifiedTaxCategory (aBuilder);
   }
@@ -196,7 +196,7 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <Item>
   }
 
   @Nullable
-  public Item build ()
+  public ItemType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -205,11 +205,12 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <Item>
       return null;
     }
 
-    final Item ret = new Item ();
-    ret.setDescription (m_sDescription);
+    final ItemType ret = new ItemType ();
+    if (StringHelper.isNotEmpty (m_sDescription))
+      ret.addDescription (new DescriptionType (m_sDescription));
     ret.setName (m_sName);
     ret.setCommodityClassification (m_aCommodityClassifications);
-    ret.setClassifiedTaxCategory (m_aClassifiedTaxCategory);
+    ret.addClassifiedTaxCategory (m_aClassifiedTaxCategory);
     return ret;
   }
 }

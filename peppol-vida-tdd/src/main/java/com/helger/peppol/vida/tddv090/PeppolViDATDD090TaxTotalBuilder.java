@@ -31,9 +31,8 @@ import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
-import com.helger.peppol.vida.tdd.v090.cac.TaxTotal;
-import com.helger.peppol.vida.tdd.v090.cac.TaxTotal.TaxSubtotal;
 
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 
 /**
@@ -41,13 +40,13 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090TaxTotalBuilder implements IBuilder <TaxTotal>
+public class PeppolViDATDD090TaxTotalBuilder implements IBuilder <TaxTotalType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090TaxTotalBuilder.class);
 
   private final String m_sCurrencyCode;
   private BigDecimal m_aTaxAmount;
-  private final ICommonsList <TaxSubtotal> m_aSubtotals = new CommonsArrayList <> ();
+  private final ICommonsList <TaxSubtotalType> m_aSubtotals = new CommonsArrayList <> ();
 
   public PeppolViDATDD090TaxTotalBuilder (@NonNull final String sCurrencyCode)
   {
@@ -88,20 +87,20 @@ public class PeppolViDATDD090TaxTotalBuilder implements IBuilder <TaxTotal>
 
   @NonNull
   @ReturnsMutableObject
-  public ICommonsList <TaxSubtotal> subtotals ()
+  public ICommonsList <TaxSubtotalType> subtotals ()
   {
     return m_aSubtotals;
   }
 
   @NonNull
-  public PeppolViDATDD090TaxTotalBuilder subtotals (@Nullable final ICommonsList <TaxSubtotal> a)
+  public PeppolViDATDD090TaxTotalBuilder subtotals (@Nullable final ICommonsList <TaxSubtotalType> a)
   {
     m_aSubtotals.setAll (a);
     return this;
   }
 
   @NonNull
-  public PeppolViDATDD090TaxTotalBuilder addTaxSubtotal (@Nullable final TaxSubtotal a)
+  public PeppolViDATDD090TaxTotalBuilder addTaxSubtotal (@Nullable final TaxSubtotalType a)
   {
     if (a != null)
       m_aSubtotals.add (a);
@@ -144,7 +143,7 @@ public class PeppolViDATDD090TaxTotalBuilder implements IBuilder <TaxTotal>
   }
 
   @Nullable
-  public TaxTotal build ()
+  public TaxTotalType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -153,7 +152,7 @@ public class PeppolViDATDD090TaxTotalBuilder implements IBuilder <TaxTotal>
       return null;
     }
 
-    final TaxTotal ret = new TaxTotal ();
+    final TaxTotalType ret = new TaxTotalType ();
     ret.setTaxAmount (m_aTaxAmount).setCurrencyID (m_sCurrencyCode);
     ret.setTaxSubtotal (m_aSubtotals);
     return ret;

@@ -26,17 +26,13 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.peppol.vida.tdd.v090.cac.CardAccount;
-import com.helger.peppol.vida.tdd.v090.cac.FinancialInstitutionBranch;
-import com.helger.peppol.vida.tdd.v090.cac.PaymentMeans;
-import com.helger.peppol.vida.tdd.v090.cac.PaymentMeans.PayeeFinancialAccount;
-import com.helger.peppol.vida.tdd.v090.cbc.PaymentMeansCode;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BranchType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CardAccountType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.FinancialAccountType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentMeansCodeType;
 
 /**
@@ -44,7 +40,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Payment
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMeans>
+public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMeansType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090PaymentMeansBuilder.class);
 
@@ -278,7 +274,7 @@ public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMea
   }
 
   @Nullable
-  public PaymentMeans build ()
+  public PaymentMeansType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -287,17 +283,18 @@ public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMea
       return null;
     }
 
-    final PaymentMeans ret = new PaymentMeans ();
+    final PaymentMeansType ret = new PaymentMeansType ();
     {
-      final PaymentMeansCode aPMC = new PaymentMeansCode ();
+      final PaymentMeansCodeType aPMC = new PaymentMeansCodeType ();
       aPMC.setValue (m_sPaymentMeansCode);
       aPMC.setName (m_sPaymentMeansCodeName);
       ret.setPaymentMeansCode (aPMC);
     }
-    ret.setPaymentID (m_sPaymentID);
+    if (StringHelper.isNotEmpty (m_sPaymentID))
+      ret.addPaymentID (new PaymentIDType (m_sPaymentID));
     if (StringHelper.isNotEmpty (m_sCardPrimaryAccountNumberID))
     {
-      final CardAccount aCA = new CardAccount ();
+      final CardAccountType aCA = new CardAccountType ();
       aCA.setPrimaryAccountNumberID (m_sCardPrimaryAccountNumberID);
       aCA.setNetworkID (m_sCardNetworkID);
       aCA.setHolderName (m_sCardHolderName);
@@ -305,11 +302,11 @@ public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMea
     }
     if (StringHelper.isNotEmpty (m_sPayeeFinancialAccountID))
     {
-      final PayeeFinancialAccount aPFA = new PayeeFinancialAccount ();
+      final FinancialAccountType aPFA = new FinancialAccountType ();
       aPFA.setID (m_sPayeeFinancialAccountID).setSchemeID (m_sPayeeFinancialAccountIDScheme);
       if (StringHelper.isNotEmpty (m_sPayeeFinancialInstitutionBranchID))
       {
-        final FinancialInstitutionBranch aFIB = new FinancialInstitutionBranch ();
+        final BranchType aFIB = new BranchType ();
         aFIB.setID (m_sPayeeFinancialInstitutionBranchID).setSchemeID (m_sPayeeFinancialInstitutionBranchIDScheme);
         aPFA.setFinancialInstitutionBranch (aFIB);
       }

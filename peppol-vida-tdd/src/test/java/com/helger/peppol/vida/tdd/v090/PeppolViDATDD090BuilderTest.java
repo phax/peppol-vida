@@ -41,6 +41,7 @@ import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD090Marshaller;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxDataType;
 import com.helger.peppol.vida.tdd.validate.PeppolViDATDDValidator;
 import com.helger.peppol.vida.tddv090.PeppolViDATDD090Builder;
 import com.helger.peppolid.factory.IIdentifierFactory;

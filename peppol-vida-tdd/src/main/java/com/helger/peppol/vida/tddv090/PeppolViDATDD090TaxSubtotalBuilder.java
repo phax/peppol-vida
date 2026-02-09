@@ -28,20 +28,19 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.peppol.vida.tdd.v090.cac.TaxScheme;
-import com.helger.peppol.vida.tdd.v090.cac.TaxTotal.TaxSubtotal;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "TaxSubtotal".
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal>
+public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotalType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090TaxSubtotalBuilder.class);
 
@@ -241,7 +240,7 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
   }
 
   @Nullable
-  public TaxSubtotal build ()
+  public TaxSubtotalType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -250,17 +249,20 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
       return null;
     }
 
-    final TaxSubtotal ret = new TaxSubtotal ();
+    final TaxSubtotalType ret = new TaxSubtotalType ();
     ret.setTaxableAmount (m_aTaxableAmount).setCurrencyID (m_sCurrencyCode);
     ret.setTaxAmount (m_aTaxAmount).setCurrencyID (m_sCurrencyCode);
     {
-      final var aTC = new TaxSubtotal.TaxCategory ();
+      final var aTC = new TaxCategoryType ();
       aTC.setID (m_sTaxCategoryID).setSchemeID (m_sTaxCategoryIDScheme);
-      aTC.setPercent (m_aPercentage);
-      aTC.setTaxExemptionReasonCode (m_sTaxExemptionReasonCode);
-      aTC.setTaxExemptionReason (m_sTaxExemptionReason);
+      if (m_aPercentage != null)
+        aTC.setPercent (m_aPercentage);
+      if (StringHelper.isNotEmpty (m_sTaxExemptionReasonCode))
+        aTC.setTaxExemptionReasonCode (m_sTaxExemptionReasonCode);
+      if (StringHelper.isNotEmpty (m_sTaxExemptionReason))
+        aTC.addTaxExemptionReason (new TaxExemptionReasonType (m_sTaxExemptionReason));
       {
-        final var aTS = new TaxScheme ();
+        final var aTS = new TaxSchemeType ();
         aTS.setID (m_sTaxSchemeID);
         aTC.setTaxScheme (aTS);
       }

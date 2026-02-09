@@ -36,16 +36,25 @@ import com.helger.datetime.xml.XMLOffsetTime;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentScope;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
-import com.helger.peppol.vida.tdd.v090.TaxDataType;
-import com.helger.peppol.vida.tdd.v090.TaxDataType.ReceivingParty;
-import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportedTransaction;
-import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportersRepresentative;
-import com.helger.peppol.vida.tdd.v090.TaxDataType.ReportingParty;
-import com.helger.peppol.vida.tdd.v090.TaxDataType.TaxAuthority;
-import com.helger.peppol.vida.tdd.v090.cac.PartyIdentification;
+import com.helger.peppol.vida.tdd.v2026_02_08.ReferencedDocumentTypeCodeType;
+import com.helger.peppol.vida.tdd.v2026_02_08.ReportedTransactionType;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxAuthorityType;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxDataDocumentReporterRoleType;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxDataDocumentScopeType;
+import com.helger.peppol.vida.tdd.v2026_02_08.TaxDataType;
 import com.helger.peppolid.IParticipantIdentifier;
 import com.helger.peppolid.factory.IIdentifierFactory;
 import com.helger.peppolid.factory.PeppolIdentifierFactory;
+
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyIdentificationType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueDateType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueTimeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NameType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ProfileIDType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UUIDType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 document.
@@ -74,7 +83,7 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
   private IParticipantIdentifier m_aReportingParty;
   private IParticipantIdentifier m_aReceivingParty;
   private IParticipantIdentifier m_aReportersRepresentative;
-  private ReportedTransaction m_aReportedTransaction;
+  private ReportedTransactionType m_aReportedTransaction;
 
   public PeppolViDATDD090Builder ()
   {
@@ -302,13 +311,13 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
   }
 
   @Nullable
-  public ReportedTransaction reportedTransaction ()
+  public ReportedTransactionType reportedTransaction ()
   {
     return m_aReportedTransaction;
   }
 
   @NonNull
-  public PeppolViDATDD090Builder reportedTransaction (@Nullable final ReportedTransaction a)
+  public PeppolViDATDD090Builder reportedTransaction (@Nullable final ReportedTransactionType a)
   {
     m_aReportedTransaction = a;
     return this;
@@ -508,40 +517,51 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
     }
 
     final TaxDataType ret = new TaxDataType ();
-    ret.setCustomizationID (m_sCustomizationID);
-    ret.setProfileID (m_sProfileID);
-    ret.setUUID (m_sUUID);
-    ret.setIssueDate (XMLOffsetDate.of (m_aIssueDate));
-    ret.setIssueTime (XMLOffsetTime.of (m_aIssueTime));
-    ret.setDocumentTypeCode (m_eDocumentTypeCode.getID ());
-    // Duplicate element
-    ret.setDocumentCurrencyCode (m_aReportedTransaction.getReportedDocument ().getDocumentCurrencyCode ());
-    ret.setDocumentScope (m_eDocumentScope.getID ());
-    ret.setReporterRole (m_eReporterRole.getID ());
+    ret.setCustomizationID (new CustomizationIDType (m_sCustomizationID));
+    ret.setProfileID (new ProfileIDType (m_sProfileID));
+    ret.setUUID (new UUIDType (m_sUUID));
+    ret.setIssueDate (new IssueDateType (XMLOffsetDate.of (m_aIssueDate)));
+    ret.setIssueTime (new IssueTimeType (XMLOffsetTime.of (m_aIssueTime)));
     {
-      final TaxAuthority a = new TaxAuthority ();
-      a.setID (m_sTaxAuthorityID);
-      a.setName (m_sTaxAuthorityName);
+      final var aDocType = new ReferencedDocumentTypeCodeType ();
+      aDocType.setValue (m_eDocumentTypeCode.getID ());
+      ret.setDocumentTypeCode (aDocType);
+    }
+    {
+      final var aTDS = new TaxDataDocumentScopeType ();
+      aTDS.setValue (m_eDocumentScope.getID ());
+      ret.setDocumentScope (aTDS);
+    }
+    {
+      final var aRR = new TaxDataDocumentReporterRoleType ();
+      aRR.setValue (m_eReporterRole.getID ());
+      ret.setReporterRole (aRR);
+    }
+    {
+      final TaxAuthorityType a = new TaxAuthorityType ();
+      a.setID (new IDType (m_sTaxAuthorityID));
+      if (StringHelper.isEmpty (m_sTaxAuthorityName))
+        a.setName (new NameType (m_sTaxAuthorityName));
       ret.setTaxAuthority (a);
     }
     {
       final String [] aParts = StringHelper.getExplodedArray (':', m_aReportingParty.getValue (), 2);
-      final ReportingParty aParty = new ReportingParty ();
+      final PartyType aParty = new PartyType ();
       aParty.setEndpointID (aParts[1]).setSchemeID (aParts[0]);
       ret.setReportingParty (aParty);
     }
     {
       final String [] aParts = StringHelper.getExplodedArray (':', m_aReceivingParty.getValue (), 2);
-      final ReceivingParty aParty = new ReceivingParty ();
+      final PartyType aParty = new PartyType ();
       aParty.setEndpointID (aParts[1]).setSchemeID (aParts[0]);
       ret.setReceivingParty (aParty);
     }
     {
       final String [] aParts = StringHelper.getExplodedArray (':', m_aReportersRepresentative.getValue (), 2);
-      final ReportersRepresentative aParty = new ReportersRepresentative ();
-      final PartyIdentification aPID = new PartyIdentification ();
+      final PartyType aParty = new PartyType ();
+      final PartyIdentificationType aPID = new PartyIdentificationType ();
       aPID.setID (aParts[1]).setSchemeID (aParts[0]);
-      aParty.setPartyIdentification (aPID);
+      aParty.addPartyIdentification (aPID);
       ret.setReportersRepresentative (aParty);
     }
     ret.addReportedTransaction (m_aReportedTransaction);

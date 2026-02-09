@@ -28,17 +28,18 @@ import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
-import com.helger.peppol.vida.tdd.v090.cac.AllowanceCharge;
-import com.helger.peppol.vida.tdd.v090.cac.TaxCategory;
+import com.helger.base.string.StringHelper;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "AllowanceCharge".
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <AllowanceCharge>
+public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <AllowanceChargeType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090AllowanceChargeBuilder.class);
 
@@ -49,7 +50,7 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
   private BigDecimal m_aMultFactor;
   private BigDecimal m_aAmount;
   private BigDecimal m_aBaseAmount;
-  private TaxCategory m_aTaxCategory;
+  private TaxCategoryType m_aTaxCategory;
 
   public PeppolViDATDD090AllowanceChargeBuilder (@Nullable final String sDocumentCurrencyCode)
   {
@@ -160,13 +161,13 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
   }
 
   @Nullable
-  public TaxCategory taxCategory ()
+  public TaxCategoryType taxCategory ()
   {
     return m_aTaxCategory;
   }
 
   @NonNull
-  public PeppolViDATDD090AllowanceChargeBuilder taxCategory (@Nullable final TaxCategory a)
+  public PeppolViDATDD090AllowanceChargeBuilder taxCategory (@Nullable final TaxCategoryType a)
   {
     m_aTaxCategory = a;
     return this;
@@ -212,7 +213,7 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
   }
 
   @Nullable
-  public AllowanceCharge build ()
+  public AllowanceChargeType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -221,16 +222,18 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
       return null;
     }
 
-    final AllowanceCharge ret = new AllowanceCharge ();
+    final AllowanceChargeType ret = new AllowanceChargeType ();
     ret.setChargeIndicator (m_bCharge);
-    ret.setAllowanceChargeReasonCode (m_sReasonCode);
-    ret.setAllowanceChargeReason (m_sReason);
-    ret.setMultiplierFactorNumeric (m_aMultFactor);
+    if (StringHelper.isNotEmpty (m_sReasonCode))
+      ret.setAllowanceChargeReasonCode (m_sReasonCode);
+    if (StringHelper.isNotEmpty (m_sReason))
+      ret.addAllowanceChargeReason (new AllowanceChargeReasonType (m_sReason));
+    if (m_aMultFactor != null)
+      ret.setMultiplierFactorNumeric (m_aMultFactor);
     ret.setAmount (m_aAmount).setCurrencyID (m_sDocumentCurrencyCode);
     if (m_aBaseAmount != null)
       ret.setBaseAmount (m_aBaseAmount).setCurrencyID (m_sDocumentCurrencyCode);
-    // XXX the TaxCategory element has no type in XSD
-    // ret.setTaxCategory (m_aTaxCategory);
+    ret.addTaxCategory (m_aTaxCategory);
 
     return ret;
   }

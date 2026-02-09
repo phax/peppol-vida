@@ -29,8 +29,6 @@ import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 import com.helger.datetime.xml.XMLOffsetDate;
-import com.helger.peppol.vida.tdd.v090.cac.BillingReference;
-import com.helger.peppol.vida.tdd.v090.cac.InvoiceDocumentReference;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
@@ -41,7 +39,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <BillingReference>
+public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <BillingReferenceType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090BillingReferenceBuilder.class);
 
@@ -140,7 +138,7 @@ public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <Billin
   }
 
   @Nullable
-  public BillingReference build ()
+  public BillingReferenceType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -149,9 +147,9 @@ public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <Billin
       return null;
     }
 
-    final BillingReference ret = new BillingReference ();
+    final BillingReferenceType ret = new BillingReferenceType ();
     {
-      final InvoiceDocumentReference aIDR = new InvoiceDocumentReference ();
+      final DocumentReferenceType aIDR = new DocumentReferenceType ();
       aIDR.setID (m_sID).setSchemeID (m_sIDScheme);
       if (m_aIssueDate != null)
         aIDR.setIssueDate (XMLOffsetDate.of (m_aIssueDate));

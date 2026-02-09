@@ -26,8 +26,6 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.peppol.vida.tdd.v090.cac.CommodityClassification;
-import com.helger.peppol.vida.tdd.v090.cbc.ItemClassificationCode;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CommodityClassificationType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemClassificationCodeType;
@@ -37,7 +35,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemCla
  *
  * @author Philip Helger
  */
-public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder <CommodityClassification>
+public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder <CommodityClassificationType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD090CommodityClassificationBuilder.class);
 
@@ -136,7 +134,7 @@ public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder 
   }
 
   @Nullable
-  public CommodityClassification build ()
+  public CommodityClassificationType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
@@ -145,9 +143,9 @@ public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder 
       return null;
     }
 
-    final CommodityClassification ret = new CommodityClassification ();
+    final CommodityClassificationType ret = new CommodityClassificationType ();
     {
-      final ItemClassificationCode aIC = new ItemClassificationCode ();
+      final ItemClassificationCodeType aIC = new ItemClassificationCodeType ();
       aIC.setValue (m_sItemClassification);
       aIC.setListID (m_sItemClassificationListID);
       aIC.setListVersionID (m_sItemClassificationListVersionID);
