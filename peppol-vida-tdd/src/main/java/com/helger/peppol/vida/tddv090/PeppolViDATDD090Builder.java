@@ -540,7 +540,7 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
     {
       final TaxAuthorityType a = new TaxAuthorityType ();
       a.setID (new IDType (m_sTaxAuthorityID));
-      if (StringHelper.isEmpty (m_sTaxAuthorityName))
+      if (StringHelper.isNotEmpty (m_sTaxAuthorityName))
         a.setName (new NameType (m_sTaxAuthorityName));
       ret.setTaxAuthority (a);
     }

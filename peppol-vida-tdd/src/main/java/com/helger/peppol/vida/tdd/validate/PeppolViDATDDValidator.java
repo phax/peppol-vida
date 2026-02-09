@@ -20,6 +20,7 @@ import org.jspecify.annotations.NonNull;
 
 import com.helger.annotation.concurrent.Immutable;
 import com.helger.base.exception.InitializationException;
+import com.helger.peppol.vida.tdd.jaxb.CPeppolViDATDD;
 import com.helger.schematron.ISchematronResource;
 import com.helger.schematron.sch.SchematronResourceSCH;
 
@@ -31,9 +32,16 @@ import com.helger.schematron.sch.SchematronResourceSCH;
 @Immutable
 public final class PeppolViDATDDValidator
 {
-  public static final String SCH_VIDA_TDD_090_PATH = "external/schematron/0.9.0/Peppol-ViDA-TDD-ph.sch";
+  @NonNull
+  private static ClassLoader _getCL ()
+  {
+    return CPeppolViDATDD.class.getClassLoader ();
+  }
 
-  private static final ISchematronResource VIDA_TDD_090 = SchematronResourceSCH.fromClassPath (SCH_VIDA_TDD_090_PATH);
+  public static final String SCH_VIDA_TDD_090_PATH = "external/schematron/2026-02-08/Peppol-ViDA-TDD-ph.sch";
+
+  private static final ISchematronResource VIDA_TDD_090 = SchematronResourceSCH.fromClassPath (SCH_VIDA_TDD_090_PATH,
+                                                                                               _getCL ());
 
   static
   {

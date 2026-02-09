@@ -214,13 +214,13 @@ public final class PeppolViDATDD090BuilderTest
       final String sXML = new PeppolViDATDD090Marshaller ().setFormattedOutput (true).getAsString (aTDD);
       assertNotNull (sXML);
 
-      if (false)
+      if (true)
         LOGGER.info (sXML);
 
       // Schematron validation
       final SchematronOutputType aSVRL = aSCHRes.applySchematronValidationToSVRL (aRes);
       assertNotNull (aSVRL);
-      if (false)
+      if (true)
         LOGGER.info (new SVRLMarshaller ().setFormattedOutput (true).getAsString (aSVRL));
       assertEquals (new CommonsArrayList <> (), SVRLHelper.getAllFailedAssertions (aSVRL));
     }
