@@ -49,8 +49,11 @@ to build the solution.
 
 # News and noteworthy
 
+v0.1.3 - 2026-02-10
+* Updated to new Schematron from OpenPeppol
+
 v0.1.2 - 2026-02-09
-* Updated to new XSD + Schematron from OpenPeppol
+* Updated to new XSD from OpenPeppol
 
 v0.1.1 - 2026-01-30
 * Fixed comparison errors in `PeppolViDATDD090TaxSubtotalBuilder._isEveryRequiredFieldSet`
