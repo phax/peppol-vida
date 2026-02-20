@@ -34,13 +34,14 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
+import com.helger.base.uuid.UUID5Helper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.datetime.web.PDTWebDateHelper;
 import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
-import com.helger.peppol.vida.tdd.UUID5Helper;
+import com.helger.peppol.vida.tdd.CViDATDD;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentTypeCode;
 import com.helger.peppol.vida.tdd.v2026_02_08.DocumentLineType;
 import com.helger.peppol.vida.tdd.v2026_02_08.MonetaryTotalType;
@@ -287,7 +288,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   @NonNull
   public PeppolViDATDD090ReportedTransactionBuilder initFromCreditNote (@NonNull final CreditNoteType aCN)
   {
-    ValueEnforcer.notNull (aCN, "Invoice");
+    ValueEnforcer.notNull (aCN, "CreditNote");
 
     customizationID (aCN.getCustomizationIDValue ());
     profileID (aCN.getProfileIDValue ());
@@ -811,7 +812,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
   }
 
   @NonNull
-  public PeppolViDATDD090ReportedTransactionBuilder taxTotalDocumentCurrency (@Nullable final Consumer <PeppolViDATDD090TaxTotalBuilder> a)
+  public PeppolViDATDD090ReportedTransactionBuilder taxTotalDocumentCurrency (@NonNull final Consumer <PeppolViDATDD090TaxTotalBuilder> a)
   {
     if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
       throw new IllegalStateException ("The TaxTotal can only be built, after the DocumentCurrencyCode is set!");
@@ -1134,13 +1135,13 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     {
       // The UUID is calculated based on rule ID-BDID-01
       // TODO check if the concatenation is correct
-      final UUID aUUID = UUID5Helper.fromUTF8 (UUID5Helper.PEPPOL_VIDA_NAMESPACE,
+      final UUID aUUID = UUID5Helper.fromUTF8 (CViDATDD.PEPPOL_VIDA_NAMESPACE,
                                                StringHelper.getNotNull (m_sDocumentTypeCode, "") +
-                                                                                  StringHelper.getNotNull (m_sID, "") +
-                                                                                  StringHelper.getNotNull (PDTWebDateHelper.getAsStringXSD (m_aIssueDate),
-                                                                                                           "") +
-                                                                                  StringHelper.getNotNull (m_sSellerTaxID,
-                                                                                                           ""));
+                                                                               StringHelper.getNotNull (m_sID, "") +
+                                                                               StringHelper.getNotNull (PDTWebDateHelper.getAsStringXSD (m_aIssueDate),
+                                                                                                        "") +
+                                                                               StringHelper.getNotNull (m_sSellerTaxID,
+                                                                                                        ""));
 
       final ReportedDocumentType a = new ReportedDocumentType ();
       if (StringHelper.isNotEmpty (m_sCustomizationID))
