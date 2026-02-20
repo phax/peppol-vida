@@ -495,7 +495,7 @@ public class PeppolViDATDD090Builder implements IBuilder <TaxDataType>
           }
         }
 
-    // ViDA must have exactly one reported transaction
+    // ViDA must have exactly one reported transaction (according to the Schematron)
     if (m_aReportedTransaction == null)
     {
       aCondLog.error (sErrorPrefix + "ReportedTransaction is missing");
