@@ -49,6 +49,9 @@ to build the solution.
 
 # News and noteworthy
 
+v0.1.4 - work in progress
+* Fixed `peppol-vida-tdd` package name from `com.helger.peppol.vida.tddv090` to `com.helger.peppol.vida.tdd.v090`
+
 v0.1.3 - 2026-02-10
 * Updated to new Schematron from OpenPeppol
 
