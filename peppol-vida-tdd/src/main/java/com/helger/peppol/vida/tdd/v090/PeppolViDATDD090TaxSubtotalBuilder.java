@@ -200,7 +200,7 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 TaxSubtotal builder: ";
@@ -208,17 +208,17 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     if (m_aTaxableAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxableAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aTaxAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sTaxCategoryID))
     {
       aCondLog.error (sErrorPrefix + "TaxCategoryID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_sTaxCategoryIDScheme is optional
     // m_aPercentage is optional
@@ -227,10 +227,10 @@ public class PeppolViDATDD090TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     if (StringHelper.isEmpty (m_sTaxSchemeID))
     {
       aCondLog.error (sErrorPrefix + "TaxSchemeID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)

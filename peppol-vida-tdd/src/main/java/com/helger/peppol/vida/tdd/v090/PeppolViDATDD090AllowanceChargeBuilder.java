@@ -187,7 +187,7 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
     return taxCategory (aBuilder);
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 AllowanceCharge builder: ";
@@ -198,12 +198,12 @@ public class PeppolViDATDD090AllowanceChargeBuilder implements IBuilder <Allowan
     if (m_aAmount == null)
     {
       aCondLog.error (sErrorPrefix + "Amount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_aBaseAmount is optional
     // m_aTaxCategory is optional
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)

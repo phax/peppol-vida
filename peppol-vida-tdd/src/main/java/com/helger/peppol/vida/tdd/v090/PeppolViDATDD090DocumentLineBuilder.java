@@ -348,7 +348,7 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 DocumentLine builder: ";
@@ -356,23 +356,23 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     if (StringHelper.isEmpty (m_sID))
     {
       aCondLog.error (sErrorPrefix + "ID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_sNote is optional
     if (m_aQuantity == null)
     {
       aCondLog.error (sErrorPrefix + "Quantity is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sQuantityUnit))
     {
       aCondLog.error (sErrorPrefix + "QuantityUnit is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aLineExtensionAmount == null)
     {
       aCondLog.error (sErrorPrefix + "LineExtensionAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_aInvoicePeriodStart is optional
     // m_aInvoicePeriodEnd is optional
@@ -381,15 +381,15 @@ public class PeppolViDATDD090DocumentLineBuilder implements IBuilder <DocumentLi
     if (m_aItem == null)
     {
       aCondLog.error (sErrorPrefix + "Item is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aPriceAmount == null)
     {
       aCondLog.error (sErrorPrefix + "PriceAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)

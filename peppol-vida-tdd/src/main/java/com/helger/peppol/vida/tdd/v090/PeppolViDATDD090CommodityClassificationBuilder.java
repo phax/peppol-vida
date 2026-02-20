@@ -107,7 +107,7 @@ public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder 
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 CommodityClassification builder: ";
@@ -115,16 +115,16 @@ public class PeppolViDATDD090CommodityClassificationBuilder implements IBuilder 
     if (StringHelper.isEmpty (m_sItemClassification))
     {
       aCondLog.error (sErrorPrefix + "ItemClassification is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sItemClassificationListID))
     {
       aCondLog.error (sErrorPrefix + "ItemClassificationListID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_sItemClassificationListVersionID is optional
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)

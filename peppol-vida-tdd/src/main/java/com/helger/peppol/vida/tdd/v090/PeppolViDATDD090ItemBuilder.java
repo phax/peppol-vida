@@ -168,7 +168,7 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <ItemType>
     return classifiedTaxCategory (aBuilder);
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 Item builder: ";
@@ -177,16 +177,16 @@ public class PeppolViDATDD090ItemBuilder implements IBuilder <ItemType>
     if (StringHelper.isEmpty (m_sName))
     {
       aCondLog.error (sErrorPrefix + "Name is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_aCommodityClassifications may be empty
     if (m_aClassifiedTaxCategory == null)
     {
       aCondLog.error (sErrorPrefix + "ClassifiedTaxCategory is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)

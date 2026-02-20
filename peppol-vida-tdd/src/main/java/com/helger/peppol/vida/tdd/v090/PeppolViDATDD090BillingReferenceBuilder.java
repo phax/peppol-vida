@@ -115,7 +115,7 @@ public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <Billin
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 BillingReference builder: ";
@@ -123,12 +123,12 @@ public class PeppolViDATDD090BillingReferenceBuilder implements IBuilder <Billin
     if (StringHelper.isEmpty (m_sID))
     {
       aCondLog.error (sErrorPrefix + "ID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_sIDScheme is optional
     // m_aIssueDate is optional
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)

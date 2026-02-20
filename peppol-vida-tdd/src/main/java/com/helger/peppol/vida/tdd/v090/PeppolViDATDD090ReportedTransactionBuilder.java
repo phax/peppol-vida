@@ -992,7 +992,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     return addDocumentLine (aBuilder);
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     int nErrs = 0;
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
@@ -1004,35 +1004,35 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     if (StringHelper.isEmpty (m_sCustomizationID))
     {
       aCondLog.error (sErrorPrefix + "CustomizationID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sProfileID))
     {
       aCondLog.error (sErrorPrefix + "ProfileID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sID))
     {
       aCondLog.error (sErrorPrefix + "ID is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aIssueDate == null)
     {
       aCondLog.error (sErrorPrefix + "IssueDate is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // IssueTime is optional
     if (StringHelper.isEmpty (m_sDocumentTypeCode))
     {
       aCondLog.error (sErrorPrefix + "DocumentTypeCode is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // Note is optional
     // TaxPointDate is optional
     if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
     {
       aCondLog.error (sErrorPrefix + "DocumentCurrencyCode is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // InvoicePeriod is optional
 
@@ -1054,7 +1054,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     if (m_aTaxTotalDocumentCurrency == null)
     {
       aCondLog.error (sErrorPrefix + "TaxTotalDocumentCurrency is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aTaxTotalTaxCurrency != null)
     {
@@ -1062,7 +1062,7 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       {
         aCondLog.error (sErrorPrefix +
                         "If TaxTotalAmountTaxCurrency is provided, TaxCurrencyCode must also be provided");
-        aReportedDocsErrs.inc ();
+        aErrorCount.inc ();
       }
     }
     else
@@ -1071,23 +1071,23 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
       {
         aCondLog.error (sErrorPrefix +
                         "If TaxCurrencyCode is provided, TaxTotalAmountTaxCurrency must also be provided");
-        aReportedDocsErrs.inc ();
+        aErrorCount.inc ();
       }
     }
     if (m_aLineExtensionAmount == null)
     {
       aCondLog.error (sErrorPrefix + "LineExtensionAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aTaxExclusiveTotalAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aTaxInclusiveTotalAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxInclusiveTotalAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_aAllowanceTotalAmount is optional
     // m_aChargeTotalAmount is optional
@@ -1096,18 +1096,18 @@ public class PeppolViDATDD090ReportedTransactionBuilder implements IBuilder <Rep
     if (m_aPayableAmount == null)
     {
       aCondLog.error (sErrorPrefix + "PayableAmount is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     if (m_aDocumentLines.isEmpty ())
     {
       aCondLog.error (sErrorPrefix + "At least one DocumentLine is needed");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
 
     // Failed TDDs don't need this
     // TODO missing in 0.9.0
     // if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD)
-    nErrs += aReportedDocsErrs.intValue ();
+    nErrs += aErrorCount.intValue ();
 
     return nErrs == 0;
   }

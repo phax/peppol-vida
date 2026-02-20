@@ -244,7 +244,7 @@ public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 PaymentMeans builder: ";
@@ -252,7 +252,7 @@ public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMea
     if (StringHelper.isEmpty (m_sPaymentMeansCode))
     {
       aCondLog.error (sErrorPrefix + "PaymentMeansCode is missing");
-      aReportedDocsErrs.inc ();
+      aErrorCount.inc ();
     }
     // m_sPaymentMeansCodeName is optional
     // m_sPaymentID is optional
@@ -264,7 +264,7 @@ public class PeppolViDATDD090PaymentMeansBuilder implements IBuilder <PaymentMea
     // m_sPayeeFinancialInstitutionBranchID is optional
     // m_sPayeeFinancialInstitutionBranchIDScheme is optional
 
-    return aReportedDocsErrs.intValue () == 0;
+    return aErrorCount.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
