@@ -28,7 +28,7 @@ This project consists of the following submodules (in alphabetic order)
 
 # Maven usage
 
-Add the following to your `pom.xml` to use this artifact:, replacing `x.y.z` with the real version number.
+Add the following to your `pom.xml` to use this artifact, replacing `x.y.z` with the real version number.
 
 ```xml
 <dependency>
@@ -36,6 +36,27 @@ Add the following to your `pom.xml` to use this artifact:, replacing `x.y.z` wit
   <artifactId>peppol-vida-tdd</artifactId>
   <version>x.y.z</version>
 </dependency>
+```
+
+# Usage example
+
+```java
+// Build a TDD document from scratch
+TaxDataType tdd = new PeppolViDATDD090Builder ()
+    .documentTypeCode (EViDATDDDocumentTypeCode.SUBMIT)
+    .documentScope (EViDATDDDocumentScope.DOMESTIC)
+    .reporterRole (EViDATDDReporterRole.SENDER)
+    .reportingParty (participantID)
+    .receivingParty (receiverID)
+    .taxAuthorityID ("XX")
+    .reportedTransaction (rt -> rt.initFromInvoice (invoice))
+    .build ();
+
+// Serialize to XML
+String xml = new PeppolViDATDD090Marshaller ().setFormattedOutput (true).getAsString (tdd);
+
+// Validate with Schematron
+ISchematronResource schematron = PeppolViDATDDValidator.getSchematronViDA_TDD_090 ();
 ```
 
 # Building
