@@ -7,6 +7,8 @@ Special support for Peppol ViDA (pilot right now).
 
 **This project does NOT (yet) contain an official data model of the European DRR as required by ViDA!**
 
+peppol-vida is part of my Peppol solution stack. See https://github.com/phax/peppol for other components and libraries in that area.
+
 This contains a set of Java libraries.
 They are licensed under the Apache 2.0 license.
 The minimum requirement is Java 17.
