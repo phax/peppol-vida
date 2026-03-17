@@ -1,7 +1,9 @@
 # peppol-vida
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.helger.peppol/peppol-vida-parent-pom)](https://img.shields.io/maven-central/v/com.helger.peppol/peppol-vida-parent-pom)
-[![javadoc](https://javadoc.io/badge2/com.helger.peppol/peppol-vida-tdd/javadoc.svg)](https://javadoc.io/doc/com.helger.peppol/peppol-vida-tdd)
+<!-- ph-badge-start -->
+[![Sonatype Central](https://maven-badges.sml.io/sonatype-central/com.helger.peppol/peppol-vida-parent-pom/badge.svg)](https://maven-badges.sml.io/sonatype-central/com.helger.peppol/peppol-vida-parent-pom/)
+[![javadoc](https://javadoc.io/badge2/com.helger.peppol/peppol-vida-testfiles/javadoc.svg)](https://javadoc.io/doc/com.helger.peppol/peppol-vida-testfiles)
+<!-- ph-badge-end -->
 
 Special support for Peppol ViDA (pilot right now).
 
