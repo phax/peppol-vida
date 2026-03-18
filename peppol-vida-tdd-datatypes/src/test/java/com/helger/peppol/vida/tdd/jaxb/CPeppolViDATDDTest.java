@@ -30,6 +30,6 @@ public final class CPeppolViDATDDTest
   @Test
   public void testBasic ()
   {
-    assertTrue (CPeppolViDATDD.TDD_XSD_0_9_0.exists ());
+    assertTrue (CPeppolViDATDD.TDD_XSD_1_0_0.exists ());
   }
 }

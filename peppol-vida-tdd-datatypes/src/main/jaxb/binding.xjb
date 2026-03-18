@@ -28,9 +28,9 @@
     <xjc:javaType name="com.helger.datetime.xml.XMLOffsetTime"     xmlType="xsd:time"     adapter="com.helger.jaxb.adapter.AdapterXMLOffsetTime" />
   </globalBindings>
   
-  <bindings schemaLocation="../resources/external/schemas/2026-02-08/ViDA-tdd-0.9.0.xsd">
+  <bindings schemaLocation="../resources/external/schemas/2026-03-18/Peppol-ViDA-TDD.xsd">
     <schemaBindings>
-      <package name="com.helger.peppol.vida.tdd.v2026_02_08" />
+      <package name="com.helger.peppol.vida.tdd.v2026_03_18" />
     </schemaBindings>
   </bindings>
 </bindings>

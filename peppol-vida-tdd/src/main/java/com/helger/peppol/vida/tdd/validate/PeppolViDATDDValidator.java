@@ -16,13 +16,30 @@
  */
 package com.helger.peppol.vida.tdd.validate;
 
+import java.util.Locale;
+
 import org.jspecify.annotations.NonNull;
 
 import com.helger.annotation.concurrent.Immutable;
-import com.helger.base.exception.InitializationException;
+import com.helger.base.version.Version;
+import com.helger.diver.api.coord.DVRCoordinate;
+import com.helger.diver.api.version.DVRVersion;
+import com.helger.io.resource.ClassPathResource;
+import com.helger.io.resource.IReadableResource;
 import com.helger.peppol.vida.tdd.jaxb.CPeppolViDATDD;
-import com.helger.schematron.ISchematronResource;
-import com.helger.schematron.sch.SchematronResourceSCH;
+import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD100Marshaller;
+import com.helger.phive.api.execute.ValidationExecutionManager;
+import com.helger.phive.api.executorset.IValidationExecutorSet;
+import com.helger.phive.api.executorset.ValidationExecutorSet;
+import com.helger.phive.api.executorset.ValidationExecutorSetRegistry;
+import com.helger.phive.api.executorset.status.ValidationExecutorSetStatus;
+import com.helger.phive.api.result.ValidationResultList;
+import com.helger.phive.api.validity.IValidityDeterminator;
+import com.helger.phive.xml.schematron.ValidationExecutorSchematron;
+import com.helger.phive.xml.source.IValidationSourceXML;
+import com.helger.phive.xml.source.ValidationSourceXML;
+import com.helger.phive.xml.xsd.ValidationExecutorXSD;
+import com.helger.ubl21.UBL21NamespaceContext;
 
 /**
  * This class contains the Schematron resources for validating Peppol ViDA pilot TDD documents.
@@ -38,27 +55,52 @@ public final class PeppolViDATDDValidator
     return CPeppolViDATDD.class.getClassLoader ();
   }
 
-  public static final String SCH_VIDA_TDD_090_PATH = "external/schematron/2026-02-08/Peppol-ViDA-TDD-ph.sch";
+  public static final DVRCoordinate VID_TDD_VIDA_100 = new DVRCoordinate ("org.peppol.vida",
+                                                                          "tdd",
+                                                                          DVRVersion.of (new Version (1, 0, 0)));
+  private static final String PREFIX_100 = "external/schematron/2026-03-18/";
+  public static final IReadableResource XSLT_CEN_TDD_100 = new ClassPathResource (PREFIX_100 + "CEN-EN16931-UBL.xslt",
+                                                                                  _getCL ());
+  public static final IReadableResource XSLT_BILLING_TDD_100 = new ClassPathResource (PREFIX_100 +
+                                                                                      "PEPPOL-EN16931-UBL.xslt",
+                                                                                      _getCL ());
+  public static final IReadableResource XSLT_VIDA_TDD_100 = new ClassPathResource (PREFIX_100 + "Peppol-ViDA-TDD.xslt",
+                                                                                   _getCL ());
 
-  private static final ISchematronResource VIDA_TDD_090 = SchematronResourceSCH.fromClassPath (SCH_VIDA_TDD_090_PATH,
-                                                                                               _getCL ());
+  public static final ValidationExecutorSetRegistry <IValidationSourceXML> VES_REGISTRY = new ValidationExecutorSetRegistry <> ();
 
   static
   {
-    for (final ISchematronResource aSch : new ISchematronResource [] { VIDA_TDD_090 })
-      if (!aSch.isValidSchematron ())
-        throw new InitializationException ("Schematron in " + aSch.getResource ().getPath () + " is invalid");
+    VES_REGISTRY.registerValidationExecutorSet (ValidationExecutorSet.create (VID_TDD_VIDA_100,
+                                                                              "Peppol ViDA Pilot TDD 1.0.0",
+                                                                              ValidationExecutorSetStatus.createDeprecatedNow (false),
+                                                                              ValidationExecutorXSD.create (PeppolViDATDD100Marshaller.getAllXSDs ()),
+                                                                              ValidationExecutorSchematron.createXSLT (XSLT_CEN_TDD_100,
+                                                                                                                       UBL21NamespaceContext.getInstance ()),
+                                                                              ValidationExecutorSchematron.createXSLT (XSLT_BILLING_TDD_100,
+                                                                                                                       UBL21NamespaceContext.getInstance ()),
+                                                                              ValidationExecutorSchematron.createXSLT (XSLT_VIDA_TDD_100,
+                                                                                                                       UBL21NamespaceContext.getInstance ())));
   }
 
   private PeppolViDATDDValidator ()
   {}
 
   /**
-   * @return Schematron ViDA pilot TDD v0.9.0
+   * Validate against Schematron ViDA Pilot TDD v1.0.0 rules
+   *
+   * @param aXmlRes
+   *        The XML resource to use. May not be <code>null</code>.
+   * @return The Validation result list. Never <code>null</code>.
    */
   @NonNull
-  public static ISchematronResource getSchematronViDA_TDD_090 ()
+  public static ValidationResultList validateViDA_TDD_100 (@NonNull final IReadableResource aXmlRes)
   {
-    return VIDA_TDD_090;
+    final IValidationExecutorSet <IValidationSourceXML> aExecutors = VES_REGISTRY.getOfID (VID_TDD_VIDA_100);
+    final IValidationSourceXML aSource = ValidationSourceXML.create (aXmlRes);
+    return ValidationExecutionManager.executeValidation (IValidityDeterminator.createDefault (),
+                                                         aExecutors,
+                                                         aSource,
+                                                         Locale.US);
   }
 }

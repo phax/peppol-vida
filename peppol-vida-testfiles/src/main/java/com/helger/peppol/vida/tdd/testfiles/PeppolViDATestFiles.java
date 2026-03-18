@@ -78,29 +78,40 @@ public final class PeppolViDATestFiles
   @NonNull
   @Nonempty
   @ReturnsMutableCopy
-  public static ICommonsList <@NonNull ClassPathResource> getAllGoodTDD090Files ()
+  public static ICommonsList <@NonNull ClassPathResource> getAllGoodTDD100Files ()
   {
-    return _getAll ("tdd/0.9.0/good/",
+    return _getAll ("tdd/1.0.0/good/",
                     "Allowance-example.xml",
                     "base-creditnote-correction.xml",
                     "base-example.xml",
                     "base-negative-inv-correction.xml",
+                    "SB-Allowance-example.xml",
+                    "SB-base-creditnote-correction.xml",
+                    "SB-base-example.xml",
+                    "SB-base-negative-inv-correction.xml",
+                    "SB-vat-category-E.xml",
+                    "SB-vat-category-O.xml",
+                    "SB-Vat-category-S.xml",
+                    "SB-vat-category-Z.xml",
+                    // "SB-WithoutTaxes-example.xml",
                     "vat-category-E.xml",
                     "vat-category-O.xml",
                     "Vat-category-S.xml",
-                    "vat-category-Z.xml");
+                    "vat-category-Z.xml"
+    // ,"WithoutTaxes-example.xml"
+    );
   }
 
   @NonNull
   @ReturnsMutableCopy
-  public static ICommonsList <@NonNull ClassPathResource> getAllSchematronBadTDD090Files ()
+  public static ICommonsList <@NonNull ClassPathResource> getAllSchematronBadTDD100Files ()
   {
     return new CommonsArrayList <> ();
   }
 
   @NonNull
   @ReturnsMutableCopy
-  public static ICommonsList <@NonNull ClassPathResource> getAllPayloadBadTDD090Files ()
+  public static ICommonsList <@NonNull ClassPathResource> getAllPayloadBadTDD100Files ()
   {
     return new CommonsArrayList <> ();
   }

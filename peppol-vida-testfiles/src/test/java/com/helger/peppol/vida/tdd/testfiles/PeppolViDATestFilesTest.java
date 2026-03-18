@@ -34,8 +34,8 @@ public final class PeppolViDATestFilesTest
   {
     assertTrue (PeppolViDATestFiles.getAllGoodBillingInvoiceFiles ().stream ().allMatch (ClassPathResource::exists));
     assertTrue (PeppolViDATestFiles.getAllGoodBillingCreditNoteFiles ().stream ().allMatch (ClassPathResource::exists));
-    assertTrue (PeppolViDATestFiles.getAllGoodTDD090Files ().stream ().allMatch (ClassPathResource::exists));
-    assertTrue (PeppolViDATestFiles.getAllSchematronBadTDD090Files ().stream ().allMatch (ClassPathResource::exists));
-    assertTrue (PeppolViDATestFiles.getAllPayloadBadTDD090Files ().stream ().allMatch (ClassPathResource::exists));
+    assertTrue (PeppolViDATestFiles.getAllGoodTDD100Files ().stream ().allMatch (ClassPathResource::exists));
+    assertTrue (PeppolViDATestFiles.getAllSchematronBadTDD100Files ().stream ().allMatch (ClassPathResource::exists));
+    assertTrue (PeppolViDATestFiles.getAllPayloadBadTDD100Files ().stream ().allMatch (ClassPathResource::exists));
   }
 }

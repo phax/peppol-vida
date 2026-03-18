@@ -36,19 +36,19 @@ public final class CPeppolViDATDD
     return CPeppolViDATDD.class.getClassLoader ();
   }
 
-  private static final String PATH_0_9_0 = "/external/schemas/2026-02-08/";
+  private static final String PATH_1_0_0 = "/external/schemas/2026-03-18/";
   /**
-   * XML Schema resources for Peppol ViDA pilot TDD XSD 0.9.0
+   * XML Schema resources for Peppol ViDA pilot TDD XSD 1.0.0
    */
-  public static final String TDD_XSD_0_9_0_PATH = PATH_0_9_0 + "ViDA-tdd-0.9.0.xsd";
+  public static final String TDD_XSD_1_0_0_PATH = PATH_1_0_0 + "Peppol-ViDA-TDD.xsd";
 
   /**
-   * XML Schema resources for Peppol ViDA pilot TDD XSD 0.9.0
+   * XML Schema resources for Peppol ViDA pilot TDD XSD 1.0.0
    */
-  public static final ClassPathResource TDD_XSD_0_9_0 = new ClassPathResource (TDD_XSD_0_9_0_PATH, _getCL ());
+  public static final ClassPathResource TDD_XSD_1_0_0 = new ClassPathResource (TDD_XSD_1_0_0_PATH, _getCL ());
 
-  /** Namespace URI for Peppol ViDA pilot TDD XSD 0.9.0 */
-  public static final String TDD_XSD_0_9_0_NS = "urn:peppol:schema:vida-taxdata:1.0";
+  /** Namespace URI for Peppol ViDA pilot TDD XSD 1.0.0 */
+  public static final String TDD_XSD_1_0_0_NS = "urn:peppol:schema:vida-taxdata:1.0";
 
   @PresentForCodeCoverage
   private static final CPeppolViDATDD INSTANCE = new CPeppolViDATDD ();
