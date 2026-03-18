@@ -74,9 +74,19 @@ to build the solution.
 
 # News and noteworthy
 
-v0.1.4 - work in progress
-* Requires at least ph-commons 12.1.3
-* Fixed `peppol-vida-tdd` package name from `com.helger.peppol.vida.tddv090` to `com.helger.peppol.vida.tdd.v090`
+v0.2.0 - 2026-03-18
+* Requires at least ph-commons 12.1.5
+* Requires at least peppol-commons 12.3.12
+* Updated to TDD v1.0.0 specification (XSD and Schematron from 2026-03-18)
+* Renamed all v090 classes to v100 (e.g. `PeppolViDATDD090Builder` -> `PeppolViDATDD100Builder`)
+* Renamed `EViDATDDDocumentTypeCode` to `EViDATDDTaxDataTypeCode`
+* Added `long` overloads for all `BigDecimal` setter methods in v100 builders
+* Added `PeppolViDATDD100TaxSubtotalBuilder` with `TaxCategoryType`-based API (replacing individual field setters)
+* Added `priceBaseQuantity` to `PeppolViDATDD100DocumentLineBuilder`
+* Added TDD v1.0.0 test files
+* Added pre-compiled XSLT Schematrons for CEN-EN16931-UBL, PEPPOL-EN16931-UBL, and Peppol-ViDA-TDD
+* Removed `UUID5Helper` class (moved to ph-commons `UUID5Helper`)
+* Fixed `peppol-vida-tdd` package name from `com.helger.peppol.vida.tddv090` to `com.helger.peppol.vida.tdd.v100`
 
 v0.1.3 - 2026-02-10
 * Updated to new Schematron from OpenPeppol
