@@ -81,8 +81,11 @@ public final class PeppolViDATDD100BuilderTest
                                                                                                                                  20))
                                                                                          .documentTypeCode ("380")
                                                                                          .documentCurrencyCode ("AED")
+                                                                                         .sellerEndpointIDSchemeID ("0088")
+                                                                                         .sellerEndpointID ("1234567890123")
                                                                                          .sellerTaxID ("DE11223344")
                                                                                          .buyerTaxID ("SK987654321")
+                                                                                         .buyerName ("Buyer Corp")
                                                                                          .taxTotalDocumentCurrency (x -> x.taxAmount (120)
                                                                                                                           .addTaxSubtotal (y -> y.taxableAmount (1200)
                                                                                                                                                  .taxAmount (120)
@@ -144,10 +147,13 @@ public final class PeppolViDATDD100BuilderTest
                                                                                          .documentTypeCode ("380")
                                                                                          .documentCurrencyCode ("EUR")
                                                                                          .taxCurrencyCode ("AED")
+                                                                                         .sellerEndpointIDSchemeID ("0088")
+                                                                                         .sellerEndpointID ("1234567890123")
                                                                                          .sellerTaxID ("DE11223344")
                                                                                          .sellerCountryCode ("DE")
                                                                                          .buyerTaxID ("ATU87654321")
                                                                                          .buyerCountryCode ("AT")
+                                                                                         .buyerName ("Buyer Corp")
                                                                                          .taxRepresentativeID ("CH000111222")
                                                                                          .taxRepresentativeCountryCode ("CH")
                                                                                          .taxTotalDocumentCurrency (x -> x.taxAmount (120)
@@ -218,7 +224,7 @@ public final class PeppolViDATDD100BuilderTest
       final String sXML = m.getAsString (aTDD);
       assertNotNull (sXML);
 
-      if (true)
+      if (false)
         LOGGER.info (sXML);
 
       // Schematron validation

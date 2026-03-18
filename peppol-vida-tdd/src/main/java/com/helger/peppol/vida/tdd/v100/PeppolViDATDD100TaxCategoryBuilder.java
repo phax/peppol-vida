@@ -115,6 +115,12 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100TaxCategoryBuilder taxSchemeID_VAT ()
+  {
+    return taxSchemeID ("VAT");
+  }
+
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
