@@ -38,7 +38,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "Item".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "Item".
  *
  * @author Philip Helger
  */
@@ -171,7 +171,7 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 Item builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 Item builder: ";
 
     // m_sDescription is optional
     if (StringHelper.isEmpty (m_sName))

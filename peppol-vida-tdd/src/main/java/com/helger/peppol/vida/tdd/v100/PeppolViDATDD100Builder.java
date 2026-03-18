@@ -57,7 +57,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Profile
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UUIDType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 document.
+ * Builder for Peppol ViDA pilot TDD 1.0.0 document.
  *
  * @author Philip Helger
  */
@@ -342,7 +342,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     int nErrs = 0;
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final IIdentifierFactory aIF = PeppolIdentifierFactory.INSTANCE;
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 builder: ";
 
     if (StringHelper.isEmpty (m_sCustomizationID))
     {

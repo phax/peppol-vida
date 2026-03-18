@@ -20,16 +20,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Month;
 import java.time.ZoneOffset;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.base.numeric.BigHelper;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.diagnostics.error.IError;
 import com.helger.io.resource.ClassPathResource;
@@ -74,29 +73,35 @@ public final class PeppolViDATDD100BuilderTest
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            .taxAuthorityID ("XX")
                                                            // Provide all fields manually
-                                                           .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@ae-1")
-                                                                                         .profileID ("urn:peppol:bis:billing")
+                                                           .reportedTransaction (rt -> rt.customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
+                                                                                         .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
                                                                                          .id ("invoice-1")
                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
                                                                                                                                  Month.SEPTEMBER,
                                                                                                                                  20))
                                                                                          .documentTypeCode ("380")
                                                                                          .documentCurrencyCode ("AED")
-                                                                                         .sellerTaxID ("123456789")
-                                                                                         .buyerTaxID ("987654321")
-                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (BigHelper.toBigDecimal (240)))
-                                                                                         .lineExtensionAmount (BigHelper.toBigDecimal (1200))
-                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal (1200))
-                                                                                         .taxInclusiveTotalAmount (BigHelper.toBigDecimal (1440))
-                                                                                         .payableAmount (BigHelper.toBigDecimal (1440))
+                                                                                         .sellerTaxID ("DE11223344")
+                                                                                         .buyerTaxID ("SK987654321")
+                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (120)
+                                                                                                                          .addTaxSubtotal (y -> y.taxableAmount (1200)
+                                                                                                                                                 .taxAmount (120)
+                                                                                                                                                 .taxCategory (z -> z.id ("S")
+                                                                                                                                                                     .percentage (10)
+                                                                                                                                                                     .taxSchemeID ("VAT"))))
+                                                                                         .lineExtensionAmount (1200)
+                                                                                         .taxExclusiveTotalAmount (1200)
+                                                                                         .taxInclusiveTotalAmount (1320)
+                                                                                         .payableAmount (1320)
                                                                                          .addDocumentLine (x -> x.id ("1")
-                                                                                                                 .quantity (BigDecimal.TEN)
+                                                                                                                 .quantity (10)
                                                                                                                  .quantityUnit ("STK")
-                                                                                                                 .lineExtensionAmount (BigHelper.toBigDecimal (1200))
+                                                                                                                 .lineExtensionAmount (1200)
                                                                                                                  .item (y -> y.name ("What")
-                                                                                                                              .classifiedTaxCategory (z -> z.id ("X")
+                                                                                                                              .classifiedTaxCategory (z -> z.id ("S")
+                                                                                                                                                            .percentage (10)
                                                                                                                                                             .taxSchemeID ("VAT")))
-                                                                                                                 .priceAmount (BigHelper.toBigDecimal (120))))
+                                                                                                                 .priceAmount (120)))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -126,8 +131,8 @@ public final class PeppolViDATDD100BuilderTest
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            .taxAuthorityID ("XX")
                                                            // Provide all fields manually
-                                                           .reportedTransaction (rt -> rt.customizationID ("urn:peppol:pint:billing-1@eu-1")
-                                                                                         .profileID ("urn:peppol:bis:billing")
+                                                           .reportedTransaction (rt -> rt.customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
+                                                                                         .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
                                                                                          .id ("invoice-1")
                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
                                                                                                                                  Month.SEPTEMBER,
@@ -137,31 +142,37 @@ public final class PeppolViDATDD100BuilderTest
                                                                                                                                   0,
                                                                                                                                   ZoneOffset.UTC))
                                                                                          .documentTypeCode ("380")
-                                                                                         .documentCurrencyCode ("AED")
-                                                                                         .taxCurrencyCode ("EUR")
-                                                                                         .sellerTaxID ("123456789")
+                                                                                         .documentCurrencyCode ("EUR")
+                                                                                         .taxCurrencyCode ("AED")
+                                                                                         .sellerTaxID ("DE11223344")
                                                                                          .sellerCountryCode ("DE")
-                                                                                         .buyerTaxID ("987654321")
+                                                                                         .buyerTaxID ("ATU87654321")
                                                                                          .buyerCountryCode ("AT")
-                                                                                         .taxRepresentativeID ("any123")
+                                                                                         .taxRepresentativeID ("CH000111222")
                                                                                          .taxRepresentativeCountryCode ("CH")
-                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (BigHelper.toBigDecimal (200)))
-                                                                                         .taxTotalTaxCurrency (x -> x.taxAmount (BigHelper.toBigDecimal (500)))
-                                                                                         .lineExtensionAmount (BigHelper.toBigDecimal (1200))
-                                                                                         .taxExclusiveTotalAmount (BigHelper.toBigDecimal (1200))
-                                                                                         .taxInclusiveTotalAmount (BigHelper.toBigDecimal (1700))
-                                                                                         .allowanceTotalAmount (BigDecimal.ZERO)
-                                                                                         .chargeTotalAmount (BigDecimal.ZERO)
-                                                                                         .payableRoundingAmount (BigDecimal.ZERO)
-                                                                                         .payableAmount (BigHelper.toBigDecimal (1700))
+                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (120)
+                                                                                                                          .addTaxSubtotal (y -> y.taxableAmount (1200)
+                                                                                                                                                 .taxAmount (120)
+                                                                                                                                                 .taxCategory (z -> z.id ("S")
+                                                                                                                                                                     .percentage (10)
+                                                                                                                                                                     .taxSchemeID ("VAT"))))
+                                                                                         .taxTotalTaxCurrency (x -> x.taxAmount (500))
+                                                                                         .lineExtensionAmount (1200)
+                                                                                         .taxExclusiveTotalAmount (1200)
+                                                                                         .taxInclusiveTotalAmount (1320)
+                                                                                         .allowanceTotalAmount (0)
+                                                                                         .chargeTotalAmount (0)
+                                                                                         .payableRoundingAmount (0)
+                                                                                         .payableAmount (1320)
                                                                                          .addDocumentLine (x -> x.id ("1")
-                                                                                                                 .quantity (BigDecimal.TEN)
+                                                                                                                 .quantity (10)
                                                                                                                  .quantityUnit ("STK")
-                                                                                                                 .lineExtensionAmount (BigHelper.toBigDecimal (1200))
+                                                                                                                 .lineExtensionAmount (1200)
                                                                                                                  .item (y -> y.name ("What")
-                                                                                                                              .classifiedTaxCategory (z -> z.id ("X")
+                                                                                                                              .classifiedTaxCategory (z -> z.id ("S")
+                                                                                                                                                            .percentage (10)
                                                                                                                                                             .taxSchemeID ("VAT")))
-                                                                                                                 .priceAmount (BigHelper.toBigDecimal (120))))
+                                                                                                                 .priceAmount (120)))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -207,7 +218,7 @@ public final class PeppolViDATDD100BuilderTest
       final String sXML = m.getAsString (aTDD);
       assertNotNull (sXML);
 
-      if (false)
+      if (true)
         LOGGER.info (sXML);
 
       // Schematron validation
@@ -297,7 +308,7 @@ public final class PeppolViDATDD100BuilderTest
   }
 
   @Test
-  // @Ignore ("Not supported by v0.9.0")
+  @Ignore ("Not supported by v1.0.0")
   public void testCreateFailedInvoiceWithoutReportedDocument () throws Exception
   {
     final IIdentifierFactory aIF = PeppolIdentifierFactory.INSTANCE;

@@ -33,7 +33,7 @@ Three Maven modules with strict build order (each depends on the previous):
 
 1. **`peppol-vida-testfiles`** — Bundles test XML files as classpath resources. `PeppolViDATestFiles` provides programmatic access to valid UBL invoices, credit notes, and TDD documents.
 
-2. **`peppol-vida-tdd-datatypes`** — JAXB-generated data model from `external/schemas/2026-02-08/ViDA-tdd-0.9.0.xsd`. Contains `CPeppolViDATDD` (schema constants/resources) and `PeppolViDATDD090Marshaller` (XML serialization).
+2. **`peppol-vida-tdd-datatypes`** — JAXB-generated data model from `external/schemas/2026-02-08/ViDA-tdd-1.0.0.xsd`. Contains `CPeppolViDATDD` (schema constants/resources) and `PeppolViDATDD090Marshaller` (XML serialization).
 
 3. **`peppol-vida-tdd`** — Main business logic. Key entry points:
    - `PeppolViDATDD090Builder` — builds TDD documents from scratch using fluent API
@@ -76,6 +76,6 @@ The classes in `peppol-vida-tdd-datatypes/src/main/java/.../jaxb/` are **auto-ge
 Test XML resources live in `peppol-vida-testfiles/src/main/resources/external/`:
 - `invoice/good/` — Valid UBL 2.1 invoices
 - `creditnote/good/` — Valid UBL 2.1 credit notes
-- `tdd/0.9.0/good/` — Valid TDD v0.9.0 documents
+- `tdd/1.0.0/good/` — Valid TDD v1.0.0 documents
 
 `PeppolViDATestFiles` exposes these as `IReadableResource` collections.

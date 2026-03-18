@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 
@@ -33,7 +34,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "TaxCategory".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "TaxCategory".
  *
  * @author Philip Helger
  */
@@ -95,6 +96,12 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100TaxCategoryBuilder percentage (final long n)
+  {
+    return percentage (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public String taxSchemeID ()
   {
@@ -111,7 +118,7 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 TaxCategory builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 TaxCategory builder: ";
 
     if (StringHelper.isEmpty (m_sID))
     {

@@ -36,7 +36,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Payment
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.PaymentMeansCodeType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "PaymentMeans".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "PaymentMeans".
  *
  * @author Philip Helger
  */
@@ -54,7 +54,7 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
   private String m_sPayeeFinancialAccountIDScheme;
   private String m_sPayeeFinancialInstitutionBranchID;
   private String m_sPayeeFinancialInstitutionBranchIDScheme;
-  // PaymentMandate has no type in 0.9.0
+  // PaymentMandate has no type in 1.0.0
 
   public PeppolViDATDD100PaymentMeansBuilder ()
   {}
@@ -247,7 +247,7 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 PaymentMeans builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 PaymentMeans builder: ";
 
     if (StringHelper.isEmpty (m_sPaymentMeansCode))
     {

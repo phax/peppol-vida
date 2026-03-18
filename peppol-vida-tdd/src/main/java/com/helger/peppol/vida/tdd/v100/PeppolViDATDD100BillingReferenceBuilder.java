@@ -35,7 +35,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Doc
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "BillingReference".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "BillingReference".
  *
  * @author Philip Helger
  */
@@ -118,7 +118,7 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 BillingReference builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 BillingReference builder: ";
 
     if (StringHelper.isEmpty (m_sID))
     {

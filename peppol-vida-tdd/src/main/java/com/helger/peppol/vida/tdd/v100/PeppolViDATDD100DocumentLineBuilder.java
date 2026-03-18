@@ -29,6 +29,7 @@ import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
@@ -50,7 +51,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.LineExt
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "DocumentLine".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "DocumentLine".
  *
  * @author Philip Helger
  */
@@ -70,6 +71,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
   private final ICommonsList <AllowanceChargeType> m_aAllowanceCharges = new CommonsArrayList <> ();
   private ItemType m_aItem;
   private BigDecimal m_aPriceAmount;
+  private BigDecimal m_aPriceBaseQuantity;
 
   public PeppolViDATDD100DocumentLineBuilder (@Nullable final String sDocumentCurrencyCode)
   {
@@ -107,7 +109,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
       invoicePeriodStart (aIP.getStartDateValueLocal ());
       invoicePeriodEnd (aIP.getEndDateValueLocal ());
       if (aIP.hasDescriptionCodeEntries ())
-        invoicePeriodDescriptionCode (aIP.getDescriptionAtIndex (0).getValue ());
+        invoicePeriodDescriptionCode (aIP.getDescriptionCodeAtIndex (0).getValue ());
     }
 
     for (final var aAC : aLine.getAllowanceCharge ())
@@ -117,7 +119,10 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
       item (x -> x.initFromUBL (aLine.getItem ()));
 
     if (aLine.getPrice () != null)
+    {
       priceAmount (aLine.getPrice ().getPriceAmountValue ());
+      priceBaseQuantity (aLine.getPrice ().getBaseQuantityValue ());
+    }
 
     return this;
   }
@@ -153,7 +158,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
       invoicePeriodStart (aIP.getStartDateValueLocal ());
       invoicePeriodEnd (aIP.getEndDateValueLocal ());
       if (aIP.hasDescriptionCodeEntries ())
-        invoicePeriodDescriptionCode (aIP.getDescriptionAtIndex (0).getValue ());
+        invoicePeriodDescriptionCode (aIP.getDescriptionCodeAtIndex (0).getValue ());
     }
 
     for (final var aAC : aLine.getAllowanceCharge ())
@@ -163,7 +168,10 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
       item (x -> x.initFromUBL (aLine.getItem ()));
 
     if (aLine.getPrice () != null)
+    {
       priceAmount (aLine.getPrice ().getPriceAmountValue ());
+      priceBaseQuantity (aLine.getPrice ().getBaseQuantityValue ());
+    }
 
     return this;
   }
@@ -207,6 +215,12 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100DocumentLineBuilder quantity (final long n)
+  {
+    return quantity (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public String quantityUnit ()
   {
@@ -231,6 +245,12 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
   {
     m_aLineExtensionAmount = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD100DocumentLineBuilder lineExtensionAmount (final long n)
+  {
+    return lineExtensionAmount (BigHelper.toBigDecimal (n));
   }
 
   @Nullable
@@ -348,10 +368,35 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100DocumentLineBuilder priceAmount (final long n)
+  {
+    return priceAmount (BigHelper.toBigDecimal (n));
+  }
+
+  @Nullable
+  public BigDecimal priceBaseQuantity ()
+  {
+    return m_aPriceBaseQuantity;
+  }
+
+  @NonNull
+  public PeppolViDATDD100DocumentLineBuilder priceBaseQuantity (final long n)
+  {
+    return priceBaseQuantity (BigHelper.toBigDecimal (n));
+  }
+
+  @NonNull
+  public PeppolViDATDD100DocumentLineBuilder priceBaseQuantity (@Nullable final BigDecimal a)
+  {
+    m_aPriceBaseQuantity = a;
+    return this;
+  }
+
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 DocumentLine builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 DocumentLine builder: ";
 
     if (StringHelper.isEmpty (m_sID))
     {
@@ -388,6 +433,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
       aCondLog.error (sErrorPrefix + "PriceAmount is missing");
       aErrorCount.inc ();
     }
+    // m_aPriceBaseQuantity is optional
 
     return aErrorCount.intValue () == 0;
   }
@@ -443,6 +489,8 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     {
       final PriceType a = new PriceType ();
       a.setPriceAmount (m_aPriceAmount).setCurrencyID (m_sDocumentCurrencyCode);
+      if (m_aPriceBaseQuantity != null)
+        a.setBaseQuantity (m_aPriceBaseQuantity);
       ret.setPrice (a);
     }
 

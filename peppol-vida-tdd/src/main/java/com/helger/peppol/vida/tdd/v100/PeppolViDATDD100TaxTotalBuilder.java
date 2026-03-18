@@ -28,6 +28,7 @@ import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
@@ -36,7 +37,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "TaxTotal".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "TaxTotal".
  *
  * @author Philip Helger
  */
@@ -86,6 +87,12 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
   }
 
   @NonNull
+  public PeppolViDATDD100TaxTotalBuilder taxAmount (final long n)
+  {
+    return taxAmount (BigHelper.toBigDecimal (n));
+  }
+
+  @NonNull
   @ReturnsMutableObject
   public ICommonsList <TaxSubtotalType> subtotals ()
   {
@@ -114,7 +121,7 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
   }
 
   @NonNull
-  public PeppolViDATDD100TaxTotalBuilder addTaxSubtotal (@NonNull final Consumer <PeppolViDATDD100TaxSubtotalBuilder> aBuilderConsumer)
+  public PeppolViDATDD100TaxTotalBuilder addTaxSubtotal (@NonNull final Consumer <? super PeppolViDATDD100TaxSubtotalBuilder> aBuilderConsumer)
   {
     final PeppolViDATDD100TaxSubtotalBuilder aBuilder = new PeppolViDATDD100TaxSubtotalBuilder (m_sCurrencyCode);
     aBuilderConsumer.accept (aBuilder);
@@ -124,7 +131,7 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 TaxTotal builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 TaxTotal builder: ";
 
     if (m_aTaxAmount == null)
     {

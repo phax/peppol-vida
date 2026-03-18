@@ -31,7 +31,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Com
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemClassificationCodeType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "CommodityClassification".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "CommodityClassification".
  *
  * @author Philip Helger
  */
@@ -110,7 +110,7 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 CommodityClassification builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 CommodityClassification builder: ";
 
     if (StringHelper.isEmpty (m_sItemClassification))
     {

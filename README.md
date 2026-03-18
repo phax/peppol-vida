@@ -89,7 +89,7 @@ v0.1.1 - 2026-01-30
 * Removed `PeppolViDATDD090ReportedTransactionBuilder.uuid` and building a UUID v5 manually instead
 
 v0.1.0 - 2026-01-25
-* Initial version targeting Peppol ViDA pilot TDD specs v0.9.0
+* Initial version targeting Peppol ViDA pilot TDD specs v1.0.0
 
 ---
 

@@ -17,6 +17,7 @@
 package com.helger.peppol.vida.tdd.v100;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -26,17 +27,14 @@ import org.slf4j.LoggerFactory;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
-import com.helger.base.string.StringHelper;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "TaxSubtotal".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "TaxSubtotal".
  *
  * @author Philip Helger
  */
@@ -47,12 +45,7 @@ public class PeppolViDATDD100TaxSubtotalBuilder implements IBuilder <TaxSubtotal
   private final String m_sCurrencyCode;
   private BigDecimal m_aTaxableAmount;
   private BigDecimal m_aTaxAmount;
-  private String m_sTaxCategoryID;
-  private String m_sTaxCategoryIDScheme;
-  private BigDecimal m_aPercentage;
-  private String m_sTaxExemptionReasonCode;
-  private String m_sTaxExemptionReason;
-  private String m_sTaxSchemeID;
+  private TaxCategoryType m_aTaxCategory;
 
   public PeppolViDATDD100TaxSubtotalBuilder (@NonNull final String sCurrencyCode)
   {
@@ -73,26 +66,7 @@ public class PeppolViDATDD100TaxSubtotalBuilder implements IBuilder <TaxSubtotal
 
     taxableAmount (aObj.getTaxableAmountValue ());
     taxAmount (aObj.getTaxAmountValue ());
-
-    final TaxCategoryType aTaxCategory = aObj.getTaxCategory ();
-    if (aTaxCategory != null)
-    {
-      final IDType aID = aTaxCategory.getID ();
-      if (aID != null)
-      {
-        taxCategoryID (aID.getValue ());
-        taxCategoryIDScheme (aID.getSchemeID ());
-      }
-      percentage (aTaxCategory.getPercentValue ());
-      taxExemptionReasonCode (aTaxCategory.getTaxExemptionReasonCodeValue ());
-      if (aTaxCategory.hasTaxExemptionReasonEntries ())
-        taxExemptionReason (aTaxCategory.getTaxExemptionReasonAtIndex (0).getValue ());
-
-      final TaxSchemeType aTS = aTaxCategory.getTaxScheme ();
-      if (aTS != null)
-        taxSchemeID (aTS.getIDValue ());
-    }
-
+    taxCategory (x -> x.initFromUBL (aObj.getTaxCategory ()));
     return this;
   }
 
@@ -109,6 +83,12 @@ public class PeppolViDATDD100TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100TaxSubtotalBuilder taxableAmount (final long n)
+  {
+    return taxableAmount (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal taxAmount ()
   {
@@ -122,115 +102,61 @@ public class PeppolViDATDD100TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     return this;
   }
 
-  @Nullable
-  public String taxCategoryID ()
-  {
-    return m_sTaxCategoryID;
-  }
-
   @NonNull
-  public PeppolViDATDD100TaxSubtotalBuilder taxCategoryID (@Nullable final String s)
+  public PeppolViDATDD100TaxSubtotalBuilder taxAmount (final long n)
   {
-    m_sTaxCategoryID = s;
-    return this;
+    return taxAmount (BigHelper.toBigDecimal (n));
   }
 
   @Nullable
-  public String taxCategoryIDScheme ()
+  public TaxCategoryType taxCategory ()
   {
-    return m_sTaxCategoryIDScheme;
+    return m_aTaxCategory;
   }
 
   @NonNull
-  public PeppolViDATDD100TaxSubtotalBuilder taxCategoryIDScheme (@Nullable final String s)
+  public PeppolViDATDD100TaxSubtotalBuilder taxCategory (@Nullable final TaxCategoryType a)
   {
-    m_sTaxCategoryIDScheme = s;
+    m_aTaxCategory = a;
     return this;
-  }
-
-  @Nullable
-  public BigDecimal percentage ()
-  {
-    return m_aPercentage;
   }
 
   @NonNull
-  public PeppolViDATDD100TaxSubtotalBuilder percentage (@Nullable final BigDecimal a)
+  public PeppolViDATDD100TaxSubtotalBuilder taxCategory (@Nullable final PeppolViDATDD100TaxCategoryBuilder a)
   {
-    m_aPercentage = a;
-    return this;
-  }
-
-  @Nullable
-  public String taxExemptionReasonCode ()
-  {
-    return m_sTaxExemptionReasonCode;
+    return taxCategory (a == null ? null : a.build ());
   }
 
   @NonNull
-  public PeppolViDATDD100TaxSubtotalBuilder taxExemptionReasonCode (@Nullable final String s)
+  public PeppolViDATDD100TaxSubtotalBuilder taxCategory (@NonNull final Consumer <? super PeppolViDATDD100TaxCategoryBuilder> aBuilderConsumer)
   {
-    m_sTaxExemptionReasonCode = s;
-    return this;
+    final PeppolViDATDD100TaxCategoryBuilder aBuilder = new PeppolViDATDD100TaxCategoryBuilder ();
+    aBuilderConsumer.accept (aBuilder);
+    return taxCategory (aBuilder);
   }
 
-  @Nullable
-  public String taxExemptionReason ()
-  {
-    return m_sTaxExemptionReason;
-  }
-
-  @NonNull
-  public PeppolViDATDD100TaxSubtotalBuilder taxExemptionReason (@Nullable final String s)
-  {
-    m_sTaxExemptionReason = s;
-    return this;
-  }
-
-  @Nullable
-  public String taxSchemeID ()
-  {
-    return m_sTaxSchemeID;
-  }
-
-  @NonNull
-  public PeppolViDATDD100TaxSubtotalBuilder taxSchemeID (@Nullable final String s)
-  {
-    m_sTaxSchemeID = s;
-    return this;
-  }
-
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
+  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aReportedDocsErrs)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 TaxSubtotal builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 TaxSubtotal builder: ";
 
     if (m_aTaxableAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxableAmount is missing");
-      aErrorCount.inc ();
+      aReportedDocsErrs.inc ();
     }
     if (m_aTaxAmount == null)
     {
       aCondLog.error (sErrorPrefix + "TaxAmount is missing");
-      aErrorCount.inc ();
+      aReportedDocsErrs.inc ();
     }
-    if (StringHelper.isEmpty (m_sTaxCategoryID))
+    if (m_aTaxCategory == null)
     {
-      aCondLog.error (sErrorPrefix + "TaxCategoryID is missing");
-      aErrorCount.inc ();
-    }
-    // m_sTaxCategoryIDScheme is optional
-    // m_aPercentage is optional
-    // m_sTaxExemptionReasonCode is optional
-    // m_sTaxExemptionReason is optional
-    if (StringHelper.isEmpty (m_sTaxSchemeID))
-    {
-      aCondLog.error (sErrorPrefix + "TaxSchemeID is missing");
-      aErrorCount.inc ();
+      aCondLog.error (sErrorPrefix + "TaxCategory is missing");
+      aReportedDocsErrs.inc ();
     }
 
-    return aErrorCount.intValue () == 0;
+    return aReportedDocsErrs.intValue () == 0;
   }
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
@@ -252,22 +178,7 @@ public class PeppolViDATDD100TaxSubtotalBuilder implements IBuilder <TaxSubtotal
     final TaxSubtotalType ret = new TaxSubtotalType ();
     ret.setTaxableAmount (m_aTaxableAmount).setCurrencyID (m_sCurrencyCode);
     ret.setTaxAmount (m_aTaxAmount).setCurrencyID (m_sCurrencyCode);
-    {
-      final var aTC = new TaxCategoryType ();
-      aTC.setID (m_sTaxCategoryID).setSchemeID (m_sTaxCategoryIDScheme);
-      if (m_aPercentage != null)
-        aTC.setPercent (m_aPercentage);
-      if (StringHelper.isNotEmpty (m_sTaxExemptionReasonCode))
-        aTC.setTaxExemptionReasonCode (m_sTaxExemptionReasonCode);
-      if (StringHelper.isNotEmpty (m_sTaxExemptionReason))
-        aTC.addTaxExemptionReason (new TaxExemptionReasonType (m_sTaxExemptionReason));
-      {
-        final var aTS = new TaxSchemeType ();
-        aTS.setID (m_sTaxSchemeID);
-        aTC.setTaxScheme (aTS);
-      }
-      ret.setTaxCategory (aTC);
-    }
+    ret.setTaxCategory (m_aTaxCategory);
     return ret;
   }
 }

@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 
@@ -35,7 +36,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceChargeReasonType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "AllowanceCharge".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "AllowanceCharge".
  *
  * @author Philip Helger
  */
@@ -134,6 +135,12 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100AllowanceChargeBuilder multiplicationFactor (final long n)
+  {
+    return multiplicationFactor (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal amount ()
   {
@@ -147,6 +154,12 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100AllowanceChargeBuilder amount (final long n)
+  {
+    return amount (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal baseAmount ()
   {
@@ -158,6 +171,12 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
   {
     m_aBaseAmount = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD100AllowanceChargeBuilder baseAmount (final long n)
+  {
+    return baseAmount (BigHelper.toBigDecimal (n));
   }
 
   @Nullable
@@ -190,7 +209,7 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
   private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
   {
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 AllowanceCharge builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 AllowanceCharge builder: ";
 
     // m_sReasonCode is optional
     // m_sReason is optional

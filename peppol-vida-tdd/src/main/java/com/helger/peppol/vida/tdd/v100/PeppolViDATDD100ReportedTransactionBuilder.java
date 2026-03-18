@@ -32,6 +32,7 @@ import com.helger.annotation.style.ReturnsMutableObject;
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
+import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 import com.helger.base.uuid.UUID5Helper;
@@ -84,7 +85,7 @@ import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
 import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
- * Builder for Peppol ViDA pilot TDD 0.9.0 sub element called "ReportedTransaction".
+ * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "ReportedTransaction".
  *
  * @author Philip Helger
  */
@@ -864,6 +865,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder lineExtensionAmount (final long n)
+  {
+    return lineExtensionAmount (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal taxExclusiveTotalAmount ()
   {
@@ -875,6 +882,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   {
     m_aTaxExclusiveTotalAmount = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder taxExclusiveTotalAmount (final long n)
+  {
+    return taxExclusiveTotalAmount (BigHelper.toBigDecimal (n));
   }
 
   @Nullable
@@ -890,6 +903,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder taxInclusiveTotalAmount (final long n)
+  {
+    return taxInclusiveTotalAmount (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal allowanceTotalAmount ()
   {
@@ -901,6 +920,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   {
     m_aAllowanceTotalAmount = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder allowanceTotalAmount (final long n)
+  {
+    return allowanceTotalAmount (BigHelper.toBigDecimal (n));
   }
 
   @Nullable
@@ -916,6 +941,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder chargeTotalAmount (final long n)
+  {
+    return chargeTotalAmount (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal prepaidAmount ()
   {
@@ -927,6 +958,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   {
     m_aPrepaidAmount = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder prepaidAmount (final long n)
+  {
+    return prepaidAmount (BigHelper.toBigDecimal (n));
   }
 
   @Nullable
@@ -942,6 +979,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder payableRoundingAmount (final long n)
+  {
+    return payableRoundingAmount (BigHelper.toBigDecimal (n));
+  }
+
   @Nullable
   public BigDecimal payableAmount ()
   {
@@ -953,6 +996,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   {
     m_aPayableAmount = a;
     return this;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder payableAmount (final long n)
+  {
+    return payableAmount (BigHelper.toBigDecimal (n));
   }
 
   @NonNull
@@ -997,7 +1046,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   {
     int nErrs = 0;
     final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 0.9.0 ReportedTransaction builder: ";
+    final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 ReportedTransaction builder: ";
 
     // TransportHeaderID is optional
 
@@ -1106,7 +1155,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     }
 
     // Failed TDDs don't need this
-    // TODO missing in 0.9.0
+    // TODO missing in 1.0.0
     // if (m_eDocumentTypeCode != EViDATDDDocumentTypeCode.DISREGARD)
     nErrs += aErrorCount.intValue ();
 
