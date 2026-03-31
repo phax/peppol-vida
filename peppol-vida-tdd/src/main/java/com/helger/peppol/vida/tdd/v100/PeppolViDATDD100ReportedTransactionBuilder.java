@@ -55,9 +55,9 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.All
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CountryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CustomerPartyType;
-import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyLegalEntityType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DeliveryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyLegalEntityType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PaymentMeansType;
@@ -68,9 +68,9 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.AllowanceTotalAmountType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ChargeTotalAmountType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.CustomizationIDType;
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.EndpointIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DescriptionCodeType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.DocumentCurrencyCodeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.EndpointIDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueDateType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IssueTimeType;
@@ -110,8 +110,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   private LocalDate m_aInvoicePeriodEnd;
   private String m_sInvoicePeriodDescriptionCode;
   private final ICommonsList <BillingReferenceType> m_aBillingReferences = new CommonsArrayList <> ();
+  // BT-34
   private String m_sSellerEndpointIDSchemeID;
   private String m_sSellerEndpointID;
+  // BT-29
+  private String m_sSellerIDSchemeID;
+  private String m_sSellerID;
   private String m_sSellerTaxID;
   private String m_sSellerCountryCode;
   private String m_sBuyerTaxID;
@@ -194,6 +198,16 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
         {
           sellerEndpointIDSchemeID (aEndpoint.getSchemeID ());
           sellerEndpointID (aEndpoint.getValue ());
+        }
+
+        if (aParty.hasPartyIdentificationEntries ())
+        {
+          final IDType aPID = aParty.getPartyIdentificationAtIndex (0).getID ();
+          if (aPID != null)
+          {
+            sellerIDSchemeID (aPID.getSchemeID ());
+            sellerID (aPID.getValue ());
+          }
         }
 
         if (aParty.hasPartyTaxSchemeEntries ())
@@ -355,6 +369,16 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
         {
           sellerEndpointIDSchemeID (aEndpoint.getSchemeID ());
           sellerEndpointID (aEndpoint.getValue ());
+        }
+
+        if (aParty.hasPartyIdentificationEntries ())
+        {
+          final IDType aPID = aParty.getPartyIdentificationAtIndex (0).getID ();
+          if (aPID != null)
+          {
+            sellerIDSchemeID (aPID.getSchemeID ());
+            sellerID (aPID.getValue ());
+          }
         }
 
         if (aParty.hasPartyTaxSchemeEntries ())
@@ -694,6 +718,32 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   public PeppolViDATDD100ReportedTransactionBuilder sellerEndpointID (@Nullable final String s)
   {
     m_sSellerEndpointID = s;
+    return this;
+  }
+
+  @Nullable
+  public String sellerIDSchemeID ()
+  {
+    return m_sSellerIDSchemeID;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder sellerIDSchemeID (@Nullable final String s)
+  {
+    m_sSellerIDSchemeID = s;
+    return this;
+  }
+
+  @Nullable
+  public String sellerID ()
+  {
+    return m_sSellerID;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder sellerID (@Nullable final String s)
+  {
+    m_sSellerID = s;
     return this;
   }
 
@@ -1177,6 +1227,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
       aCondLog.error (sErrorPrefix + "Seller EndpointID is missing");
       aErrorCount.inc ();
     }
+    // m_sSellerIDSchemeID is optional
+    if (StringHelper.isEmpty (m_sSellerID))
+    {
+      aCondLog.error (sErrorPrefix + "Seller ID is missing");
+      aErrorCount.inc ();
+    }
     // m_sSellerTaxID is optional (needed in all cases except if TaxCategory is "O")
     // m_sSellerCountryCode is optional
 
@@ -1282,10 +1338,9 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
                                                      StringImplode.imploder ()
                                                                   .filterNonEmpty ()
                                                                   .separator (' ')
-                                                                  .source (StringHelper.getNotNull (m_sSellerEndpointIDSchemeID,
+                                                                  .source (StringHelper.getNotNull (m_sSellerIDSchemeID,
                                                                                                     ""),
-                                                                           StringHelper.getNotNull (m_sSellerEndpointID,
-                                                                                                    ""),
+                                                                           StringHelper.getNotNull (m_sSellerID, ""),
                                                                            StringHelper.getNotNull (m_sDocumentTypeCode,
                                                                                                     ""),
                                                                            StringHelper.getNotNull (m_sID, ""),
