@@ -74,6 +74,11 @@ to build the solution.
 
 # News and noteworthy
 
+v0.2.1 - 2026-03-31
+* Fixed `ReportedDocumentID` UUID5 generation to use Seller ID (BT-29) instead of Seller Endpoint ID (BT-34) as input ([#1](https://github.com/phax/peppol-vida/issues/1))
+* Added `sellerID` and `sellerIDSchemeID` to `PeppolViDATDD100ReportedTransactionBuilder`
+* Seller ID (BT-29) is now a required field in `PeppolViDATDD100ReportedTransactionBuilder`
+
 v0.2.0 - 2026-03-18
 * Requires at least ph-commons 12.1.5
 * Requires at least peppol-commons 12.3.12
