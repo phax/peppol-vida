@@ -30,15 +30,13 @@ import com.helger.peppol.vida.tdd.jaxb.CPeppolViDATDD;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD100Marshaller;
 import com.helger.phive.api.execute.ValidationExecutionManager;
 import com.helger.phive.api.executorset.IValidationExecutorSet;
-import com.helger.phive.api.executorset.ValidationExecutorSet;
 import com.helger.phive.api.executorset.ValidationExecutorSetRegistry;
-import com.helger.phive.api.executorset.status.ValidationExecutorSetStatus;
 import com.helger.phive.api.result.ValidationResultList;
 import com.helger.phive.api.validity.IValidityDeterminator;
+import com.helger.phive.xml.executorset.VesXmlBuilder;
 import com.helger.phive.xml.schematron.ValidationExecutorSchematron;
 import com.helger.phive.xml.source.IValidationSourceXML;
 import com.helger.phive.xml.source.ValidationSourceXML;
-import com.helger.phive.xml.xsd.ValidationExecutorXSD;
 import com.helger.ubl21.UBL21NamespaceContext;
 
 /**
@@ -71,16 +69,18 @@ public final class PeppolViDATDDValidator
 
   static
   {
-    VES_REGISTRY.registerValidationExecutorSet (ValidationExecutorSet.create (VID_TDD_VIDA_100,
-                                                                              "Peppol ViDA Pilot TDD 1.0.0",
-                                                                              ValidationExecutorSetStatus.createDeprecatedNow (false),
-                                                                              ValidationExecutorXSD.create (PeppolViDATDD100Marshaller.getAllXSDs ()),
-                                                                              ValidationExecutorSchematron.createXSLT (XSLT_CEN_TDD_100,
-                                                                                                                       UBL21NamespaceContext.getInstance ()),
-                                                                              ValidationExecutorSchematron.createXSLT (XSLT_BILLING_TDD_100,
-                                                                                                                       UBL21NamespaceContext.getInstance ()),
-                                                                              ValidationExecutorSchematron.createXSLT (XSLT_VIDA_TDD_100,
-                                                                                                                       UBL21NamespaceContext.getInstance ())));
+    VesXmlBuilder.builder ()
+                 .vesID (VID_TDD_VIDA_100)
+                 .displayName ("Peppol ViDA Pilot TDD 1.0.0")
+                 .notDeprecated ()
+                 .addXSD (PeppolViDATDD100Marshaller.getAllXSDs ())
+                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_CEN_TDD_100,
+                                                                          UBL21NamespaceContext.getInstance ()))
+                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_BILLING_TDD_100,
+                                                                          UBL21NamespaceContext.getInstance ()))
+                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_VIDA_TDD_100,
+                                                                          UBL21NamespaceContext.getInstance ()))
+                 .registerInto (VES_REGISTRY);
   }
 
   private PeppolViDATDDValidator ()
