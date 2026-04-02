@@ -53,8 +53,9 @@ public final class PeppolViDATDDValidator
     return CPeppolViDATDD.class.getClassLoader ();
   }
 
-  public static final DVRCoordinate VID_TDD_VIDA_100 = new DVRCoordinate ("org.peppol.vida",
-                                                                          "tdd",
+  // Aligned with phive-rules
+  public static final DVRCoordinate VID_TDD_VIDA_100 = new DVRCoordinate ("org.peppol.taxdata",
+                                                                          "vida",
                                                                           DVRVersion.of (new Version (1, 0, 0)));
   private static final String PREFIX_100 = "external/schematron/2026-03-18/";
   public static final IReadableResource XSLT_CEN_TDD_100 = new ClassPathResource (PREFIX_100 + "CEN-EN16931-UBL.xslt",
