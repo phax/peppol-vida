@@ -37,7 +37,7 @@ import com.helger.phive.xml.executorset.VesXmlBuilder;
 import com.helger.phive.xml.schematron.ValidationExecutorSchematron;
 import com.helger.phive.xml.source.IValidationSourceXML;
 import com.helger.phive.xml.source.ValidationSourceXML;
-import com.helger.ubl21.UBL21NamespaceContext;
+import com.helger.xml.namespace.MapBasedNamespaceContext;
 
 /**
  * This class contains the Schematron resources for validating Peppol ViDA pilot TDD documents.
@@ -69,17 +69,15 @@ public final class PeppolViDATDDValidator
 
   static
   {
+    final MapBasedNamespaceContext aNsCtx = PeppolViDATDD100Marshaller.createNamespaceContext ();
     VesXmlBuilder.builder ()
                  .vesID (VID_TDD_VIDA_100)
                  .displayName ("Peppol ViDA Pilot TDD 1.0.0")
                  .notDeprecated ()
                  .addXSD (PeppolViDATDD100Marshaller.getAllXSDs ())
-                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_CEN_TDD_100,
-                                                                          UBL21NamespaceContext.getInstance ()))
-                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_BILLING_TDD_100,
-                                                                          UBL21NamespaceContext.getInstance ()))
-                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_VIDA_TDD_100,
-                                                                          UBL21NamespaceContext.getInstance ()))
+                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_CEN_TDD_100, aNsCtx))
+                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_BILLING_TDD_100, aNsCtx))
+                 .addSchematron (ValidationExecutorSchematron.createXSLT (XSLT_VIDA_TDD_100, aNsCtx))
                  .registerInto (VES_REGISTRY);
   }
 
