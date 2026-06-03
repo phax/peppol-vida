@@ -3,6 +3,8 @@
 <!-- ph-badge-start -->
 [![Sonatype Central](https://maven-badges.sml.io/sonatype-central/com.helger.peppol/peppol-vida-parent-pom/badge.svg)](https://maven-badges.sml.io/sonatype-central/com.helger.peppol/peppol-vida-parent-pom/)
 [![javadoc](https://javadoc.io/badge2/com.helger.peppol/peppol-vida-testfiles/javadoc.svg)](https://javadoc.io/doc/com.helger.peppol/peppol-vida-testfiles)
+
+> If this project saved you some time or made your day a little easier, a star would mean a lot — it helps others find it too.
 <!-- ph-badge-end -->
 
 Special support for Peppol ViDA (pilot right now).
