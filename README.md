@@ -78,6 +78,7 @@ to build the solution.
 
 v0.2.2 - work in progress
 * Requires at least phive 12.0.2
+* Updated to TDD v1.0.0 specification (XSD and Schematron from 2026-06-02)
 
 v0.2.1 - 2026-03-31
 * Fixed `ReportedDocumentID` UUID5 generation to use Seller ID (BT-29) instead of Seller Endpoint ID (BT-34) as input ([#1](https://github.com/phax/peppol-vida/issues/1))

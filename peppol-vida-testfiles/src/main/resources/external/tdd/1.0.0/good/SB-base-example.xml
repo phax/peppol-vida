@@ -12,8 +12,8 @@
 	<pxs:DocumentScope>D</pxs:DocumentScope>
 	<pxs:ReporterRole>C2</pxs:ReporterRole>
 	<pxs:TaxAuthority>
-		<cbc:ID>GB-TAX</cbc:ID>
-		<cbc:Name>British Tax Authority</cbc:Name>
+		<cbc:ID>DE-TAX</cbc:ID>
+		<cbc:Name>German Tax Authority</cbc:Name>
 	</pxs:TaxAuthority>
 	<pxs:ReportingParty>
 		<cbc:EndpointID schemeID="0088">9482348239847239874</cbc:EndpointID>
@@ -39,11 +39,11 @@
 				<cac:Party>
 					<cac:PostalAddress>
 						<cac:Country>
-							<cbc:IdentificationCode>GB</cbc:IdentificationCode>
+							<cbc:IdentificationCode>DE</cbc:IdentificationCode>
 						</cac:Country>
 					</cac:PostalAddress>
 					<cac:PartyTaxScheme>
-						<cbc:CompanyID>GB123456789</cbc:CompanyID>
+						<cbc:CompanyID>DE811569869</cbc:CompanyID>
 						<cac:TaxScheme>
 							<cbc:ID>VAT</cbc:ID>
 						</cac:TaxScheme>
@@ -69,9 +69,9 @@
 				<cbc:PaymentMeansCode name="Credit transfer">30</cbc:PaymentMeansCode>
 				<cbc:PaymentID>INV-2025-0046</cbc:PaymentID>
 				<cac:PayeeFinancialAccount>
-					<cbc:ID>GB29NWBK60161331926819</cbc:ID>
+					<cbc:ID>DE89370400440532013000</cbc:ID>
 					<cac:FinancialInstitutionBranch>
-						<cbc:ID>NWBKGB2L</cbc:ID>
+						<cbc:ID>DEUTDEFF</cbc:ID>
 					</cac:FinancialInstitutionBranch>
 				</cac:PayeeFinancialAccount>
 			</cac:PaymentMeans>

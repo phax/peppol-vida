@@ -12,8 +12,8 @@
 	<pxs:DocumentScope>D</pxs:DocumentScope>
 	<pxs:ReporterRole>C2</pxs:ReporterRole>
 	<pxs:TaxAuthority>
-		<cbc:ID>GB-TAX</cbc:ID>
-		<cbc:Name>British Tax Authority</cbc:Name>
+		<cbc:ID>FR-TAX</cbc:ID>
+		<cbc:Name>French Tax Authority</cbc:Name>
 	</pxs:TaxAuthority>
 	<pxs:ReportingParty>
 		<cbc:EndpointID schemeID="0088">9482348239847239874</cbc:EndpointID>
@@ -45,11 +45,11 @@
 				<cac:Party>
 					<cac:PostalAddress>
 						<cac:Country>
-							<cbc:IdentificationCode>GB</cbc:IdentificationCode>
+							<cbc:IdentificationCode>FR</cbc:IdentificationCode>
 						</cac:Country>
 					</cac:PostalAddress>
 					<cac:PartyTaxScheme>
-						<cbc:CompanyID>GB123456789</cbc:CompanyID>
+						<cbc:CompanyID>FR40303265045</cbc:CompanyID>
 						<cac:TaxScheme>
 							<cbc:ID>VAT</cbc:ID>
 						</cac:TaxScheme>
@@ -75,9 +75,9 @@
 				<cbc:PaymentMeansCode name="Credit transfer">30</cbc:PaymentMeansCode>
 				<cbc:PaymentID>CN-2025-0003</cbc:PaymentID>
 				<cac:PayeeFinancialAccount>
-					<cbc:ID>GB29NWBK60161331926819</cbc:ID>
+					<cbc:ID>FR1420041010050500013M02606</cbc:ID>
 					<cac:FinancialInstitutionBranch>
-						<cbc:ID>NWBKGB2L</cbc:ID>
+						<cbc:ID>BNPAFRPP</cbc:ID>
 					</cac:FinancialInstitutionBranch>
 				</cac:PayeeFinancialAccount>
 			</cac:PaymentMeans>
