@@ -76,7 +76,7 @@ to build the solution.
 
 # News and noteworthy
 
-v0.2.2 - work in progress
+v0.9.0 - 2026-06-06
 * Requires at least phive 12.0.2
 * Updated to TDD v1.0.0 specification (XSD and Schematron from 2026-06-02)
 
