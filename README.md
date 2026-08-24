@@ -76,6 +76,9 @@ to build the solution.
 
 # News and noteworthy
 
+v0.10.1 - 2026-08-24
+* Included TaxExemptionReason and TaxExemptionReasonCode. See [#2](https://github.com/phax/peppol-vida/pull/2) - thx @vrbyjimmy
+
 v0.10.0 - 2026-07-19
 * Updated to ph-schematron v10.x
 
