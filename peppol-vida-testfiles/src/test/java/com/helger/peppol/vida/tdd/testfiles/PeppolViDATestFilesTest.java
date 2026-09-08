@@ -37,5 +37,8 @@ public final class PeppolViDATestFilesTest
     assertTrue (PeppolViDATestFiles.getAllGoodTDD100Files ().stream ().allMatch (ClassPathResource::exists));
     assertTrue (PeppolViDATestFiles.getAllSchematronBadTDD100Files ().stream ().allMatch (ClassPathResource::exists));
     assertTrue (PeppolViDATestFiles.getAllPayloadBadTDD100Files ().stream ().allMatch (ClassPathResource::exists));
+    assertTrue (PeppolViDATestFiles.getAllPilotTestData ()
+                                   .stream ()
+                                   .allMatch (x -> x.getSourceRes ().exists () && x.getSampleTDDRes ().exists ()));
   }
 }

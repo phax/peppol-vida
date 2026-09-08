@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+	<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+	<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+	<cbc:ID>NW-HP-001 - AT-DK</cbc:ID>
+	<cbc:IssueDate>2026-02-10</cbc:IssueDate>
+	<cbc:DueDate>2026-03-12</cbc:DueDate>
+	<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+	<cbc:Note>FICTITIOUS INVOICE - DO NOT PAY - DO NOT USE IN TAX RETURNS!
+This is a generic sample invoice to cover a "regular" invoicing use case in ViDA.
+As such, the seller and buyer are located in two different EU member states.</cbc:Note>
+	<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+	<cbc:BuyerReference>your buyer reference</cbc:BuyerReference>
+	<cac:OrderReference>
+		<cbc:ID>PO-54321</cbc:ID>
+		<cbc:SalesOrderID>Order #456789</cbc:SalesOrderID>
+	</cac:OrderReference>
+	<cac:ContractDocumentReference>
+		<cbc:ID>Contract ABC</cbc:ID>
+	</cac:ContractDocumentReference>
+	<cac:ProjectReference>
+		<cbc:ID>Project #12345</cbc:ID>
+	</cac:ProjectReference>
+	<cac:AccountingSupplierParty>
+		<cac:Party>
+			<cbc:EndpointID schemeID="9913">001109-vidapilot.ATU99887766</cbc:EndpointID>
+			<cac:PartyIdentification>
+				<cbc:ID>9876-2222222</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>AT-Verkauf</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Beispielgasse 1</cbc:StreetName>
+				<cbc:CityName>Wien</cbc:CityName>
+				<cbc:PostalZone>1010</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>AT</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>ATU99887766</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:RegistrationName>AT-Verkauf GmbH</cbc:RegistrationName>
+				<cbc:CompanyID>FN 123456 w</cbc:CompanyID>
+			</cac:PartyLegalEntity>
+			<cac:Contact>
+				<cbc:Name>Werner Mustermeier</cbc:Name>
+				<cbc:Telephone>+43 1 555 67 89</cbc:Telephone>
+				<cbc:ElectronicMail>werner.mustermeier@at-verkauf.at</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingSupplierParty>
+	<cac:AccountingCustomerParty>
+		<cac:Party>
+			<cbc:EndpointID schemeID="9913">001110-vidapilot.DK12345674</cbc:EndpointID>
+			<cac:PartyName>
+				<cbc:Name>Køber DK</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Strøget 47</cbc:StreetName>
+				<cbc:CityName>København</cbc:CityName>
+				<cbc:PostalZone>1100</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>DK</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>DK12345674</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:RegistrationName>Køber Danmark ApS</cbc:RegistrationName>
+			</cac:PartyLegalEntity>
+			<cac:Contact>
+				<cbc:Name>Anders Nielsen</cbc:Name>
+				<cbc:Telephone>+45 33 123456</cbc:Telephone>
+				<cbc:ElectronicMail>a.nielsen@koeber-danmark.dk</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingCustomerParty>
+	<cac:Delivery>
+		<cbc:ActualDeliveryDate>2026-01-31</cbc:ActualDeliveryDate>
+		<cac:DeliveryLocation>
+			<cac:Address>
+				<cbc:StreetName>Strøget 47</cbc:StreetName>
+				<cbc:CityName>København</cbc:CityName>
+				<cbc:PostalZone>1100</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>DK</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:Address>
+		</cac:DeliveryLocation>
+		<cac:DeliveryParty>
+			<cac:PartyName>
+				<cbc:Name>Køber Danmark ApS (Delivery to buyer main address - country BT-80 must be specified for ICS)</cbc:Name>
+			</cac:PartyName>
+		</cac:DeliveryParty>
+	</cac:Delivery>
+	<cac:PaymentMeans>
+		<cbc:PaymentMeansCode name="SEPA credit transfer">58</cbc:PaymentMeansCode>
+		<cac:PayeeFinancialAccount>
+			<cbc:ID>AT55 2040 4000 4523 5017</cbc:ID>
+			<cbc:Name>AT-Verkauf GmbH</cbc:Name>
+			<cac:FinancialInstitutionBranch>
+				<cbc:ID>SBGSAT2SXXX</cbc:ID>
+			</cac:FinancialInstitutionBranch>
+		</cac:PayeeFinancialAccount>
+	</cac:PaymentMeans>
+	<cac:PaymentTerms>
+		<cbc:Note>Please remit your payment of 915,00 € before 12.03.2026.</cbc:Note>
+	</cac:PaymentTerms>
+	<cac:TaxTotal>
+		<cbc:TaxAmount currencyID="EUR">0</cbc:TaxAmount>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="EUR">915</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="EUR">0</cbc:TaxAmount>
+			<cac:TaxCategory>
+				<cbc:ID>K</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cbc:TaxExemptionReasonCode>VATEX-EU-IC</cbc:TaxExemptionReasonCode>
+				<cbc:TaxExemptionReason>VAT exempt intra-community supply (Article 138 Directive 2006/112/EC)</cbc:TaxExemptionReason>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+	</cac:TaxTotal>
+	<cac:LegalMonetaryTotal>
+		<cbc:LineExtensionAmount currencyID="EUR">915</cbc:LineExtensionAmount>
+		<cbc:TaxExclusiveAmount currencyID="EUR">915</cbc:TaxExclusiveAmount>
+		<cbc:TaxInclusiveAmount currencyID="EUR">915</cbc:TaxInclusiveAmount>
+		<cbc:PayableAmount currencyID="EUR">915</cbc:PayableAmount>
+	</cac:LegalMonetaryTotal>
+	<cac:InvoiceLine>
+		<cbc:ID>1</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="H87">3</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="EUR">306</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Description>This Great Good is invoiced with a 0% VAT rate and "K" tax code to indicate use of the ICS tax exemption</cbc:Description>
+			<cbc:Name>Great Good (exempt of VAT for IC supply-Code K)</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Buyer SKU not known</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>GG-100124</cbc:ID>
+			</cac:SellersItemIdentification>
+			<cac:ClassifiedTaxCategory>
+				<cbc:ID>K</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="EUR">102</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>2</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="H87">7</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="EUR">609</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Description>Another Great Good, invoiced with a 0% VAT rate and "K" tax code to indicate use of the ICS tax exemption</cbc:Description>
+			<cbc:Name>Another Great Good (exempt of VAT for IC supply-Code K)</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Buyer SKU not known</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>GG-100993</cbc:ID>
+			</cac:SellersItemIdentification>
+			<cac:ClassifiedTaxCategory>
+				<cbc:ID>K</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="EUR">87</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+</Invoice>

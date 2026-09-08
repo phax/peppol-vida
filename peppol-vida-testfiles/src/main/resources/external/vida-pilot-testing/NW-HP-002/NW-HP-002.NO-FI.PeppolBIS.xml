@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+	<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+	<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+	<cbc:ID>NW-HP-002 - NO-FI</cbc:ID>
+	<cbc:IssueDate>2026-02-10</cbc:IssueDate>
+	<cbc:DueDate>2026-03-12</cbc:DueDate>
+	<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+	<cbc:Note>FICTITIOUS INVOICE - DO NOT PAY - DO NOT USE IN TAX RETURNS!
+This is a generic sample invoice to cover a "regular" invoicing use case in ViDA.
+As such, the seller and buyer are located in two different EU member states.</cbc:Note>
+	<cbc:DocumentCurrencyCode>NOK</cbc:DocumentCurrencyCode>
+	<cbc:BuyerReference>your buyer reference</cbc:BuyerReference>
+	<cac:OrderReference>
+		<cbc:ID>PO-54321</cbc:ID>
+		<cbc:SalesOrderID>Order #456789</cbc:SalesOrderID>
+	</cac:OrderReference>
+	<cac:ContractDocumentReference>
+		<cbc:ID>Contract ABC</cbc:ID>
+	</cac:ContractDocumentReference>
+	<cac:ProjectReference>
+		<cbc:ID>Project #12345</cbc:ID>
+	</cac:ProjectReference>
+	<cac:AccountingSupplierParty>
+		<cac:Party>
+			<cbc:EndpointID schemeID="9913">001109-vidapilot.NO123456785MVA</cbc:EndpointID>
+			<cac:PartyIdentification>
+				<cbc:ID>9876-444444</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>Norge Salg</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Karl Johans gate 15</cbc:StreetName>
+				<cbc:CityName>Oslo</cbc:CityName>
+				<cbc:PostalZone>0154</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>NO</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>NO123456785MVA</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>Foretaksregisteret</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>TAX</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:RegistrationName>Norge Salg AS</cbc:RegistrationName>
+			</cac:PartyLegalEntity>
+			<cac:Contact>
+				<cbc:Name>Lars Hansen</cbc:Name>
+				<cbc:Telephone>+358 9 555 1234</cbc:Telephone>
+				<cbc:ElectronicMail>lars.hansen@norge-salg.no</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingSupplierParty>
+	<cac:AccountingCustomerParty>
+		<cac:Party>
+			<cbc:EndpointID schemeID="9913">001110-vidapilot.FI12345671</cbc:EndpointID>
+			<cac:PartyName>
+				<cbc:Name>Ostaja Finland</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Mannerheimintie 12</cbc:StreetName>
+				<cbc:CityName>Helsinki</cbc:CityName>
+				<cbc:PostalZone>00100</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>FI</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>FI12345671</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:RegistrationName>Ostaja Finland Oy</cbc:RegistrationName>
+				<cbc:CompanyID schemeID="0216">003712345671buyer</cbc:CompanyID>
+			</cac:PartyLegalEntity>
+			<cac:Contact>
+				<cbc:Name>Mikko Virtanen</cbc:Name>
+				<cbc:Telephone>+358 9 12345678</cbc:Telephone>
+				<cbc:ElectronicMail>m.virtanen@ostaja-finland.fi</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingCustomerParty>
+	<cac:Delivery>
+		<cbc:ActualDeliveryDate>2026-01-31</cbc:ActualDeliveryDate>
+		<cac:DeliveryLocation>
+			<cac:Address>
+				<cbc:StreetName>Mannerheimintie 12</cbc:StreetName>
+				<cbc:CityName>Helsinki</cbc:CityName>
+				<cbc:PostalZone>00100</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>FI</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:Address>
+		</cac:DeliveryLocation>
+		<cac:DeliveryParty>
+			<cac:PartyName>
+				<cbc:Name>Ostaja Finland Oy (Delivery to buyer main address - country BT-80 must be specified for ICS)</cbc:Name>
+			</cac:PartyName>
+		</cac:DeliveryParty>
+	</cac:Delivery>
+	<cac:PaymentMeans>
+		<cbc:PaymentMeansCode name="SEPA credit transfer">58</cbc:PaymentMeansCode>
+		<cac:PayeeFinancialAccount>
+			<cbc:ID>NO50 1503 2080 119</cbc:ID>
+			<cbc:Name>Norge Salg AS</cbc:Name>
+		</cac:PayeeFinancialAccount>
+	</cac:PaymentMeans>
+	<cac:PaymentTerms>
+		<cbc:Note>Please remit your payment of 58.176,00 kr before 12.03.2026.</cbc:Note>
+	</cac:PaymentTerms>
+	<cac:TaxTotal>
+		<cbc:TaxAmount currencyID="NOK">0</cbc:TaxAmount>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="NOK">58176</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="NOK">0</cbc:TaxAmount>
+			<cac:TaxCategory>
+				<cbc:ID>K</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cbc:TaxExemptionReasonCode>VATEX-EU-IC</cbc:TaxExemptionReasonCode>
+				<cbc:TaxExemptionReason>Intra-community supply of services under reverse charge following Art. 196 of Directive 2006/112/EC</cbc:TaxExemptionReason>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+	</cac:TaxTotal>
+	<cac:LegalMonetaryTotal>
+		<cbc:LineExtensionAmount currencyID="NOK">58176</cbc:LineExtensionAmount>
+		<cbc:TaxExclusiveAmount currencyID="NOK">58176</cbc:TaxExclusiveAmount>
+		<cbc:TaxInclusiveAmount currencyID="NOK">58176</cbc:TaxInclusiveAmount>
+		<cbc:PayableAmount currencyID="NOK">58176</cbc:PayableAmount>
+	</cac:LegalMonetaryTotal>
+	<cac:InvoiceLine>
+		<cbc:ID>1</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="HUR">16</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="NOK">19424</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Description>This Super Service is invoiced with a 0% VAT rate and "K" tax code to indicate Intra-community delivery using the reverse charge.</cbc:Description>
+			<cbc:Name>Super Service (K-IC using reverse charge)</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Buyer SKU not known</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>SS-RC-100123</cbc:ID>
+			</cac:SellersItemIdentification>
+			<cac:ClassifiedTaxCategory>
+				<cbc:ID>K</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="NOK">1214</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>2</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="HUR">32</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="NOK">38752</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Description>More Super Service, also invoiced with a 0% VAT rate and "K" tax code.</cbc:Description>
+			<cbc:Name>More Super Service (K-IC using reverse charge)</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Buyer SKU also not known</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>SS-RC-100321</cbc:ID>
+			</cac:SellersItemIdentification>
+			<cac:ClassifiedTaxCategory>
+				<cbc:ID>K</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="NOK">1211</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+</Invoice>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+	<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+	<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+	<cbc:ID>NW-HP-001 - IE-NO</cbc:ID>
+	<cbc:IssueDate>2026-02-10</cbc:IssueDate>
+	<cbc:DueDate>2026-03-12</cbc:DueDate>
+	<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+	<cbc:Note>FICTITIOUS INVOICE - DO NOT PAY - DO NOT USE IN TAX RETURNS!
+This is a generic sample invoice to cover a "regular" invoicing use case in ViDA.
+As such, the seller and buyer are located in two different EU member states.</cbc:Note>
+	<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+	<cbc:BuyerReference>your buyer reference</cbc:BuyerReference>
+	<cac:OrderReference>
+		<cbc:ID>PO-54321</cbc:ID>
+		<cbc:SalesOrderID>Order #456789</cbc:SalesOrderID>
+	</cac:OrderReference>
+	<cac:ContractDocumentReference>
+		<cbc:ID>Contract ABC</cbc:ID>
+	</cac:ContractDocumentReference>
+	<cac:ProjectReference>
+		<cbc:ID>Project #12345</cbc:ID>
+	</cac:ProjectReference>
+	<cac:AccountingSupplierParty>
+		<cac:Party>
+			<cbc:EndpointID schemeID="9913">001109-vidapilot.IE9876543T</cbc:EndpointID>
+			<cac:PartyIdentification>
+				<cbc:ID>4001-124356IE</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>Irish Sales &amp; Distribution</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>12 Grand Canal Dock</cbc:StreetName>
+				<cbc:CityName>Dublin 2</cbc:CityName>
+				<cbc:PostalZone>D02 X285</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>IE</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>IE9876543T</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:RegistrationName>Irish Sales &amp; Distribution Ltd</cbc:RegistrationName>
+				<cbc:CompanyID>654321</cbc:CompanyID>
+			</cac:PartyLegalEntity>
+			<cac:Contact>
+				<cbc:Name>Sean O’Connor</cbc:Name>
+				<cbc:Telephone>+353 1 496 0123</cbc:Telephone>
+				<cbc:ElectronicMail>sean@irish-sales.ie</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingSupplierParty>
+	<cac:AccountingCustomerParty>
+		<cac:Party>
+			<cbc:EndpointID schemeID="9913">001110-vidapilot.NO234567896MVA</cbc:EndpointID>
+			<cac:PartyName>
+				<cbc:Name>Kjøper Norge</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Karl Johans gate 25</cbc:StreetName>
+				<cbc:CityName>Oslo</cbc:CityName>
+				<cbc:PostalZone>0159</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>NO</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cbc:CompanyID>NO234567896MVA</cbc:CompanyID>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:PartyLegalEntity>
+				<cbc:RegistrationName>Kjøper Norge AS</cbc:RegistrationName>
+			</cac:PartyLegalEntity>
+			<cac:Contact>
+				<cbc:Name>Lars Eriksen</cbc:Name>
+				<cbc:Telephone>+47 22 345678</cbc:Telephone>
+				<cbc:ElectronicMail>l.eriksen@kjoper-norge.no</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingCustomerParty>
+	<cac:Delivery>
+		<cbc:ActualDeliveryDate>2026-01-31</cbc:ActualDeliveryDate>
+		<cac:DeliveryLocation>
+			<cac:Address>
+				<cbc:StreetName>Karl Johans gate 25</cbc:StreetName>
+				<cbc:CityName>Oslo</cbc:CityName>
+				<cbc:PostalZone>0159</cbc:PostalZone>
+				<cac:Country>
+					<cbc:IdentificationCode>NO</cbc:IdentificationCode>
+				</cac:Country>
+			</cac:Address>
+		</cac:DeliveryLocation>
+		<cac:DeliveryParty>
+			<cac:PartyName>
+				<cbc:Name>Kjøper Norge AS (Delivery to buyer main address - country BT-80 must be specified for ICS)</cbc:Name>
+			</cac:PartyName>
+		</cac:DeliveryParty>
+	</cac:Delivery>
+	<cac:PaymentMeans>
+		<cbc:PaymentMeansCode name="SEPA credit transfer">58</cbc:PaymentMeansCode>
+		<cac:PayeeFinancialAccount>
+			<cbc:ID>IE68 AIBK 9311 5287 6543 21</cbc:ID>
+			<cbc:Name>Irish Sales &amp; Distribution Ltd</cbc:Name>
+			<cac:FinancialInstitutionBranch>
+				<cbc:ID>AIBK</cbc:ID>
+			</cac:FinancialInstitutionBranch>
+		</cac:PayeeFinancialAccount>
+	</cac:PaymentMeans>
+	<cac:PaymentTerms>
+		<cbc:Note>Bitte überweisen Sie den Rechnungsbetrag in Höhe von 915,00 € bis zum Fälligkeitsdatum 12.03.2026.</cbc:Note>
+	</cac:PaymentTerms>
+	<cac:TaxTotal>
+		<cbc:TaxAmount currencyID="EUR">0</cbc:TaxAmount>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="EUR">915</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="EUR">0</cbc:TaxAmount>
+			<cac:TaxCategory>
+				<cbc:ID>G</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cbc:TaxExemptionReasonCode>VATEX-EU-G</cbc:TaxExemptionReasonCode>
+				<cbc:TaxExemptionReason>Export outside of EU</cbc:TaxExemptionReason>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+	</cac:TaxTotal>
+	<cac:LegalMonetaryTotal>
+		<cbc:LineExtensionAmount currencyID="EUR">915</cbc:LineExtensionAmount>
+		<cbc:TaxExclusiveAmount currencyID="EUR">915</cbc:TaxExclusiveAmount>
+		<cbc:TaxInclusiveAmount currencyID="EUR">915</cbc:TaxInclusiveAmount>
+		<cbc:PayableAmount currencyID="EUR">915</cbc:PayableAmount>
+	</cac:LegalMonetaryTotal>
+	<cac:InvoiceLine>
+		<cbc:ID>1</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="H87">3</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="EUR">306</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Description>This Great Good is invoiced with a 0% VAT rate and "G" tax code to indicate export of goods outside of the EU.</cbc:Description>
+			<cbc:Name>Great Good (exempt of VAT for export outside EU-Code G)</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Buyer SKU not known</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>GG-100124</cbc:ID>
+			</cac:SellersItemIdentification>
+			<cac:ClassifiedTaxCategory>
+				<cbc:ID>G</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="EUR">102</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>2</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="H87">7</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="EUR">609</cbc:LineExtensionAmount>
+		<cac:Item>
+			<cbc:Description>Another Great Good, invoiced with a 0% VAT rate and "G" tax code to indicate export of goods outside of the EU.</cbc:Description>
+			<cbc:Name>Another Great Good (exempt of VAT for export outside EU-Code G)</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Buyer SKU not known</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>GG-100993</cbc:ID>
+			</cac:SellersItemIdentification>
+			<cac:ClassifiedTaxCategory>
+				<cbc:ID>G</cbc:ID>
+				<cbc:Percent>0</cbc:Percent>
+				<cac:TaxScheme>
+					<cbc:ID>VAT</cbc:ID>
+				</cac:TaxScheme>
+			</cac:ClassifiedTaxCategory>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="EUR">87</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+</Invoice>

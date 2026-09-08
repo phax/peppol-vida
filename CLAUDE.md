@@ -21,17 +21,17 @@ mvn clean install -DskipTests
 mvn test -pl peppol-vida-tdd
 
 # Run a single test class
-mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD090BuilderFuncTest
+mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD100BuilderTest
 
 # Run a single test method
-mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD090BuilderFuncTest#testBasicMinimal
+mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD100BuilderTest#testBasicMinimal
 ```
 
 ## Module Structure
 
 Three Maven modules with strict build order (each depends on the previous):
 
-1. **`peppol-vida-testfiles`** — Bundles test XML files as classpath resources. `PeppolViDATestFiles` provides programmatic access to valid UBL invoices, credit notes, and TDD documents.
+1. **`peppol-vida-testfiles`** — Bundles test XML files as classpath resources. `PeppolViDATestFiles` provides programmatic access to valid UBL invoices, credit notes, and TDD documents, as well as to a subset of the official OpenPeppol ViDA Pilot Testing data packages (`PeppolViDAPilotTestData`).
 
 2. **`peppol-vida-tdd-datatypes`** — JAXB-generated data model from `external/schemas/2026-03-18/Peppol-ViDA-TDD.xsd`. Contains `CPeppolViDATDD` (schema constants/resources) and `PeppolViDATDD100Marshaller` (XML serialization).
 
@@ -44,8 +44,8 @@ Three Maven modules with strict build order (each depends on the previous):
 
 **Builder pattern** is used throughout with fluent APIs:
 ```java
-new PeppolViDATDD090Builder()
-    .documentTypeCode(EViDATDDDocumentTypeCode.SUBMIT)
+new PeppolViDATDD100Builder()
+    .taxDataTypeCode(EViDATDDTaxDataTypeCode.SUBMIT)
     .documentScope(EViDATDDDocumentScope.DOMESTIC)
     .reporterRole(EViDATDDReporterRole.SENDER)
     .reportedTransaction(rt -> rt.customizationID(...).profileID(...))
@@ -63,7 +63,7 @@ This codebase follows the [Helger framework](https://github.com/phax) convention
 - **Annotations:** `@NonNull`/`@Nullable` (JSpecify), `@Immutable` for thread-safe classes
 - **Preconditions:** `ValueEnforcer.notNull()` — not standard Java assertions
 - **Validation:** `_isEveryRequiredFieldSet()` (private check), `isEveryRequiredFieldSet()` (public)
-- **Enums** implement `IHasID<String>` for serialization: `EViDATDDDocumentTypeCode`, `EViDATDDDocumentScope`, `EViDATDDReporterRole`
+- **Enums** implement `IHasID<String>` for serialization: `EViDATDDTaxDataTypeCode`, `EViDATDDDocumentScope`, `EViDATDDReporterRole`
 - **Resources:** `ClassPathResource` for schema/schematron files, accessed via static `_getCL()` method
 - **Logging:** `ConditionalLogger` for optional debug/error messages
 
@@ -77,5 +77,6 @@ Test XML resources live in `peppol-vida-testfiles/src/main/resources/external/`:
 - `invoice/good/` — Valid UBL 2.1 invoices
 - `creditnote/good/` — Valid UBL 2.1 credit notes
 - `tdd/1.0.0/good/` — Valid TDD v1.0.0 documents
+- `vida-pilot-testing/` — Unmodified copies from https://github.com/OpenPEPPOL/vida-pilot-testing/ - per test scenario the source Peppol BIS document and the matching non-normative sample TDD
 
 `PeppolViDATestFiles` exposes these as `IReadableResource` collections.

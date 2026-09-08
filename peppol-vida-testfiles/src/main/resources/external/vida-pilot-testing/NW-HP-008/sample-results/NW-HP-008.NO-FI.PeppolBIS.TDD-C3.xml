@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pxs:TaxData xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:pxs="urn:peppol:schema:vida-taxdata:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:peppol:taxdata:vida-1</cbc:CustomizationID>
+  <cbc:ProfileID>urn:peppol:taxreporting</cbc:ProfileID>
+  <cbc:UUID>0d51b94f-e7a0-4f34-afd8-6def9b3179fe</cbc:UUID>
+  <cbc:IssueDate>2026-09-04</cbc:IssueDate>
+  <cbc:IssueTime>23:51:10.495+02:00</cbc:IssueTime>
+  <pxs:TaxDataTypeCode>S</pxs:TaxDataTypeCode>
+  <pxs:DocumentScope>IC</pxs:DocumentScope>
+  <pxs:ReporterRole>C3</pxs:ReporterRole>
+  <pxs:TaxAuthority>
+    <cbc:ID>FI</cbc:ID>
+    <cbc:Name>Verohallinto / Skatteförvaltningen</cbc:Name>
+  </pxs:TaxAuthority>
+  <pxs:ReportingParty>
+    <cbc:EndpointID schemeID="9913">001110-vidapilot.fi12345671</cbc:EndpointID>
+  </pxs:ReportingParty>
+  <pxs:ReceivingParty>
+    <cbc:EndpointID schemeID="0242">001111-vidapilot.tax_fi</cbc:EndpointID>
+  </pxs:ReceivingParty>
+  <pxs:ReportersRepresentative>
+    <cac:PartyIdentification>
+      <cbc:ID schemeID="0242">001110-vidapilot</cbc:ID>
+    </cac:PartyIdentification>
+  </pxs:ReportersRepresentative>
+  <pxs:ReportedTransaction>
+    <pxs:ReportedDocument>
+      <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+      <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+      <cbc:ID>NW-HP-008 - NO-FI</cbc:ID>
+      <cbc:UUID>f6d0e98b-7949-5eab-aaea-45bbc1df02c3</cbc:UUID>
+      <cbc:IssueDate>2026-02-10</cbc:IssueDate>
+      <pxs:DocumentTypeCode>381</pxs:DocumentTypeCode>
+      <cbc:Note>FICTITIOUS CREDIT NOTE - DO NOT PAY - DO NOT USE IN TAX RETURNS!
+This is a generic sample credit note to cover a "regular" invoicing use case in ViDA.
+As such, the seller and buyer are located in two different EU member states.</cbc:Note>
+      <cbc:DocumentCurrencyCode>NOK</cbc:DocumentCurrencyCode>
+      <cac:AccountingSupplierParty>
+        <cac:Party>
+          <cac:PostalAddress>
+            <cac:Country>
+              <cbc:IdentificationCode>NO</cbc:IdentificationCode>
+            </cac:Country>
+          </cac:PostalAddress>
+          <cac:PartyTaxScheme>
+            <cbc:CompanyID>NO123456785MVA</cbc:CompanyID>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:PartyTaxScheme>
+        </cac:Party>
+      </cac:AccountingSupplierParty>
+      <cac:AccountingCustomerParty>
+        <cac:Party>
+          <cac:PostalAddress>
+            <cac:Country>
+              <cbc:IdentificationCode>FI</cbc:IdentificationCode>
+            </cac:Country>
+          </cac:PostalAddress>
+          <cac:PartyTaxScheme>
+            <cbc:CompanyID>FI12345671</cbc:CompanyID>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:PartyTaxScheme>
+          <cac:PartyLegalEntity>
+            <cbc:RegistrationName>Ostaja Finland Oy</cbc:RegistrationName>
+          </cac:PartyLegalEntity>
+        </cac:Party>
+      </cac:AccountingCustomerParty>
+      <cac:Delivery>
+        <cbc:ActualDeliveryDate>2026-01-31</cbc:ActualDeliveryDate>
+      </cac:Delivery>
+      <cac:TaxTotal>
+        <cbc:TaxAmount currencyID="NOK">0</cbc:TaxAmount>
+        <cac:TaxSubtotal>
+          <cbc:TaxableAmount currencyID="NOK">19633</cbc:TaxableAmount>
+          <cbc:TaxAmount currencyID="NOK">0</cbc:TaxAmount>
+          <cac:TaxCategory>
+            <cbc:ID>G</cbc:ID>
+            <cbc:Percent>0</cbc:Percent>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:TaxCategory>
+        </cac:TaxSubtotal>
+      </cac:TaxTotal>
+      <pxs:MonetaryTotal>
+        <cbc:LineExtensionAmount currencyID="NOK">19633</cbc:LineExtensionAmount>
+        <cbc:TaxExclusiveAmount currencyID="NOK">19633</cbc:TaxExclusiveAmount>
+        <cbc:TaxInclusiveAmount currencyID="NOK">19633</cbc:TaxInclusiveAmount>
+        <cbc:PayableAmount currencyID="NOK">19633</cbc:PayableAmount>
+      </pxs:MonetaryTotal>
+      <pxs:DocumentLine>
+        <cbc:ID>1</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="H87">10</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="NOK">11020</cbc:LineExtensionAmount>
+        <cac:Item>
+          <cbc:Description>This Great Good is invoiced with a 0% VAT rate and "G" tax code to indicate use of "import from third country"</cbc:Description>
+          <cbc:Name>Great Good (import from third country-Code G)</cbc:Name>
+          <cac:ClassifiedTaxCategory>
+            <cbc:ID>G</cbc:ID>
+            <cbc:Percent>0</cbc:Percent>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:ClassifiedTaxCategory>
+        </cac:Item>
+        <cac:Price>
+          <cbc:PriceAmount currencyID="NOK">1102</cbc:PriceAmount>
+          <cbc:BaseQuantity>1</cbc:BaseQuantity>
+        </cac:Price>
+      </pxs:DocumentLine>
+      <pxs:DocumentLine>
+        <cbc:ID>2</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="H87">9</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="NOK">8613</cbc:LineExtensionAmount>
+        <cac:Item>
+          <cbc:Description>Another Great Good is invoiced with a 0% VAT rate and "G" tax code to indicate use of "import from third country"</cbc:Description>
+          <cbc:Name>Another Great Good (import from third country-Code G)</cbc:Name>
+          <cac:ClassifiedTaxCategory>
+            <cbc:ID>G</cbc:ID>
+            <cbc:Percent>0</cbc:Percent>
+            <cac:TaxScheme>
+              <cbc:ID>VAT</cbc:ID>
+            </cac:TaxScheme>
+          </cac:ClassifiedTaxCategory>
+        </cac:Item>
+        <cac:Price>
+          <cbc:PriceAmount currencyID="NOK">957</cbc:PriceAmount>
+          <cbc:BaseQuantity>1</cbc:BaseQuantity>
+        </cac:Price>
+      </pxs:DocumentLine>
+    </pxs:ReportedDocument>
+  </pxs:ReportedTransaction>
+</pxs:TaxData>

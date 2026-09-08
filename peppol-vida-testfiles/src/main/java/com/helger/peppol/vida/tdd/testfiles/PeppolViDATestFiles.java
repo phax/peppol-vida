@@ -103,6 +103,48 @@ public final class PeppolViDATestFiles
   }
 
   @NonNull
+  private static PeppolViDAPilotTestData _getPilotTestData (@NonNull final String sScenarioID,
+                                                            @NonNull final String sJurisdictions,
+                                                            final boolean bCreditNote)
+  {
+    final String sBaseName = sScenarioID + "." + sJurisdictions + ".PeppolBIS";
+    final String sPrefix = "external/vida-pilot-testing/" + sScenarioID + "/";
+    return new PeppolViDAPilotTestData (sScenarioID,
+                                        sJurisdictions,
+                                        bCreditNote,
+                                        new ClassPathResource (sPrefix + sBaseName + ".xml", _getCL ()),
+                                        new ClassPathResource (sPrefix + "sample-results/" + sBaseName + ".TDD-C3.xml",
+                                                               _getCL ()));
+  }
+
+  /**
+   * Get the bundled subset of the official test data packages of the OpenPeppol ViDA Pilot Testing
+   * repository (https://github.com/OpenPEPPOL/vida-pilot-testing/). Each entry combines the source
+   * Peppol BIS Billing 3.0 document with the matching non-normative buy-side (C3) sample TDD.
+   *
+   * @return A non-<code>null</code> non-empty list of all bundled test data packages.
+   * @since 0.10.2
+   */
+  @NonNull
+  @Nonempty
+  @ReturnsMutableCopy
+  public static ICommonsList <@NonNull PeppolViDAPilotTestData> getAllPilotTestData ()
+  {
+    final ICommonsList <PeppolViDAPilotTestData> ret = new CommonsArrayList <> ();
+    for (final String s : new String [] { "AT-DK", "DK-NO", "IE-NO", "NO-FI", "SE-BE" })
+    {
+      ret.add (_getPilotTestData ("NW-HP-001", s, false));
+      ret.add (_getPilotTestData ("NW-HP-002", s, false));
+      ret.add (_getPilotTestData ("NW-HP-006", s, false));
+    }
+    for (final String s : new String [] { "AT-DK", "BE-DK", "FI-AT", "IE-DK", "SE-DK" })
+      ret.add (_getPilotTestData ("NW-HP-002-RC", s, false));
+    for (final String s : new String [] { "AT-DK", "BE-SE", "DK-NO", "IE-NO", "NO-FI" })
+      ret.add (_getPilotTestData ("NW-HP-008", s, true));
+    return ret;
+  }
+
+  @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <@NonNull ClassPathResource> getAllSchematronBadTDD100Files ()
   {
