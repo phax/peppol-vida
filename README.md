@@ -86,7 +86,7 @@ to build the solution.
 
 # News and noteworthy
 
-v0.10.2 - work in progress
+v0.10.2 - 2026-09-08
 * Added a reference to the OpenPeppol ViDA Pilot Testing repository https://github.com/OpenPEPPOL/vida-pilot-testing/
 * Added a subset of the official test data packages of that repository to `peppol-vida-testfiles`, available via `PeppolViDATestFiles.getAllPilotTestData ()`
 * Added class `PeppolViDAPilotTestData` that combines a source document with the matching official sample TDD
