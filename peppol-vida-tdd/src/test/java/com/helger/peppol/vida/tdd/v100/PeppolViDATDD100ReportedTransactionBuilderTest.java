@@ -39,8 +39,8 @@ public final class PeppolViDATDD100ReportedTransactionBuilderTest
 {
   /**
    * Create a ReportedTransaction that only differs in the fields that are relevant for the
-   * ReportedDocument UUID calculation according to rule ID-BDID-01. All other fields are filled with
-   * arbitrary but valid values.
+   * ReportedDocument UUID calculation according to rule ID-BDID-01. All other fields are filled
+   * with arbitrary but valid values.
    */
   @Nullable
   private static ReportedTransactionType _createForUUID (@Nullable final String sSellerIDSchemeID,

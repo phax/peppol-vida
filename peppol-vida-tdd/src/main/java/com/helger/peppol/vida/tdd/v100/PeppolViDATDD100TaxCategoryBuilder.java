@@ -70,20 +70,20 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     if (aTaxScheme != null)
       taxSchemeID (aTaxScheme.getIDValue ());
 
-    if (!aObj.getTaxExemptionReason().isEmpty())
+    if (!aObj.getTaxExemptionReason ().isEmpty ())
     {
-      for (var taxExemptionReason : aObj.getTaxExemptionReason())
+      for (var taxExemptionReason : aObj.getTaxExemptionReason ())
       {
-        if (!StringHelper.isEmpty(taxExemptionReason.getValue()))
+        if (!StringHelper.isEmpty (taxExemptionReason.getValue ()))
         {
-          taxExemptionReason(taxExemptionReason.getValue());
+          taxExemptionReason (taxExemptionReason.getValue ());
         }
       }
     }
 
-    if (aObj.getTaxExemptionReasonCode() != null)
+    if (aObj.getTaxExemptionReasonCode () != null)
     {
-      taxExemptionReasonCode(aObj.getTaxExemptionReasonCode().getValue());
+      taxExemptionReasonCode (aObj.getTaxExemptionReasonCode ().getValue ());
     }
 
     return this;
@@ -212,16 +212,16 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
       ret.setTaxScheme (aTS);
     }
 
-    if (!StringHelper.isEmpty(m_sTaxExemptionReason))
+    if (!StringHelper.isEmpty (m_sTaxExemptionReason))
     {
       final TaxExemptionReasonType aET = new TaxExemptionReasonType ();
-      aET.setValue(m_sTaxExemptionReason);
-      ret.getTaxExemptionReason().add(aET);
+      aET.setValue (m_sTaxExemptionReason);
+      ret.getTaxExemptionReason ().add (aET);
     }
 
-    if (!StringHelper.isEmpty(m_sTaxExemptionReasonCode))
+    if (!StringHelper.isEmpty (m_sTaxExemptionReasonCode))
     {
-      ret.setTaxExemptionReasonCode(m_sTaxExemptionReasonCode);
+      ret.setTaxExemptionReasonCode (m_sTaxExemptionReasonCode);
     }
 
     return ret;

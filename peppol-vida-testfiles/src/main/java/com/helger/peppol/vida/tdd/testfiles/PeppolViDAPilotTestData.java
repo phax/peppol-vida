@@ -59,8 +59,8 @@ public final class PeppolViDAPilotTestData
   }
 
   /**
-   * @return The test scenario identifier as defined in the Peppol ViDA Pilot Methodology and Testing
-   *         document - e.g. <code>NW-HP-001</code>. Neither <code>null</code> nor empty.
+   * @return The test scenario identifier as defined in the Peppol ViDA Pilot Methodology and
+   *         Testing document - e.g. <code>NW-HP-001</code>. Neither <code>null</code> nor empty.
    */
   @NonNull
   @Nonempty

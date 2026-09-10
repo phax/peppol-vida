@@ -126,7 +126,7 @@ public final class PeppolViDATDD100PilotTestDataFuncTest
       final String sXML = new PeppolViDATDD100Marshaller ().setFormattedOutput (true).getAsString (aTDD);
       assertNotNull (sXML);
       final ValidationResultList aVRL = PeppolViDATDDValidator.validateViDA_TDD_100 (new ReadableResourceString (sXML,
-                                                                                                                    StandardCharsets.UTF_8));
+                                                                                                                 StandardCharsets.UTF_8));
       assertTrue (aVRL.getAllErrors ().getAllMapped (IError::getAsStringLocaleIndepdent).toString (),
                   aVRL.getOverallValidity ().isValid ());
 
