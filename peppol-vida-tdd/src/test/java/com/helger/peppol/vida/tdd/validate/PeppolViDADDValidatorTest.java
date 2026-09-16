@@ -33,7 +33,7 @@ import com.helger.io.file.FilenameHelper;
 import com.helger.io.resource.IReadableResource;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD100Marshaller;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
-import com.helger.peppol.vida.tdd.v2026_03_18.TaxDataType;
+import com.helger.peppol.vida.tdd.v2026_09_15.TaxDataType;
 import com.helger.phive.api.executor.IValidationExecutor;
 import com.helger.phive.api.executorset.IValidationExecutorSet;
 import com.helger.phive.xml.source.IValidationSourceXML;

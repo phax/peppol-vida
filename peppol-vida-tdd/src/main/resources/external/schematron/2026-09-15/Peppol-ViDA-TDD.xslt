@@ -281,10 +281,10 @@
       </xsl:choose>
       <!--ASSERT -->
       <xsl:choose>
-         <xsl:when test="matches(normalize-space(cbc:IssueTime), '^(?:([01]\d|2[0-3]):[0-5]\d:[0-5]\d|24:00:00)(\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$')"/>
+         <xsl:when test="matches(normalize-space(cbc:IssueTime), '^(?:([01]\d|2[0-3]):[0-5]\d:[0-5]\d|24:00:00)(\.\d+)?(?:Z|[+-]\d{2}:\d{2})$')"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="matches(normalize-space(cbc:IssueTime), '^(?:([01]\d|2[0-3]):[0-5]\d:[0-5]\d|24:00:00)(\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$')">
+                                test="matches(normalize-space(cbc:IssueTime), '^(?:([01]\d|2[0-3]):[0-5]\d:[0-5]\d|24:00:00)(\.\d+)?(?:Z|[+-]\d{2}:\d{2})$')">
                <xsl:attribute name="id">ibr-tdd-05</xsl:attribute>
                <xsl:attribute name="flag">fatal</xsl:attribute>
                <xsl:attribute name="location">
@@ -582,6 +582,36 @@
                        context="/pxs:TaxData/pxs:ReportedTransaction"/>
       <!--ASSERT -->
       <xsl:choose>
+         <xsl:when test="exists(pxs:TransmissionUUID)"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="exists(pxs:TransmissionUUID)">
+               <xsl:attribute name="id">ibr-tdd-88</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-88] – The Invoice Transmission UUID (TDT-018) MUST be present.</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
+         <xsl:when test="not(exists(pxs:TransmissionUUID)) or matches(normalize-space(pxs:TransmissionUUID), '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$')"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="not(exists(pxs:TransmissionUUID)) or matches(normalize-space(pxs:TransmissionUUID), '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$')">
+               <xsl:attribute name="id">ibr-tdd-89</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-89] – The Invoice Transmission UUID (TDT-018) MUST be a valid UUID (version 1 to 8).</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
          <xsl:when test="exists(pxs:ReportedDocument)"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
@@ -603,6 +633,7 @@
                  mode="M7">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                        context="/pxs:TaxData/pxs:ReportedTransaction/pxs:ReportedDocument"/>
+      <xsl:variable name="rr_doc" select="normalize-space(/pxs:TaxData/pxs:ReporterRole)"/>
       <!--ASSERT -->
       <xsl:choose>
          <xsl:when test="count(*[not(self::cbc:CustomizationID or self::cbc:ProfileID or self::cbc:ID or self::cbc:UUID or self::cbc:IssueDate or self::cbc:IssueTime or self::pxs:DocumentTypeCode or self::cbc:Note or self::cbc:TaxPointDate or self::cbc:DocumentCurrencyCode or self::cbc:TaxCurrencyCode or self::cac:InvoicePeriod or self::cac:BillingReference or self::cac:AccountingSupplierParty or self::cac:AccountingCustomerParty or self::cac:TaxRepresentativeParty or self::cac:Delivery or self::cac:PaymentMeans or self::cac:AllowanceCharge or self::cac:TaxTotal or self::pxs:MonetaryTotal or self::pxs:DocumentLine)]) = 0"/>
@@ -629,6 +660,66 @@
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
                <svrl:text>[ibr-tdd-86] – The UUID (TDT-017) MUST be present.</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
+         <xsl:when test="not(exists(cbc:UUID)) or matches(normalize-space(cbc:UUID), '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-5[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$')"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="not(exists(cbc:UUID)) or matches(normalize-space(cbc:UUID), '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-5[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$')">
+               <xsl:attribute name="id">ibr-tdd-87</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-87] – The Invoice UUID (TDT-017) MUST be a valid UUID version 5.</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
+         <xsl:when test="not($rr_doc = 'C3') or exists(cac:TaxTotal/cbc:TaxAmount[@currencyID = normalize-space(../../cbc:DocumentCurrencyCode)])"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="not($rr_doc = 'C3') or exists(cac:TaxTotal/cbc:TaxAmount[@currencyID = normalize-space(../../cbc:DocumentCurrencyCode)])">
+               <xsl:attribute name="id">ibr-tdd-90</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-90] – When the Reporter role (TDT-012) is 'C3', the Invoice total VAT amount (BT-110) MUST be present.</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
+         <xsl:when test="not($rr_doc = 'C3') or exists(pxs:MonetaryTotal/cbc:TaxInclusiveAmount)"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="not($rr_doc = 'C3') or exists(pxs:MonetaryTotal/cbc:TaxInclusiveAmount)">
+               <xsl:attribute name="id">ibr-tdd-91</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-91] – When the Reporter role (TDT-012) is 'C3', the Invoice total amount with VAT (BT-112) MUST be present.</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
+         <xsl:when test="not($rr_doc = 'C3') or not(exists(cbc:TaxCurrencyCode)) or exists(cac:TaxTotal/cbc:TaxAmount[@currencyID = normalize-space(../../cbc:TaxCurrencyCode)])"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="not($rr_doc = 'C3') or not(exists(cbc:TaxCurrencyCode)) or exists(cac:TaxTotal/cbc:TaxAmount[@currencyID = normalize-space(../../cbc:TaxCurrencyCode)])">
+               <xsl:attribute name="id">ibr-tdd-93</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-93] – When the Reporter role (TDT-012) is 'C3' and a VAT accounting currency code (BT-006) is present, the Invoice total VAT amount in accounting currency (BT-111) MUST be present.</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>
@@ -1532,6 +1623,7 @@
                  mode="M7">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                        context="/pxs:TaxData/pxs:ReportedTransaction/pxs:ReportedDocument/cac:TaxTotal/cac:TaxSubtotal"/>
+      <xsl:variable name="rr_sub" select="normalize-space(/pxs:TaxData/pxs:ReporterRole)"/>
       <!--ASSERT -->
       <xsl:choose>
          <xsl:when test="count(*[not(self::cbc:TaxableAmount or self::cbc:TaxAmount or self::cac:TaxCategory)]) = 0"/>
@@ -1544,6 +1636,21 @@
                   <xsl:apply-templates select="." mode="schematron-select-full-path"/>
                </xsl:attribute>
                <svrl:text>[ibr-tdd-67] – The cac:TaxSubtotal (BG-23) element MUST NOT contain elements other than cbc:TaxableAmount (BT-116), cbc:TaxAmount (BT-117), and cac:TaxCategory.</svrl:text>
+            </svrl:failed-assert>
+         </xsl:otherwise>
+      </xsl:choose>
+      <!--ASSERT -->
+      <xsl:choose>
+         <xsl:when test="not($rr_sub = 'C3') or (exists(cbc:TaxAmount) and exists(cac:TaxCategory/cbc:ID) and exists(cac:TaxCategory/cbc:Percent))"/>
+         <xsl:otherwise>
+            <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="not($rr_sub = 'C3') or (exists(cbc:TaxAmount) and exists(cac:TaxCategory/cbc:ID) and exists(cac:TaxCategory/cbc:Percent))">
+               <xsl:attribute name="id">ibr-tdd-92</xsl:attribute>
+               <xsl:attribute name="flag">fatal</xsl:attribute>
+               <xsl:attribute name="location">
+                  <xsl:apply-templates select="." mode="schematron-select-full-path"/>
+               </xsl:attribute>
+               <svrl:text>[ibr-tdd-92] – When the Reporter role (TDT-012) is 'C3', each VAT breakdown (BG-23) MUST contain the VAT category tax amount (BT-117), the VAT category code (BT-118) and the VAT category rate (BT-119).</svrl:text>
             </svrl:failed-assert>
          </xsl:otherwise>
       </xsl:choose>

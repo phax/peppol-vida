@@ -153,7 +153,7 @@
       <assert id="PEPPOL-EN16931-R061" test="cac:PaymentMandate/cbc:ID" flag="fatal">Mandate reference MUST be provided for direct debit.</assert>
     </rule>
     
-    <rule context="/*/cbc:Amount | /*/cbc:BaseAmount | /*/cbc:PriceAmount | /*/cac:TaxTotal[cac:TaxSubtotal]/cbc:TaxAmount | /*/cac:TaxSubtotal/cbc:TaxAmount |/*/cbc:TaxableAmount | /*/cbc:LineExtensionAmount | /*/cbc:TaxExclusiveAmount | /*/cbc:TaxInclusiveAmount | /*/cbc:AllowanceTotalAmount | /*/cbc:ChargeTotalAmount | /*/cbc:PrepaidAmount | /*/cbc:PayableRoundingAmount | /*/cbc:PayableAmount">
+    <rule context="cbc:Amount | cbc:BaseAmount | cbc:PriceAmount | cac:TaxTotal[cac:TaxSubtotal]/cbc:TaxAmount | cac:TaxSubtotal/cbc:TaxAmount | cbc:TaxableAmount | cbc:LineExtensionAmount | cbc:TaxExclusiveAmount | cbc:TaxInclusiveAmount | cbc:AllowanceTotalAmount | cbc:ChargeTotalAmount | cbc:PrepaidAmount | cbc:PayableRoundingAmount | cbc:PayableAmount">
       <assert id="PEPPOL-EN16931-R051" test="@currencyID = $documentCurrencyCode" flag="fatal">All currencyID attributes must have the same value as the invoice currency code (BT-5), except for the invoice total VAT amount in accounting currency (BT-111).</assert>
     </rule>
     
@@ -354,7 +354,7 @@
     
     <rule context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument/pxs-taxdata:MonetaryTotal[$supplierCountryIsNL]">
       
-      <assert id="NL-R-007" test="(../pxs-taxdata:DocumentTypeCode[.='71' or .='80' or .='82' or .='84' or .='102' or .='218' or .='219' or .='326' or .='331' or .='380' or .='382' or .='383' or .='384' or .='386' or .='388' or .='393' or .='395' or .='553' or .='575' or .='623' or .='780' or .='817' or .='870' or .='875' or .='876' or .='877'] and xs:decimal(cbc:PayableAmount) &lt;= 0.0) or (../pxs-taxdata:DocumentTypeCode[.='381' or .='396' or .='81' or .='83' or .='532'] and xs:decimal(cbc:PayableAmount) &gt;= 0.0) or (//cac:PaymentMeans)" flag="fatal">[NL-R-007] For suppliers in the Netherlands, the supplier MUST provide a means of payment (cac:PaymentMeans) if the payment is from customer to supplier</assert>
+      <assert id="NL-R-007" test="(../pxs-taxdata:DocumentTypeCode[.='71' or .='80' or .='82' or .='84' or .='102' or .='218' or .='219' or .='326' or .='331' or .='380' or .='382' or .='383' or .='384' or .='386' or .='388' or .='393' or .='395' or .='553' or .='575' or .='623' or .='780' or .='817' or .='870' or .='875' or .='876' or .='877'] and xs:decimal(cbc:PayableAmount) &lt;= 0.0) or (../pxs-taxdata:DocumentTypeCode[.='381' or .='396' or .='81' or .='83' or .='532'] and xs:decimal(cbc:PayableAmount) &gt;= 0.0) or (../cac:PaymentMeans)" flag="fatal">[NL-R-007] For suppliers in the Netherlands, the supplier MUST provide a means of payment (cac:PaymentMeans) if the payment is from customer to supplier</assert>
     </rule>
     <rule context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument/cac:PaymentMeans[$supplierCountryIsNL and $customerCountryIsNL]">
       
@@ -367,7 +367,7 @@
     <let name="XR-SKONTO-REGEX" value="'#(SKONTO)#TAGE=([0-9]+#PROZENT=[0-9]+\.[0-9]{2})(#BASISBETRAG=-?[0-9]+\.[0-9]{2})?#$'"/>
     <let name="XR-EMAIL-REGEX" value="'^[a-zA-Z0-9!#\$%&amp;&#34;*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#\$%&amp;&#34;*+/=?^_`{|}~-]+)*@([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$'"/>
     <let name="XR-TELEPHONE-REGEX" value="'.*([0-9].*){3,}.*'"/>
-    <rule context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument/pxs-taxdata:ReportedDocument[$supplierCountryIsDE and $customerCountryIsDE]">
+    <rule context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument[$supplierCountryIsDE and $customerCountryIsDE]">
       <assert test="cac:PaymentMeans" flag="fatal" id="DE-R-001">An invoice shall contain information on "PAYMENT INSTRUCTIONS" (BG-16).</assert>
      
       <let name="supportedVATCodes" value="('S', 'Z', 'E', 'AE', 'K', 'G', 'L', 'M')"/>

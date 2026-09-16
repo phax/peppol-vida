@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pxs:TaxData xmlns:pxs="urn:peppol:schema:vida-taxdata:1.0"
-	xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
-	xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
-	xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+<pxs:TaxData xmlns:pxs="urn:peppol:schema:vida-taxdata:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
 	<cbc:CustomizationID>urn:peppol:taxdata:vida-1</cbc:CustomizationID>
 	<cbc:ProfileID>urn:peppol:taxreporting</cbc:ProfileID>
 	<cbc:UUID>123e4567-e89b-12d3-a456-426614174000</cbc:UUID>
@@ -27,11 +24,12 @@
 		</cac:PartyIdentification>
 	</pxs:ReportersRepresentative>
 	<pxs:ReportedTransaction>
+		<pxs:TransmissionUUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</pxs:TransmissionUUID>
 		<pxs:ReportedDocument>
 			<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:selfbilling:3.0</cbc:CustomizationID>
 			<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:selfbilling:01:1.0</cbc:ProfileID>
 			<cbc:ID>INV-2025-0046</cbc:ID>
-			<cbc:UUID>3e1c2c54-9c2f-4d7a-8c0e-3b0d98c8f8f4</cbc:UUID>
+			<cbc:UUID>6528b83a-8d78-5a2e-96ea-508d30db8327</cbc:UUID>
 			<cbc:IssueDate>2025-02-10</cbc:IssueDate>
 			<pxs:DocumentTypeCode>389</pxs:DocumentTypeCode>
 			<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>

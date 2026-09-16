@@ -24,11 +24,12 @@
 		</cac:PartyIdentification>
 	</pxs:ReportersRepresentative>
 	<pxs:ReportedTransaction>
+		<pxs:TransmissionUUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</pxs:TransmissionUUID>
 		<pxs:ReportedDocument>
 			<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
 			<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
 			<cbc:ID>INV-2025-0046-CORR</cbc:ID>
-			<cbc:UUID>1a5d9f8e-4c3e-4e92-8f33-9b1c7c0f1a21</cbc:UUID>
+			<cbc:UUID>ed5f778c-6bce-5601-b420-e83748303393</cbc:UUID>
 			<cbc:IssueDate>2025-02-12</cbc:IssueDate>
 			<pxs:DocumentTypeCode>380</pxs:DocumentTypeCode>
 			<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
@@ -113,7 +114,7 @@
 			<pxs:DocumentLine>
 				<cbc:ID>1</cbc:ID>
 				<cbc:InvoicedQuantity unitCode="DAY">-7</cbc:InvoicedQuantity>
-				<cbc:LineExtensionAmount currencyID= "EUR">-2800</cbc:LineExtensionAmount>
+				<cbc:LineExtensionAmount currencyID="EUR">-2800</cbc:LineExtensionAmount>
 				<cac:Item>
 					<cbc:Description>Reversal of previously invoiced logistics consulting services</cbc:Description>
 					<cbc:Name>Consulting services reversal</cbc:Name>

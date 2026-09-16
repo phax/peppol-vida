@@ -24,14 +24,14 @@ import com.helger.annotation.style.ReturnsMutableCopy;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.io.resource.ClassPathResource;
 import com.helger.jaxb.GenericJAXBMarshaller;
-import com.helger.peppol.vida.tdd.v2026_03_18.ObjectFactory;
-import com.helger.peppol.vida.tdd.v2026_03_18.TaxDataType;
+import com.helger.peppol.vida.tdd.v2026_09_15.ObjectFactory;
+import com.helger.peppol.vida.tdd.v2026_09_15.TaxDataType;
 import com.helger.ubl21.UBL21Marshaller;
 import com.helger.ubl21.UBL21NamespaceContext;
 import com.helger.xml.namespace.MapBasedNamespaceContext;
 
 /**
- * This is the reader and writer for Peppol ViDA pilot TDD 1.0.0 documents. This class may be
+ * This is the reader and writer for Peppol ViDA pilot TDD 1.1.0 documents. This class may be
  * derived to override protected methods from {@link GenericJAXBMarshaller}.
  *
  * @author Philip Helger
@@ -44,7 +44,7 @@ public class PeppolViDATDD100Marshaller extends GenericJAXBMarshaller <TaxDataTy
   public static ICommonsList <ClassPathResource> getAllXSDs ()
   {
     final ICommonsList <ClassPathResource> ret = UBL21Marshaller.getAllBaseXSDs ();
-    ret.add (CPeppolViDATDD.TDD_XSD_1_0_0);
+    ret.add (CPeppolViDATDD.TDD_XSD_1_1_0);
     return ret;
   }
 
@@ -54,7 +54,7 @@ public class PeppolViDATDD100Marshaller extends GenericJAXBMarshaller <TaxDataTy
   public static MapBasedNamespaceContext createNamespaceContext ()
   {
     final MapBasedNamespaceContext ret = UBL21NamespaceContext.getInstance ().getClone ();
-    ret.addMapping ("pxs", CPeppolViDATDD.TDD_XSD_1_0_0_NS);
+    ret.addMapping ("pxs", CPeppolViDATDD.TDD_XSD_1_1_0_NS);
     return ret;
   }
 

@@ -656,11 +656,11 @@
       <xsl:apply-templates select="*" mode="M28"/>
    </xsl:template>
    <!--RULE -->
-   <xsl:template match="/*/cbc:Amount | /*/cbc:BaseAmount | /*/cbc:PriceAmount | /*/cac:TaxTotal[cac:TaxSubtotal]/cbc:TaxAmount | /*/cac:TaxSubtotal/cbc:TaxAmount |/*/cbc:TaxableAmount | /*/cbc:LineExtensionAmount | /*/cbc:TaxExclusiveAmount | /*/cbc:TaxInclusiveAmount | /*/cbc:AllowanceTotalAmount | /*/cbc:ChargeTotalAmount | /*/cbc:PrepaidAmount | /*/cbc:PayableRoundingAmount | /*/cbc:PayableAmount"
+   <xsl:template match="cbc:Amount | cbc:BaseAmount | cbc:PriceAmount | cac:TaxTotal[cac:TaxSubtotal]/cbc:TaxAmount | cac:TaxSubtotal/cbc:TaxAmount | cbc:TaxableAmount | cbc:LineExtensionAmount | cbc:TaxExclusiveAmount | cbc:TaxInclusiveAmount | cbc:AllowanceTotalAmount | cbc:ChargeTotalAmount | cbc:PrepaidAmount | cbc:PayableRoundingAmount | cbc:PayableAmount"
                  priority="1015"
                  mode="M28">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                       context="/*/cbc:Amount | /*/cbc:BaseAmount | /*/cbc:PriceAmount | /*/cac:TaxTotal[cac:TaxSubtotal]/cbc:TaxAmount | /*/cac:TaxSubtotal/cbc:TaxAmount |/*/cbc:TaxableAmount | /*/cbc:LineExtensionAmount | /*/cbc:TaxExclusiveAmount | /*/cbc:TaxInclusiveAmount | /*/cbc:AllowanceTotalAmount | /*/cbc:ChargeTotalAmount | /*/cbc:PrepaidAmount | /*/cbc:PayableRoundingAmount | /*/cbc:PayableAmount"/>
+                       context="cbc:Amount | cbc:BaseAmount | cbc:PriceAmount | cac:TaxTotal[cac:TaxSubtotal]/cbc:TaxAmount | cac:TaxSubtotal/cbc:TaxAmount | cbc:TaxableAmount | cbc:LineExtensionAmount | cbc:TaxExclusiveAmount | cbc:TaxInclusiveAmount | cbc:AllowanceTotalAmount | cbc:ChargeTotalAmount | cbc:PrepaidAmount | cbc:PayableRoundingAmount | cbc:PayableAmount"/>
       <!--ASSERT -->
       <xsl:choose>
          <xsl:when test="@currencyID = $documentCurrencyCode"/>
@@ -1827,10 +1827,10 @@
                        context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument/pxs-taxdata:MonetaryTotal[$supplierCountryIsNL]"/>
       <!--ASSERT -->
       <xsl:choose>
-         <xsl:when test="(../pxs-taxdata:DocumentTypeCode[.='71' or .='80' or .='82' or .='84' or .='102' or .='218' or .='219' or .='326' or .='331' or .='380' or .='382' or .='383' or .='384' or .='386' or .='388' or .='393' or .='395' or .='553' or .='575' or .='623' or .='780' or .='817' or .='870' or .='875' or .='876' or .='877'] and xs:decimal(cbc:PayableAmount) &lt;= 0.0) or (../pxs-taxdata:DocumentTypeCode[.='381' or .='396' or .='81' or .='83' or .='532'] and xs:decimal(cbc:PayableAmount) &gt;= 0.0) or (//cac:PaymentMeans)"/>
+         <xsl:when test="(../pxs-taxdata:DocumentTypeCode[.='71' or .='80' or .='82' or .='84' or .='102' or .='218' or .='219' or .='326' or .='331' or .='380' or .='382' or .='383' or .='384' or .='386' or .='388' or .='393' or .='395' or .='553' or .='575' or .='623' or .='780' or .='817' or .='870' or .='875' or .='876' or .='877'] and xs:decimal(cbc:PayableAmount) &lt;= 0.0) or (../pxs-taxdata:DocumentTypeCode[.='381' or .='396' or .='81' or .='83' or .='532'] and xs:decimal(cbc:PayableAmount) &gt;= 0.0) or (../cac:PaymentMeans)"/>
          <xsl:otherwise>
             <svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="(../pxs-taxdata:DocumentTypeCode[.='71' or .='80' or .='82' or .='84' or .='102' or .='218' or .='219' or .='326' or .='331' or .='380' or .='382' or .='383' or .='384' or .='386' or .='388' or .='393' or .='395' or .='553' or .='575' or .='623' or .='780' or .='817' or .='870' or .='875' or .='876' or .='877'] and xs:decimal(cbc:PayableAmount) &lt;= 0.0) or (../pxs-taxdata:DocumentTypeCode[.='381' or .='396' or .='81' or .='83' or .='532'] and xs:decimal(cbc:PayableAmount) &gt;= 0.0) or (//cac:PaymentMeans)">
+                                test="(../pxs-taxdata:DocumentTypeCode[.='71' or .='80' or .='82' or .='84' or .='102' or .='218' or .='219' or .='326' or .='331' or .='380' or .='382' or .='383' or .='384' or .='386' or .='388' or .='393' or .='395' or .='553' or .='575' or .='623' or .='780' or .='817' or .='870' or .='875' or .='876' or .='877'] and xs:decimal(cbc:PayableAmount) &lt;= 0.0) or (../pxs-taxdata:DocumentTypeCode[.='381' or .='396' or .='81' or .='83' or .='532'] and xs:decimal(cbc:PayableAmount) &gt;= 0.0) or (../cac:PaymentMeans)">
                <xsl:attribute name="id">NL-R-007</xsl:attribute>
                <xsl:attribute name="flag">fatal</xsl:attribute>
                <xsl:attribute name="location">
@@ -1876,11 +1876,11 @@
                  select="'^[a-zA-Z0-9!#\$%&amp;&#34;*+/=?^_`{|}~-]+(\.[a-zA-Z0-9!#\$%&amp;&#34;*+/=?^_`{|}~-]+)*@([a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$'"/>
    <xsl:variable name="XR-TELEPHONE-REGEX" select="'.*([0-9].*){3,}.*'"/>
    <!--RULE -->
-   <xsl:template match="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument/pxs-taxdata:ReportedDocument[$supplierCountryIsDE and $customerCountryIsDE]"
+   <xsl:template match="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument[$supplierCountryIsDE and $customerCountryIsDE]"
                  priority="1004"
                  mode="M40">
       <svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                       context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument/pxs-taxdata:ReportedDocument[$supplierCountryIsDE and $customerCountryIsDE]"/>
+                       context="pxs-taxdata:TaxData/pxs-taxdata:ReportedTransaction/pxs-taxdata:ReportedDocument[$supplierCountryIsDE and $customerCountryIsDE]"/>
       <!--ASSERT -->
       <xsl:choose>
          <xsl:when test="cac:PaymentMeans"/>

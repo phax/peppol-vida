@@ -24,11 +24,12 @@
 		</cac:PartyIdentification>
 	</pxs:ReportersRepresentative>
 	<pxs:ReportedTransaction>
+		<pxs:TransmissionUUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</pxs:TransmissionUUID>
 		<pxs:ReportedDocument>
 			<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
 			<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
 			<cbc:ID>INV-2025-0412</cbc:ID>
-			<cbc:UUID>2f6b8a91-7d3c-4f5a-9a18-3c4e5f6a7b21</cbc:UUID>
+			<cbc:UUID>0c91a6a4-0663-58cc-93ab-a7924f208b38</cbc:UUID>
 			<cbc:IssueDate>2025-03-07</cbc:IssueDate>
 			<pxs:DocumentTypeCode>380</pxs:DocumentTypeCode>
 			<cbc:DocumentCurrencyCode>GBP</cbc:DocumentCurrencyCode>

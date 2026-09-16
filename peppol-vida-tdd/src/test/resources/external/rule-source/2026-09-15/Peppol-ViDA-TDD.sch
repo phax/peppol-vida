@@ -37,7 +37,7 @@
 
 			<assert id="ibr-tdd-04" flag="fatal" test="string-length(normalize-space(cbc:IssueDate)) = 10">[ibr-tdd-04] – The cbc:IssueDate (TDT-004) element MUST NOT contain timezone information.</assert>
 
-			<assert id="ibr-tdd-05" flag="fatal" test="matches(normalize-space(cbc:IssueTime), '^(?:([01]\d|2[0-3]):[0-5]\d:[0-5]\d|24:00:00)(\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$')">[ibr-tdd-05] – The cbc:IssueTime (TDT-005) element MUST contain timezone information.</assert>
+			<assert id="ibr-tdd-05" flag="fatal" test="matches(normalize-space(cbc:IssueTime), '^(?:([01]\d|2[0-3]):[0-5]\d:[0-5]\d|24:00:00)(\.\d+)?(?:Z|[+-]\d{2}:\d{2})$')">[ibr-tdd-05] – The cbc:IssueTime (TDT-005) element MUST contain timezone information.</assert>
 
 			<assert id="ibr-tdd-06" flag="fatal" test="not(contains($dtc, ' ')) and contains($cl_dtc, concat(' ', $dtc, ' '))">[ibr-tdd-06] – The pxs:TaxDataTypeCode (TDT-007) element MUST be coded according to the applicable code list.</assert>
 
@@ -90,11 +90,22 @@
 			<assert id="ibr-tdd-23" flag="fatal" test="exists(cac:PartyIdentification/cbc:ID/@schemeID) and cac:PartyIdentification/cbc:ID/@schemeID = '0242'">[ibr-tdd-23] – The scheme identifier(TDT-015-1) attribute of Reporter's Representative party (TDG-08) ID MUST be present and MUST refer to an SPID ('0242').</assert>
 		</rule>
 		<rule context="/pxs:TaxData/pxs:ReportedTransaction">
+			<assert id="ibr-tdd-88" flag="fatal" test="exists(pxs:TransmissionUUID)">[ibr-tdd-88] – The Invoice Transmission UUID (TDT-018) MUST be present.</assert>
+			<assert id="ibr-tdd-89" flag="fatal" test="not(exists(pxs:TransmissionUUID)) or matches(normalize-space(pxs:TransmissionUUID), '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$')">[ibr-tdd-89] – The Invoice Transmission UUID (TDT-018) MUST be a valid UUID (version 1 to 8).</assert>
 			<assert id="ibr-tdd-24" flag="fatal" test="exists(pxs:ReportedDocument)">[ibr-tdd-24] – The cac:ReportedDocument (TDG-02) element MUST be present.</assert>
 		</rule>
 		<rule context="/pxs:TaxData/pxs:ReportedTransaction/pxs:ReportedDocument">
+			<let name="rr_doc" value="normalize-space(/pxs:TaxData/pxs:ReporterRole)"/>
 			<assert id="ibr-tdd-25" flag="fatal" test="count(*[not(self::cbc:CustomizationID or self::cbc:ProfileID or self::cbc:ID or self::cbc:UUID or self::cbc:IssueDate or self::cbc:IssueTime or self::pxs:DocumentTypeCode or self::cbc:Note or self::cbc:TaxPointDate or self::cbc:DocumentCurrencyCode or self::cbc:TaxCurrencyCode or self::cac:InvoicePeriod or self::cac:BillingReference or self::cac:AccountingSupplierParty or self::cac:AccountingCustomerParty or self::cac:TaxRepresentativeParty or self::cac:Delivery or self::cac:PaymentMeans or self::cac:AllowanceCharge or self::cac:TaxTotal or self::pxs:MonetaryTotal or self::pxs:DocumentLine)]) = 0">[ibr-tdd-25] – The cac:ReportedDocument element MUST NOT contain elements other than cbc:CustomizationID (BT-024), cbc:ProfileID (BT-023), cbc:ID (BT-001), cbc:UUID (TDT-017), cbc:IssueDate (BT-002), cbc:IssueTime, pxs:DocumentTypeCode (BT-003), cbc:Note (BT-022), cbc:TaxPointDate (BT-007), cbc:DocumentCurrencyCode (BT-005), cbc:TaxCurrencyCode (BT-006), cac:InvoicePeriod (BG-14), cac:BillingReference (BG-03), cac:AccountingSupplierParty (BG-04), cac:AccountingCustomerParty (BG-07), cac:TaxRepresentativeParty (BG-11), cac:Delivery (BG-13), cac:PaymentMeans (BG-16), cac:AllowanceCharge (BG-20, BG-21), cac:TaxTotal (BT-110, BG-37), pxs:MonetaryTotal (BG-22), and pxs:DocumentLine (BG-25).</assert>
 			<assert id="ibr-tdd-86" flag="fatal" test="exists(cbc:UUID)">[ibr-tdd-86] – The UUID (TDT-017) MUST be present.</assert>
+
+			<assert id="ibr-tdd-87" flag="fatal" test="not(exists(cbc:UUID)) or matches(normalize-space(cbc:UUID), '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-5[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$')">[ibr-tdd-87] – The Invoice UUID (TDT-017) MUST be a valid UUID version 5.</assert>
+
+			<assert id="ibr-tdd-90" flag="fatal" test="not($rr_doc = 'C3') or exists(cac:TaxTotal/cbc:TaxAmount[@currencyID = normalize-space(../../cbc:DocumentCurrencyCode)])">[ibr-tdd-90] – When the Reporter role (TDT-012) is 'C3', the Invoice total VAT amount (BT-110) MUST be present.</assert>
+
+			<assert id="ibr-tdd-91" flag="fatal" test="not($rr_doc = 'C3') or exists(pxs:MonetaryTotal/cbc:TaxInclusiveAmount)">[ibr-tdd-91] – When the Reporter role (TDT-012) is 'C3', the Invoice total amount with VAT (BT-112) MUST be present.</assert>
+
+			<assert id="ibr-tdd-93" flag="fatal" test="not($rr_doc = 'C3') or not(exists(cbc:TaxCurrencyCode)) or exists(cac:TaxTotal/cbc:TaxAmount[@currencyID = normalize-space(../../cbc:TaxCurrencyCode)])">[ibr-tdd-93] – When the Reporter role (TDT-012) is 'C3' and a VAT accounting currency code (BT-006) is present, the Invoice total VAT amount in accounting currency (BT-111) MUST be present.</assert>
 
 		</rule>
 		<rule context="/pxs:TaxData/pxs:ReportedTransaction/pxs:ReportedDocument/cac:InvoicePeriod">
@@ -240,7 +251,10 @@
 		</rule>
 
 		<rule context="/pxs:TaxData/pxs:ReportedTransaction/pxs:ReportedDocument/cac:TaxTotal/cac:TaxSubtotal">
+			<let name="rr_sub" value="normalize-space(/pxs:TaxData/pxs:ReporterRole)"/>
 			<assert id="ibr-tdd-67" flag="fatal" test="count(*[not(self::cbc:TaxableAmount or self::cbc:TaxAmount or self::cac:TaxCategory)]) = 0">[ibr-tdd-67] – The cac:TaxSubtotal (BG-23) element MUST NOT contain elements other than cbc:TaxableAmount (BT-116), cbc:TaxAmount (BT-117), and cac:TaxCategory.</assert>
+
+			<assert id="ibr-tdd-92" flag="fatal" test="not($rr_sub = 'C3') or (exists(cbc:TaxAmount) and exists(cac:TaxCategory/cbc:ID) and exists(cac:TaxCategory/cbc:Percent))">[ibr-tdd-92] – When the Reporter role (TDT-012) is 'C3', each VAT breakdown (BG-23) MUST contain the VAT category tax amount (BT-117), the VAT category code (BT-118) and the VAT category rate (BT-119).</assert>
 
 			<assert id="ibr-tdd-68" flag="fatal" test="count(cbc:TaxableAmount/@*[not(local-name() = 'currencyID')]) = 0">[ibr-tdd-68] – The cbc:TaxableAmount (BT-116) element MUST have the attribute 'currencyID'.</assert>
 

@@ -45,10 +45,10 @@ import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
 import com.helger.peppol.vida.tdd.CViDATDD;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDTaxDataTypeCode;
-import com.helger.peppol.vida.tdd.v2026_03_18.DocumentLineType;
-import com.helger.peppol.vida.tdd.v2026_03_18.MonetaryTotalType;
-import com.helger.peppol.vida.tdd.v2026_03_18.ReportedDocumentType;
-import com.helger.peppol.vida.tdd.v2026_03_18.ReportedTransactionType;
+import com.helger.peppol.vida.tdd.v2026_09_15.DocumentLineType;
+import com.helger.peppol.vida.tdd.v2026_09_15.MonetaryTotalType;
+import com.helger.peppol.vida.tdd.v2026_09_15.ReportedDocumentType;
+import com.helger.peppol.vida.tdd.v2026_09_15.ReportedTransactionType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AddressType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
@@ -98,6 +98,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
 
   private final EViDATDDTaxDataTypeCode m_eDocumentTypeCode;
   private String m_sCustomizationID;
+  private String m_sTransmissionUUID;
   private String m_sProfileID;
   private String m_sID;
   private LocalDate m_aIssueDate;
@@ -116,6 +117,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   // BT-29
   private String m_sSellerIDSchemeID;
   private String m_sSellerID;
+  // BT-31
   private String m_sSellerTaxID;
   private String m_sSellerCountryCode;
   private String m_sBuyerTaxID;
@@ -498,6 +500,19 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   public PeppolViDATDD100ReportedTransactionBuilder customizationID (@Nullable final String s)
   {
     m_sCustomizationID = s;
+    return this;
+  }
+
+  @Nullable
+  public String transmissionUUID ()
+  {
+    return m_sTransmissionUUID;
+  }
+
+  @NonNull
+  public PeppolViDATDD100ReportedTransactionBuilder transmissionUUID (@Nullable final String s)
+  {
+    m_sTransmissionUUID = s;
     return this;
   }
 
@@ -1180,6 +1195,11 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     // TransportHeaderID is optional
 
     // Check all ReportedDocument fields
+    if (StringHelper.isEmpty (m_sTransmissionUUID))
+    {
+      aCondLog.error (sErrorPrefix + "TransmissionUUID is missing");
+      aErrorCount.inc ();
+    }
     if (StringHelper.isEmpty (m_sCustomizationID))
     {
       aCondLog.error (sErrorPrefix + "CustomizationID is missing");
@@ -1330,6 +1350,8 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
 
     final ReportedTransactionType ret = new ReportedTransactionType ();
 
+    ret.setTransmissionUUID(m_sTransmissionUUID);
+
     // ReportedDocument - optional for FAILED state
     if (m_eDocumentTypeCode != EViDATDDTaxDataTypeCode.DISREGARD || aReportedDocErrs.is0 ())
     {
@@ -1338,9 +1360,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
                                                      StringImplode.imploder ()
                                                                   .filterNonEmpty ()
                                                                   .separator (' ')
-                                                                  .source (StringHelper.getNotNull (m_sSellerIDSchemeID,
-                                                                                                    ""),
-                                                                           StringHelper.getNotNull (m_sSellerID, ""),
+                                                                  .source (StringHelper.getNotNull (m_sSellerTaxID, ""),
                                                                            StringHelper.getNotNull (m_sDocumentTypeCode,
                                                                                                     ""),
                                                                            StringHelper.getNotNull (m_sID, ""),

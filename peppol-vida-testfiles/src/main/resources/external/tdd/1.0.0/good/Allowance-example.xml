@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pxs:TaxData xmlns:pxs="urn:peppol:schema:vida-taxdata:1.0"
-	xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
-	xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
-	xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+<pxs:TaxData xmlns:pxs="urn:peppol:schema:vida-taxdata:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cec="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
 	<cbc:CustomizationID>urn:peppol:taxdata:vida-1</cbc:CustomizationID>
 	<cbc:ProfileID>urn:peppol:taxreporting</cbc:ProfileID>
 	<cbc:UUID>123e4567-e89b-12d3-a456-426614174000</cbc:UUID>
@@ -27,12 +24,13 @@
 		</cac:PartyIdentification>
 	</pxs:ReportersRepresentative>
 	<pxs:ReportedTransaction>
+		<pxs:TransmissionUUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</pxs:TransmissionUUID>
 		<pxs:ReportedDocument>
 			<cbc:CustomizationID>
 				urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
 			<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
 			<cbc:ID>INV-2025-0001</cbc:ID>
-			<cbc:UUID>f47ac10b-58cc-4372-a567-0e02b2c3d479</cbc:UUID>
+			<cbc:UUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</cbc:UUID>
 			<cbc:IssueDate>2025-01-10</cbc:IssueDate>
 			<pxs:DocumentTypeCode>380</pxs:DocumentTypeCode>
 			<cbc:Note>Monthly facility maintenance services provided during January 2025.</cbc:Note>

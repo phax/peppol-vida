@@ -35,7 +35,7 @@ import com.helger.base.string.StringHelper;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.xml.XMLOffsetDate;
-import com.helger.peppol.vida.tdd.v2026_03_18.DocumentLineType;
+import com.helger.peppol.vida.tdd.v2026_09_15.DocumentLineType;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CreditNoteLineType;

@@ -24,11 +24,12 @@
 		</cac:PartyIdentification>
 	</pxs:ReportersRepresentative>
 	<pxs:ReportedTransaction>
+		<pxs:TransmissionUUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</pxs:TransmissionUUID>
 		<pxs:ReportedDocument>
 			<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
 			<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
 			<cbc:ID>CN-2025-0003</cbc:ID>
-			<cbc:UUID>9f1c2e41-5c5f-4b0b-8c2e-7a3fdb6d3e12</cbc:UUID>
+			<cbc:UUID>5cd6f9a0-30b0-59b3-aeae-de5318029fce</cbc:UUID>
 			<cbc:IssueDate>2025-02-05</cbc:IssueDate>
 			<pxs:DocumentTypeCode>381</pxs:DocumentTypeCode>
 			<cbc:Note>Credit note issued to correct previously invoiced consulting services.</cbc:Note>
@@ -114,7 +115,7 @@
 			<pxs:DocumentLine>
 				<cbc:ID>1</cbc:ID>
 				<cbc:InvoicedQuantity unitCode="DAY">7</cbc:InvoicedQuantity>
-				<cbc:LineExtensionAmount currencyID= "EUR">2800</cbc:LineExtensionAmount>
+				<cbc:LineExtensionAmount currencyID="EUR">2800</cbc:LineExtensionAmount>
 				<cac:Item>
 					<cbc:Description>On-site consulting services for logistics optimisation</cbc:Description>
 					<cbc:Name>Consulting services</cbc:Name>

@@ -39,7 +39,7 @@ import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDTaxDataTypeCode;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD100Marshaller;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
-import com.helger.peppol.vida.tdd.v2026_03_18.TaxDataType;
+import com.helger.peppol.vida.tdd.v2026_09_15.TaxDataType;
 import com.helger.peppol.vida.tdd.validate.PeppolViDATDDValidator;
 import com.helger.peppolid.factory.IIdentifierFactory;
 import com.helger.peppolid.factory.PeppolIdentifierFactory;
@@ -76,6 +76,7 @@ public final class PeppolViDATDD100BuilderTest
                                                            .reportedTransaction (rt -> rt.customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
                                                                                          .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
                                                                                          .id ("invoice-1")
+                                                                                         .transmissionUUID("123e4567-e89b-12d3-a456-426614174000")
                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
                                                                                                                                  Month.SEPTEMBER,
                                                                                                                                  20))
@@ -138,6 +139,7 @@ public final class PeppolViDATDD100BuilderTest
                                                            .reportedTransaction (rt -> rt.customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
                                                                                          .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
                                                                                          .id ("invoice-1")
+                                                                                         .transmissionUUID("123e4567-e89b-12d3-a456-426614174000")
                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
                                                                                                                                  Month.SEPTEMBER,
                                                                                                                                  20))
@@ -218,7 +220,8 @@ public final class PeppolViDATDD100BuilderTest
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                              .taxAuthorityID ("XX")
                                                              // Read from pre-parsed UBL Invoice
-                                                             .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
+                                                             .reportedTransaction (rt -> rt.initFromInvoice (aInvoice)
+                                                                                                                          .transmissionUUID("123e4567-e89b-12d3-a456-426614174000"))
                                                              .build ();
       assertNotNull (aTDD);
 
@@ -258,7 +261,8 @@ public final class PeppolViDATDD100BuilderTest
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                              .taxAuthorityID ("XX")
                                                              // Read from pre-parsed UBL CreditNote
-                                                             .reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote))
+                                                             .reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote)
+                                                                                                                          .transmissionUUID("123e4567-e89b-12d3-a456-426614174000"))
                                                              .build ();
       assertNotNull (aTDD);
 
@@ -297,7 +301,8 @@ public final class PeppolViDATDD100BuilderTest
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            .taxAuthorityID ("XX")
                                                            // It's not really an invalid invoice
-                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
+                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice)
+                                                                                                                        .transmissionUUID("123e4567-e89b-12d3-a456-426614174000"))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -341,7 +346,9 @@ public final class PeppolViDATDD100BuilderTest
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            .taxAuthorityID ("XX")
                                                            // This Invoice is really broken
-                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice))
+                                                           .reportedTransaction (rt ->
+                                                               rt.initFromInvoice (aInvoice)
+                                                                 .transmissionUUID("123e4567-e89b-12d3-a456-426614174000"))
                                                            .build ();
     assertNotNull (aTDD);
 

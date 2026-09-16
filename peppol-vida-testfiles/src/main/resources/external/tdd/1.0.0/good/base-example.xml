@@ -24,11 +24,12 @@
 		</cac:PartyIdentification>
 	</pxs:ReportersRepresentative>
 	<pxs:ReportedTransaction>
+		<pxs:TransmissionUUID>7b8d1838-2dfa-5f83-9986-5b8d55b4ca12</pxs:TransmissionUUID>
 		<pxs:ReportedDocument>
 			<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
 			<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
 			<cbc:ID>INV-2025-0046</cbc:ID>
-			<cbc:UUID>3e1c2c54-9c2f-4d7a-8c0e-3b0d98c8f8f4</cbc:UUID>
+			<cbc:UUID>70e13169-8f17-5456-a036-c9bb6cc90f6e</cbc:UUID>
 			<cbc:IssueDate>2025-02-10</cbc:IssueDate>
 			<pxs:DocumentTypeCode>380</pxs:DocumentTypeCode>
 			<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
@@ -108,7 +109,7 @@
 			<pxs:DocumentLine>
 				<cbc:ID>1</cbc:ID>
 				<cbc:InvoicedQuantity unitCode="DAY">7</cbc:InvoicedQuantity>
-				<cbc:LineExtensionAmount currencyID= "EUR">2800</cbc:LineExtensionAmount>
+				<cbc:LineExtensionAmount currencyID="EUR">2800</cbc:LineExtensionAmount>
 				<cac:Item>
 					<cbc:Description>On-site logistics consulting services</cbc:Description>
 					<cbc:Name>Consulting services</cbc:Name>
