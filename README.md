@@ -122,23 +122,35 @@ to build the solution.
 
 # News and noteworthy
 
-v0.11.0 - work in progress
-* Updated to the TDD v1.1.0 specification (XSD from 2026-09-14, Schematron from 2026-09-14). This contains two backwards incompatible changes
-* The Invoice UUID (TDT-017) is now calculated from the Seller VAT identifier (BT-31), the invoice type code (BT-03), the invoice number (BT-01) and the invoice issue date (BT-02) - previously the Seller identifier (BT-29/BT-29-1) was used instead of BT-31. UUIDs created with earlier versions therefore differ
+v0.11.0 - 2026-09-17
+* Updated to the Peppol ViDA TDD **v1.1.0** specification - XSD and Schematron from 2026-09-14. See https://test-docs.peppol.eu/vida/2026-v1.1.0/Vida-tdd/
+* **Incompatible change**: the Invoice UUID (TDT-017) is now calculated from the Seller VAT identifier (BT-31), the invoice type code (BT-03), the invoice number (BT-01) and the invoice issue date (BT-02), each trimmed and joined with a single space character. Previously the Seller identifier (BT-29) and its scheme (BT-29-1) were used instead of BT-31, so Invoice UUIDs created with earlier versions differ
+* **Incompatible change**: the Invoice Transmission UUID (TDT-018) is new and mandatory. It identifies one single exchange of the reported document, is not derived from the document content and must therefore always be provided by the caller
+* Further changes of the TDD v1.1.0 rules:
+    * New rules `ibr-tdd-87` (TDT-017 must be a version 5 UUID), `ibr-tdd-88` and `ibr-tdd-89` (TDT-018 present and a valid UUID)
+    * New rules `ibr-tdd-90` to `ibr-tdd-93`: when the Reporter role (TDT-012) is "C3", the Invoice total VAT amount (BT-110), the Invoice total amount with VAT (BT-112), per VAT breakdown BT-117, BT-118 and BT-119 and - if a VAT accounting currency code (BT-006) is present - BT-111 are mandatory. For the Reporter role "C2" they stay optional
+    * `ibr-tdd-05` now really enforces the time zone on the TDD issue time (TDT-005); the previous regular expression made the offset optional
+    * Several inherited CEN EN 16931 and Peppol rules were repaired, because they could not match a TDD:
+        * The VAT breakdown rules `BR-{AE,E,G,K,Z,S,O,AF,AG}-08/09/10` and `PEPPOL-EN16931-R051` were anchored at the document root (`/*/cac:TaxTotal/...`), which is `pxs:TaxData` in a TDD. They now use the `pxs:TaxData/pxs:ReportedTransaction/pxs:ReportedDocument` path respectively relative paths
+        * The German rules `DE-R-001`, `DE-R-016`, `DE-R-017`, `DE-R-026` and `DE-R-031` had a duplicated path segment (`.../pxs:ReportedDocument/pxs:ReportedDocument`) and therefore never matched
+        * `UBL-CR-674` tested for the non-existing element `cbc:PrimaryAccountNumber` instead of `cbc:PrimaryAccountNumberID`
+        * `NL-R-007` accepted a `cac:PaymentMeans` anywhere in the document (`//cac:PaymentMeans`); it is now limited to the reported document (`../cac:PaymentMeans`)
+* The version number in a class or package name now always matches the TDD version it handles. **All TDD v1.0.0 classes and resources are kept as deprecated**, so that legacy documents can still be created, read, written and validated:
+    * The builders in `com.helger.peppol.vida.tdd.v110` (`PeppolViDATDD110Builder` and friends) create TDD v1.1.0 documents - they are the renamed former `…v100.PeppolViDATDD100*` classes
+    * The builders in `com.helger.peppol.vida.tdd.v100` are deprecated and functionally unchanged - they still create TDD v1.0.0 documents
+    * `PeppolViDATDD110Marshaller` binds the TDD v1.1.0 XSD, the deprecated `PeppolViDATDD100Marshaller` binds the TDD v1.0.0 XSD. Both JAXB models are generated: `…tdd.v2026_09_14` and `…tdd.v2026_03_18`. Neither marshaller can read the other version's documents
+    * `CPeppolViDATDD` got `TDD_XSD_1_1_0`, `TDD_XSD_1_1_0_PATH` and `TDD_XSD_1_1_0_NS`; the `TDD_XSD_1_0_0*` counterparts are deprecated
+* Changes in `PeppolViDATDD110ReportedTransactionBuilder` compared to the v1.0.0 builder:
+    * Added `transmissionUUID` for TDT-018. It has no default - `build ()` returns `null` if it is not set
+    * The constructor now takes the Reporter role (TDT-012) as a second argument, because the buy side (C3) must report VAT fields that the sell side (C2) may omit
+    * The Seller VAT identifier (BT-31) is now required, except for the VAT category "Not subject to VAT", for which `BR-O-02` forbids it
+    * Deprecated `sellerID` and `sellerIDSchemeID` (BT-29/BT-29-1) - they are neither part of the TDD nor an input of the UUID calculation any more, and are no longer read by `initFromInvoice`/`initFromCreditNote`
+    * The Seller electronic address (BT-34), the Buyer name (BT-44), the VAT category code (BT-118) and the line VAT information (BG-30) are no longer required, so that a minimum TDD can be created. The Invoice total amount with VAT (BT-112) is only required for the Reporter role "C3"
+    * New checks instead: the BUYER (BG-07) must carry at least one of BT-48, BT-55 or BT-44, because it must not be empty (`PEPPOL-EN16931-R008`), and exactly one `cac:TaxTotal` with at least one VAT breakdown (BG-23) is required (`PEPPOL-EN16931-R053`)
 * Added `CViDATDD.createInvoiceUUID` to calculate the Invoice UUID (TDT-017) standalone. It is verified against the four test vectors of the specification
-* Added the new mandatory Invoice Transmission UUID (TDT-018) as `transmissionUUID` to `PeppolViDATDD110ReportedTransactionBuilder`. It is not derived from the document content and must always be provided by the caller
-* `PeppolViDATDD110ReportedTransactionBuilder` now takes the Reporter role (TDT-012) as a second constructor argument, because the buy side (C3) needs VAT fields that the sell side (C2) may omit - see the new rules ibr-tdd-90 to ibr-tdd-93
-* The Seller VAT identifier (BT-31) is now a required field, except for the VAT category "Not subject to VAT" (BR-O-02)
-* Deprecated `sellerID` and `sellerIDSchemeID` (BT-29/BT-29-1) in `PeppolViDATDD110ReportedTransactionBuilder` - they are neither part of the TDD nor an input of the UUID calculation any more
-* Relaxed the builders so that a minimum TDD can be created: the Seller electronic address (BT-34), the Buyer name (BT-44), the VAT category code (BT-118) and the line VAT information (BG-30) are no longer required
-* `PeppolViDATDDValidator` got the new VES ID `org.peppol.taxdata:vida:1.1.0` and the method `validateViDA_TDD_110`
-* **All TDD v1.0.0 classes and resources are kept as deprecated**, so that legacy documents can still be created, read, written and validated. The version number in a class name now always matches the TDD version it handles:
-    * `com.helger.peppol.vida.tdd.v110.PeppolViDATDD110*` builders create TDD v1.1.0 documents - they are the renamed former `…v100.PeppolViDATDD100*` classes
-    * `com.helger.peppol.vida.tdd.v100.PeppolViDATDD100*` builders are deprecated and unchanged - they still create TDD v1.0.0 documents using the Seller identifier (BT-29) for the UUID calculation and without the Invoice Transmission UUID (TDT-018)
-    * `PeppolViDATDD110Marshaller` binds the v1.1.0 XSD, the deprecated `PeppolViDATDD100Marshaller` binds the v1.0.0 XSD. Both JAXB models are generated: `…tdd.v2026_09_14` and `…tdd.v2026_03_18`
-    * `PeppolViDATDDValidator` keeps `validateViDA_TDD_100`, `XSLT_*_TDD_100` and the VES ID `org.peppol.taxdata:vida:1.0.0`, which is registered as deprecated
-* Added `CPeppolViDATDD.TDD_XSD_1_1_0*` and changed the JAXB package to `com.helger.peppol.vida.tdd.v2026_09_14`
-* Added the TDD v1.1.0 examples to `peppol-vida-testfiles` (`tdd/1.1.0/good/`), available via `PeppolViDATestFiles.getAllGoodTDD110Files ()`. The v1.0.0 examples are kept as deprecated via `getAllGoodTDD100Files ()`
+* `PeppolViDATDDValidator` got the VES ID `org.peppol.taxdata:vida:1.1.0` (`VID_TDD_VIDA_110`), the method `validateViDA_TDD_110` and the resources `XSLT_*_TDD_110`. The `…_100` counterparts are deprecated and the TDD v1.0.0 VES is registered as deprecated. Added the constants `GROUP_ID` and `ARTIFACT_ID`
+* `peppol-vida-testfiles` now contains the TDD v1.1.0 examples in `tdd/1.1.0/good/`, available via `PeppolViDATestFiles.getAllGoodTDD110Files ()`. The v1.0.0 examples are kept as deprecated via `getAllGoodTDD100Files ()`, and `getAllSchematronBadTDD100Files`/`getAllPayloadBadTDD100Files` were renamed to `…TDD110Files`
+    * The three "WithoutTaxes" examples of the specification are not listed, because they are not XSD valid: they contain a `cac:TaxTotal` without `cbc:TaxAmount` and a `cac:TaxSubtotal` without `cbc:TaxAmount`, but both are mandatory in UBL 2.1
 * Updated the bundled OpenPeppol ViDA Pilot Testing sample TDDs to TDD v1.1.0
 
 v0.10.2 - 2026-09-08

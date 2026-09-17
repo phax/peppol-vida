@@ -116,10 +116,11 @@
               </bindingIncludes>
               <episode>false</episode>
               <catalog>${basedir}/src/main/jaxb/catalog-tdd.txt</catalog>
+              <generateDirectory>${project.build.directory}/generated-sources/xjc-100</generateDirectory>
             </configuration>
           </execution>
           <execution>
-            <id>current</id>
+            <id>v1.1.0</id>
             <goals>
               <goal>generate</goal>
             </goals>
@@ -132,6 +133,7 @@
                 <bindingInclude>binding-2026-09-14.xjb</bindingInclude>
               </bindingIncludes>
               <catalog>${basedir}/src/main/jaxb/catalog-tdd.txt</catalog>
+              <generateDirectory>${project.build.directory}/generated-sources/xjc-110</generateDirectory>
             </configuration>
           </execution>
         </executions>
@@ -177,8 +179,8 @@
             </goals>
             <configuration>
               <target>
-                <delete dir="${basedir}/target/generated-sources/xjc/oasis" />
-                <delete dir="${basedir}/target/generated-sources/xjc-2026-03-18/oasis" />
+                <delete dir="${project.build.directory}/generated-sources/xjc-100/oasis" />
+                <delete dir="${project.build.directory}/generated-sources/xjc-110/oasis" />
               </target>
             </configuration>
           </execution>
