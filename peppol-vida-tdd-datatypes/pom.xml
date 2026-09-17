@@ -192,7 +192,7 @@
         <configuration>
           <source>17</source>
           <sourcepath>
-            ${project.build.sourceDirectory}:${project.build.directory}/generated-sources/xjc:${project.build.directory}/generated-sources/xjc-2026-03-18
+            ${project.build.sourceDirectory}:${project.build.directory}/generated-sources/xjc-100:${project.build.directory}/generated-sources/xjc-110
           </sourcepath>
         </configuration>
       </plugin> 
