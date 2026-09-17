@@ -31,9 +31,9 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.diagnostics.error.IError;
 import com.helger.io.file.FilenameHelper;
 import com.helger.io.resource.IReadableResource;
-import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD100Marshaller;
+import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD110Marshaller;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
-import com.helger.peppol.vida.tdd.v2026_03_18.TaxDataType;
+import com.helger.peppol.vida.tdd.v2026_09_14.TaxDataType;
 import com.helger.phive.api.executor.IValidationExecutor;
 import com.helger.phive.api.executorset.IValidationExecutorSet;
 import com.helger.phive.xml.source.IValidationSourceXML;
@@ -59,15 +59,33 @@ public final class PeppolViDADDValidatorTest
   }
 
   @Test
-  public void testReadTDD100Good () throws Exception
+  public void testReadTDD110Good () throws Exception
   {
-    final PeppolViDATDD100Marshaller aMarshaller = new PeppolViDATDD100Marshaller ();
+    final PeppolViDATDD110Marshaller aMarshaller = new PeppolViDATDD110Marshaller ();
 
-    for (final IReadableResource aRes : PeppolViDATestFiles.getAllGoodTDD100Files ())
+    for (final IReadableResource aRes : PeppolViDATestFiles.getAllGoodTDD110Files ())
     {
       LOGGER.info ("Reading " + aRes.getPath ());
       final TaxDataType tdd = aMarshaller.read (aRes);
       assertNotNull (tdd);
+
+      final var aVRL = PeppolViDATDDValidator.validateViDA_TDD_110 (aRes);
+      assertTrue (aVRL.getAllErrors ().getAllMapped (IError::getAsStringLocaleIndepdent).toString (),
+                  aVRL.getOverallValidity ().isValid ());
+    }
+  }
+
+  /**
+   * The deprecated TDD v1.0.0 rules must still validate the TDD v1.0.0 documents. They cannot be
+   * read with {@link PeppolViDATDD110Marshaller}, because that one binds the TDD v1.1.0 XSD.
+   */
+  @Test
+  @SuppressWarnings ("deprecation")
+  public void testValidateTDD100GoodWithDeprecatedRules ()
+  {
+    for (final IReadableResource aRes : PeppolViDATestFiles.getAllGoodTDD100Files ())
+    {
+      LOGGER.info ("Validating " + aRes.getPath () + " against the deprecated TDD v1.0.0 rules");
 
       final var aVRL = PeppolViDATDDValidator.validateViDA_TDD_100 (aRes);
       assertTrue (aVRL.getAllErrors ().getAllMapped (IError::getAsStringLocaleIndepdent).toString (),
@@ -75,18 +93,34 @@ public final class PeppolViDADDValidatorTest
     }
   }
 
+  /**
+   * A TDD v1.0.0 document has no Invoice Transmission UUID (TDT-018) and must therefore fail the
+   * TDD v1.1.0 XSD validation.
+   */
   @Test
-  public void testReadTDD100Bad () throws Exception
+  @SuppressWarnings ("deprecation")
+  public void testTDD100IsInvalidAgainstTDD110 ()
   {
-    final PeppolViDATDD100Marshaller aMarshaller = new PeppolViDATDD100Marshaller ();
+    final IReadableResource aRes = PeppolViDATestFiles.getAllGoodTDD100Files ().getFirstOrNull ();
+    assertNotNull (aRes);
 
-    for (final IReadableResource aRes : PeppolViDATestFiles.getAllSchematronBadTDD100Files ())
+    final var aVRL = PeppolViDATDDValidator.validateViDA_TDD_110 (aRes);
+    assertFalse (aVRL.getAllErrors ().getAllMapped (IError::getAsStringLocaleIndepdent).toString (),
+                 aVRL.getOverallValidity ().isValid ());
+  }
+
+  @Test
+  public void testReadTDD110Bad () throws Exception
+  {
+    final PeppolViDATDD110Marshaller aMarshaller = new PeppolViDATDD110Marshaller ();
+
+    for (final IReadableResource aRes : PeppolViDATestFiles.getAllSchematronBadTDD110Files ())
     {
       LOGGER.info ("Reading " + aRes.getPath ());
       final TaxDataType tdd = aMarshaller.read (aRes);
       assertNotNull (tdd);
 
-      final var aVRL = PeppolViDATDDValidator.validateViDA_TDD_100 (aRes);
+      final var aVRL = PeppolViDATDDValidator.validateViDA_TDD_110 (aRes);
       assertFalse (aVRL.getAllErrors ().getAllMapped (IError::getAsStringLocaleIndepdent).toString (),
                    aVRL.getOverallValidity ().isValid ());
 

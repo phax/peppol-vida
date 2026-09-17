@@ -75,6 +75,12 @@ public final class PeppolViDATestFiles
     return _getAll ("creditnote/good/", "base-creditnote-correction.xml");
   }
 
+  /**
+   * @return All valid TDD v1.0.0 documents of the specification.
+   * @deprecated Since 0.11.0 - use {@link #getAllGoodTDD110Files()} instead. They are only kept
+   *             around to be able to test the deprecated TDD v1.0.0 validation rules.
+   */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @Nonempty
   @ReturnsMutableCopy
@@ -93,12 +99,50 @@ public final class PeppolViDATestFiles
                     "SB-vat-category-O.xml",
                     "SB-Vat-category-S.xml",
                     "SB-vat-category-Z.xml",
-                    // "SB-WithoutTaxes-example.xml",
+                    // "SB-WithoutTaxes-example.xml" - not XSD valid
                     "vat-category-E.xml",
                     "vat-category-O.xml",
                     "Vat-category-S.xml",
                     "vat-category-Z.xml"
-    // ,"WithoutTaxes-example.xml"
+    // , "WithoutTaxes-example.xml" - not XSD valid
+    );
+  }
+
+  @NonNull
+  @Nonempty
+  @ReturnsMutableCopy
+  public static ICommonsList <@NonNull ClassPathResource> getAllGoodTDD110Files ()
+  {
+    return _getAll ("tdd/1.1.0/good/",
+                    "Allowance-example.xml",
+                    "base-creditnote-correction.xml",
+                    "base-example.xml",
+                    "base-negative-inv-correction.xml",
+                    "C3-accounting-currency-example.xml",
+                    "DE-domestic-example.xml",
+                    "SB-Allowance-example.xml",
+                    "SB-base-creditnote-correction.xml",
+                    "SB-base-example.xml",
+                    "SB-base-negative-inv-correction.xml",
+                    "SB-vat-category-E.xml",
+                    "SB-vat-category-O.xml",
+                    "SB-Vat-category-S.xml",
+                    "SB-vat-category-Z.xml",
+                    // "SB-WithoutTaxes-example.xml" - not XSD valid, see below
+                    "vat-category-AE.xml",
+                    "vat-category-E.xml",
+                    "vat-category-G.xml",
+                    "vat-category-K.xml",
+                    "vat-category-L.xml",
+                    "vat-category-M.xml",
+                    "vat-category-O.xml",
+                    "Vat-category-S.xml",
+                    "vat-category-Z.xml"
+    // The three "WithoutTaxes" examples of the specification are not XSD valid: they contain a
+    // cac:TaxTotal without cbc:TaxAmount and a cac:TaxSubtotal without cbc:TaxAmount, but both are
+    // mandatory in UBL 2.1
+    // , "Vida-tdd-only_WithoutTaxes-example.xml"
+    // , "WithoutTaxes-example.xml"
     );
   }
 
@@ -146,14 +190,14 @@ public final class PeppolViDATestFiles
 
   @NonNull
   @ReturnsMutableCopy
-  public static ICommonsList <@NonNull ClassPathResource> getAllSchematronBadTDD100Files ()
+  public static ICommonsList <@NonNull ClassPathResource> getAllSchematronBadTDD110Files ()
   {
     return new CommonsArrayList <> ();
   }
 
   @NonNull
   @ReturnsMutableCopy
-  public static ICommonsList <@NonNull ClassPathResource> getAllPayloadBadTDD100Files ()
+  public static ICommonsList <@NonNull ClassPathResource> getAllPayloadBadTDD110Files ()
   {
     return new CommonsArrayList <> ();
   }

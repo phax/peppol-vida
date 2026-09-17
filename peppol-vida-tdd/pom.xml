@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger.peppol</groupId>
     <artifactId>peppol-vida-parent-pom</artifactId>
-    <version>0.10.3-SNAPSHOT</version>
+    <version>0.11.0-SNAPSHOT</version>
   </parent>
   <artifactId>peppol-vida-tdd</artifactId>
   <packaging>jar</packaging>
@@ -108,8 +108,8 @@
               <goal>convert</goal>
             </goals>
             <configuration>
-              <schematronDirectory>src/test/resources/external/rule-source/2026-06-02</schematronDirectory>
-              <xsltDirectory>src/main/resources/external/schematron/2026-06-02</xsltDirectory>
+              <schematronDirectory>src/test/resources/external/rule-source/2026-09-14</schematronDirectory>
+              <xsltDirectory>src/main/resources/external/schematron/2026-09-14</xsltDirectory>
               <schematronEngine>iso-schematron</schematronEngine>
             </configuration>
           </execution>

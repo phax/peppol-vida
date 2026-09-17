@@ -18,7 +18,7 @@ They are licensed under the Apache 2.0 license.
 The minimum requirement is Java 17.
 
 The backing specifications are:
-* ViDA pilot: https://test-docs.peppol.eu/vida/Vida-tdd/
+* ViDA pilot TDD v1.1.0: https://test-docs.peppol.eu/vida/2026-v1.1.0/Vida-tdd/
 
 # Related resources
 
@@ -26,17 +26,17 @@ The backing specifications are:
     * Contains the official test data packages for the Peppol ViDA Pilot testing phase
     * Per test scenario (`NW-HP-001`, `NW-HP-002`, `NW-HP-002-RC`, `NW-HP-006`, `NW-HP-008`) it provides source Peppol BIS Billing 3.0 invoices and credit notes for many combinations of tax jurisdictions, plus non-normative sample TDDs, validation reports and PDF/HTML visualizations
     * The file `MASTERDATA.md` contains the fictitious seller and buyer master data used in all test files
-    * All 167 official sample TDDs of that repository are successfully validated by `PeppolViDATDDValidator` of this project (as of 2026-09-08)
+    * All official sample TDDs of that repository are successfully validated by `PeppolViDATDDValidator` of this project (as of 2026-09-15, TDD v1.1.0)
 
 # Submodules
 
 This project consists of the following submodules (in alphabetic order)
 
 * `peppol-vida-tdd` - contains the main logic to create Peppol ViDA pilot TDD documents based on the Peppol ViDA pilot documents as well as documentation
-    * Main class to build a complete TDD from scratch is `PeppolViDATDD100Builder`
+    * Main class to build a complete TDD from scratch is `PeppolViDATDD110Builder`
     * To run the Schematron validation, use class `PeppolViDATDDValidator`
 * `peppol-vida-tdd-datatypes` - contains the JAXB generated Peppol ViDA pilot TDD data model
-    * Main class to read and write TDD XML is `PeppolViDATDD100Marshaller`
+    * Main class to read and write TDD XML is `PeppolViDATDD110Marshaller`
 * `peppol-vida-testfiles` - contains Peppol ViDA pilot specific test files as a reusable component
     * Main class is `PeppolViDATestFiles`
     * Also contains a subset of the official test data packages of the OpenPeppol ViDA Pilot Testing repository
@@ -57,7 +57,7 @@ Add the following to your `pom.xml` to use this artifact, replacing `x.y.z` with
 
 ```java
 // Build a TDD document from scratch
-TaxDataType tdd = new PeppolViDATDD100Builder ()
+TaxDataType tdd = new PeppolViDATDD110Builder ()
     .taxDataTypeCode (EViDATDDTaxDataTypeCode.SUBMIT)
     .documentScope (EViDATDDDocumentScope.DOMESTIC)
     .reporterRole (EViDATDDReporterRole.SENDER)
@@ -65,15 +65,51 @@ TaxDataType tdd = new PeppolViDATDD100Builder ()
     .receivingParty (receiverID)
     .reportersRepresentative (representativeID)
     .taxAuthorityID ("XX")
-    .reportedTransaction (rt -> rt.initFromInvoice (invoice))
+    // The Invoice Transmission UUID (TDT-018) is not part of the invoice - it identifies
+    // the transmission itself and must be provided by the caller
+    .reportedTransaction (rt -> rt.initFromInvoice (invoice).transmissionUUID (transmissionUUID))
     .build ();
 
 // Serialize to XML
-String xml = new PeppolViDATDD100Marshaller ().setFormattedOutput (true).getAsString (tdd);
+String xml = new PeppolViDATDD110Marshaller ().setFormattedOutput (true).getAsString (tdd);
 
 // Validate with XSD and Schematron
-ValidationResultList vrl = PeppolViDATDDValidator.validateViDA_TDD_100 (new ReadableResourceString (xml, StandardCharsets.UTF_8));
+ValidationResultList vrl = PeppolViDATDDValidator.validateViDA_TDD_110 (new ReadableResourceString (xml, StandardCharsets.UTF_8));
 ```
+
+# Minimum TDD
+
+How few invoice fields are enough to create a valid *and* fiscally sufficient TDD depends on the
+Reporter role (TDT-012): the Buyer (C3) is liable for the VAT of the reported transaction, the
+Seller (C2) is not. TDD v1.1.0 introduces that distinction via the rules `ibr-tdd-90` to
+`ibr-tdd-93`.
+
+In practice the gap is smaller than the semantic model suggests, because several terms that are
+`0..1` there are enforced from elsewhere:
+
+| Term | C2 | C3 | Enforced by |
+|---|---|---|---|
+| BT-110 Invoice total VAT amount | mandatory | mandatory | `cbc:TaxAmount` is mandatory inside `cac:TaxTotal` in UBL 2.1 |
+| BT-112 Invoice total amount with VAT | mandatory | mandatory | `BR-CO-15`, which always applies once BT-110 is present |
+| BT-116 VAT category taxable amount | mandatory | mandatory | semantic model |
+| BT-117 VAT category tax amount | mandatory | mandatory | `cbc:TaxAmount` is mandatory inside `cac:TaxSubtotal` in UBL 2.1 |
+| BT-119 VAT category rate | mandatory | mandatory | `BR-48`, except for the VAT category "O" |
+| **BT-118 VAT category code** | **optional** | **mandatory** | `ibr-tdd-92` |
+| BT-111 VAT total in accounting currency | optional | mandatory if BT-006 is present | `ibr-tdd-93` |
+
+So the sell side may report "0" amounts without saying which VAT category they belong to, while the
+buy side has to name the category - which is exactly the case for the reverse charge, where every
+VAT amount is "0" anyway.
+
+Besides that, the smallest TDD needs the TDD envelope (TDT-001 to TDT-015), the Invoice Transmission
+UUID (TDT-018) and, inside the ReportedDocument: BT-024, BT-023, TDT-017, BT-001, BT-002, BT-003,
+BT-005, the Seller VAT identifier (BT-31), a non-empty Buyer (BG-07), exactly one VAT breakdown
+(BG-23, `PEPPOL-EN16931-R053`), BT-106, BT-109, BT-115 and at least one document line with BT-126,
+BT-129, BT-130, BT-131, BT-153 and BT-146. The Seller electronic address (BT-34), the Buyer name
+(BT-44), the postal addresses and the line VAT information (BG-30) are not needed.
+
+Both minimums are built and Schematron validated in `PeppolViDATDD110BuilderTest.testMinimumTDDForC2`
+and `testMinimumTDDForC3`.
 
 # Building
 
@@ -85,6 +121,25 @@ mvn clean install
 to build the solution.
 
 # News and noteworthy
+
+v0.11.0 - work in progress
+* Updated to the TDD v1.1.0 specification (XSD from 2026-09-14, Schematron from 2026-09-14). This contains two backwards incompatible changes
+* The Invoice UUID (TDT-017) is now calculated from the Seller VAT identifier (BT-31), the invoice type code (BT-03), the invoice number (BT-01) and the invoice issue date (BT-02) - previously the Seller identifier (BT-29/BT-29-1) was used instead of BT-31. UUIDs created with earlier versions therefore differ
+* Added `CViDATDD.createInvoiceUUID` to calculate the Invoice UUID (TDT-017) standalone. It is verified against the four test vectors of the specification
+* Added the new mandatory Invoice Transmission UUID (TDT-018) as `transmissionUUID` to `PeppolViDATDD110ReportedTransactionBuilder`. It is not derived from the document content and must always be provided by the caller
+* `PeppolViDATDD110ReportedTransactionBuilder` now takes the Reporter role (TDT-012) as a second constructor argument, because the buy side (C3) needs VAT fields that the sell side (C2) may omit - see the new rules ibr-tdd-90 to ibr-tdd-93
+* The Seller VAT identifier (BT-31) is now a required field, except for the VAT category "Not subject to VAT" (BR-O-02)
+* Deprecated `sellerID` and `sellerIDSchemeID` (BT-29/BT-29-1) in `PeppolViDATDD110ReportedTransactionBuilder` - they are neither part of the TDD nor an input of the UUID calculation any more
+* Relaxed the builders so that a minimum TDD can be created: the Seller electronic address (BT-34), the Buyer name (BT-44), the VAT category code (BT-118) and the line VAT information (BG-30) are no longer required
+* `PeppolViDATDDValidator` got the new VES ID `org.peppol.taxdata:vida:1.1.0` and the method `validateViDA_TDD_110`
+* **All TDD v1.0.0 classes and resources are kept as deprecated**, so that legacy documents can still be created, read, written and validated. The version number in a class name now always matches the TDD version it handles:
+    * `com.helger.peppol.vida.tdd.v110.PeppolViDATDD110*` builders create TDD v1.1.0 documents - they are the renamed former `…v100.PeppolViDATDD100*` classes
+    * `com.helger.peppol.vida.tdd.v100.PeppolViDATDD100*` builders are deprecated and unchanged - they still create TDD v1.0.0 documents using the Seller identifier (BT-29) for the UUID calculation and without the Invoice Transmission UUID (TDT-018)
+    * `PeppolViDATDD110Marshaller` binds the v1.1.0 XSD, the deprecated `PeppolViDATDD100Marshaller` binds the v1.0.0 XSD. Both JAXB models are generated: `…tdd.v2026_09_14` and `…tdd.v2026_03_18`
+    * `PeppolViDATDDValidator` keeps `validateViDA_TDD_100`, `XSLT_*_TDD_100` and the VES ID `org.peppol.taxdata:vida:1.0.0`, which is registered as deprecated
+* Added `CPeppolViDATDD.TDD_XSD_1_1_0*` and changed the JAXB package to `com.helger.peppol.vida.tdd.v2026_09_14`
+* Added the TDD v1.1.0 examples to `peppol-vida-testfiles` (`tdd/1.1.0/good/`), available via `PeppolViDATestFiles.getAllGoodTDD110Files ()`. The v1.0.0 examples are kept as deprecated via `getAllGoodTDD100Files ()`
+* Updated the bundled OpenPeppol ViDA Pilot Testing sample TDDs to TDD v1.1.0
 
 v0.10.2 - 2026-09-08
 * Added a reference to the OpenPeppol ViDA Pilot Testing repository https://github.com/OpenPEPPOL/vida-pilot-testing/

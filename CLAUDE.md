@@ -21,10 +21,10 @@ mvn clean install -DskipTests
 mvn test -pl peppol-vida-tdd
 
 # Run a single test class
-mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD100BuilderTest
+mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD110BuilderTest
 
 # Run a single test method
-mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD100BuilderTest#testBasicMinimal
+mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD110BuilderTest#testBasicMinimal
 ```
 
 ## Module Structure
@@ -33,18 +33,18 @@ Three Maven modules with strict build order (each depends on the previous):
 
 1. **`peppol-vida-testfiles`** — Bundles test XML files as classpath resources. `PeppolViDATestFiles` provides programmatic access to valid UBL invoices, credit notes, and TDD documents, as well as to a subset of the official OpenPeppol ViDA Pilot Testing data packages (`PeppolViDAPilotTestData`).
 
-2. **`peppol-vida-tdd-datatypes`** — JAXB-generated data model from `external/schemas/2026-03-18/Peppol-ViDA-TDD.xsd`. Contains `CPeppolViDATDD` (schema constants/resources) and `PeppolViDATDD100Marshaller` (XML serialization).
+2. **`peppol-vida-tdd-datatypes`** — JAXB-generated data model from `external/schemas/2026-09-14/Peppol-ViDA-TDD.xsd`. Contains `CPeppolViDATDD` (schema constants/resources) and `PeppolViDATDD110Marshaller` (XML serialization). The deprecated TDD v1.0.0 model is generated in parallel from `external/schemas/2026-03-18/` into `…tdd.v2026_03_18` and served by `PeppolViDATDD100Marshaller`.
 
 3. **`peppol-vida-tdd`** — Main business logic. Key entry points:
-   - `PeppolViDATDD100Builder` — builds TDD documents from scratch using fluent API
-   - `PeppolViDATDDValidator` — Schematron validation using XSLTs in `external/schematron/2026-06-02/`
-   - `PeppolViDATDD100Marshaller` — read/write TDD XML
+   - `PeppolViDATDD110Builder` — builds TDD documents from scratch using fluent API; the deprecated `v100.PeppolViDATDD100Builder` still creates TDD v1.0.0 documents
+   - `PeppolViDATDDValidator` — Schematron validation using XSLTs in `external/schematron/2026-09-14/`; the deprecated TDD v1.0.0 rules in `external/schematron/2026-06-02/` are kept for legacy documents
+   - `PeppolViDATDD110Marshaller` — read/write TDD XML
 
 ## Architecture
 
 **Builder pattern** is used throughout with fluent APIs:
 ```java
-new PeppolViDATDD100Builder()
+new PeppolViDATDD110Builder()
     .taxDataTypeCode(EViDATDDTaxDataTypeCode.SUBMIT)
     .documentScope(EViDATDDDocumentScope.DOMESTIC)
     .reporterRole(EViDATDDReporterRole.SENDER)
@@ -76,7 +76,8 @@ The classes in `peppol-vida-tdd-datatypes/src/main/java/.../jaxb/` are **auto-ge
 Test XML resources live in `peppol-vida-testfiles/src/main/resources/external/`:
 - `invoice/good/` — Valid UBL 2.1 invoices
 - `creditnote/good/` — Valid UBL 2.1 credit notes
-- `tdd/1.0.0/good/` — Valid TDD v1.0.0 documents
+- `tdd/1.1.0/good/` — Valid TDD v1.1.0 documents
+- `tdd/1.0.0/good/` — Valid TDD v1.0.0 documents (deprecated, for the legacy validation rules)
 - `vida-pilot-testing/` — Unmodified copies from https://github.com/OpenPEPPOL/vida-pilot-testing/ - per test scenario the source Peppol BIS document and the matching non-normative sample TDD
 
 `PeppolViDATestFiles` exposes these as `IReadableResource` collections.

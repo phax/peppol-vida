@@ -17,6 +17,7 @@
 package com.helger.peppol.vida.tdd.jaxb;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -24,19 +25,32 @@ import com.helger.io.resource.ClassPathResource;
 import com.helger.peppol.vida.tdd.testfiles.PeppolViDATestFiles;
 
 /**
- * Test class for class {@link PeppolViDATDD100Marshaller}.
+ * Test class for class {@link PeppolViDATDD110Marshaller}.
  *
  * @author Philip Helger
  */
-public final class PeppolViDATDD090MarshallerTest
+public final class PeppolViDATDD110MarshallerTest
 {
   @Test
-  public void testBasic10 ()
+  public void testBasic ()
   {
-    final PeppolViDATDD100Marshaller m = new PeppolViDATDD100Marshaller ();
-    for (final ClassPathResource aRes : PeppolViDATestFiles.getAllGoodTDD100Files ())
+    final PeppolViDATDD110Marshaller m = new PeppolViDATDD110Marshaller ();
+    for (final ClassPathResource aRes : PeppolViDATestFiles.getAllGoodTDD110Files ())
       assertNotNull ("Failed to read " + aRes.getPath (), m.read (aRes));
-    for (final ClassPathResource aRes : PeppolViDATestFiles.getAllSchematronBadTDD100Files ())
+    for (final ClassPathResource aRes : PeppolViDATestFiles.getAllSchematronBadTDD110Files ())
       assertNotNull ("Failed to read " + aRes.getPath (), m.read (aRes));
+  }
+
+  /**
+   * A TDD v1.0.0 document has no Invoice Transmission UUID (TDT-018) and can therefore not be read
+   * with the TDD v1.1.0 marshaller.
+   */
+  @Test
+  @SuppressWarnings ("deprecation")
+  public void testCannotReadTDD100 ()
+  {
+    final ClassPathResource aRes = PeppolViDATestFiles.getAllGoodTDD100Files ().getFirstOrNull ();
+    assertNotNull (aRes);
+    assertNull (new PeppolViDATDD110Marshaller ().read (aRes));
   }
 }

@@ -35,10 +35,14 @@ import com.helger.xml.namespace.MapBasedNamespaceContext;
  * derived to override protected methods from {@link GenericJAXBMarshaller}.
  *
  * @author Philip Helger
+ * @deprecated Since 0.11.0 - use {@link PeppolViDATDD110Marshaller} instead. This class is only
+ *             kept around to be able to read and write legacy documents.
  */
+@Deprecated (since = "0.11.0", forRemoval = true)
 @NotThreadSafe
 public class PeppolViDATDD100Marshaller extends GenericJAXBMarshaller <TaxDataType>
 {
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableCopy
   public static ICommonsList <ClassPathResource> getAllXSDs ()
@@ -48,6 +52,7 @@ public class PeppolViDATDD100Marshaller extends GenericJAXBMarshaller <TaxDataTy
     return ret;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @Nonempty
   @ReturnsMutableCopy
@@ -61,6 +66,7 @@ public class PeppolViDATDD100Marshaller extends GenericJAXBMarshaller <TaxDataTy
   /**
    * Constructor
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100Marshaller ()
   {
     super (TaxDataType.class, getAllXSDs (), new ObjectFactory ()::createTaxData);

@@ -22,7 +22,7 @@
   <parent>
     <groupId>com.helger.peppol</groupId>
     <artifactId>peppol-vida-parent-pom</artifactId>
-    <version>0.10.3-SNAPSHOT</version>
+    <version>0.11.0-SNAPSHOT</version>
   </parent>
   <artifactId>peppol-vida-tdd-datatypes</artifactId>
   <packaging>jar</packaging>
@@ -100,8 +100,9 @@
         <artifactId>${jaxb-plugin.artifact}</artifactId>
         <version>${jaxb-plugin.version}</version>
         <executions>
+          <!-- Deprecated - only kept around to be able to read and write legacy documents -->
           <execution>
-            <id>current</id>
+            <id>v1.0.0</id>
             <goals>
               <goal>generate</goal>
             </goals>
@@ -109,7 +110,27 @@
               <schemaDirectory>${basedir}/src/main/resources/external/schemas/2026-03-18</schemaDirectory>
               <schemaIncludes>
                 <schemaInclude>*.xsd</schemaInclude>
+              </schemaIncludes>
+              <bindingIncludes>
+                <bindingInclude>binding-2026-03-18.xjb</bindingInclude>
+              </bindingIncludes>
+              <episode>false</episode>
+              <catalog>${basedir}/src/main/jaxb/catalog-tdd.txt</catalog>
+            </configuration>
+          </execution>
+          <execution>
+            <id>current</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <schemaDirectory>${basedir}/src/main/resources/external/schemas/2026-09-14</schemaDirectory>
+              <schemaIncludes>
+                <schemaInclude>*.xsd</schemaInclude>
               </schemaIncludes>  
+              <bindingIncludes>
+                <bindingInclude>binding-2026-09-14.xjb</bindingInclude>
+              </bindingIncludes>
               <catalog>${basedir}/src/main/jaxb/catalog-tdd.txt</catalog>
             </configuration>
           </execution>
@@ -157,6 +178,7 @@
             <configuration>
               <target>
                 <delete dir="${basedir}/target/generated-sources/xjc/oasis" />
+                <delete dir="${basedir}/target/generated-sources/xjc-2026-03-18/oasis" />
               </target>
             </configuration>
           </execution>
@@ -168,7 +190,7 @@
         <configuration>
           <source>17</source>
           <sourcepath>
-            ${project.build.sourceDirectory}:${project.build.directory}/generated-sources/xjc
+            ${project.build.sourceDirectory}:${project.build.directory}/generated-sources/xjc:${project.build.directory}/generated-sources/xjc-2026-03-18
           </sourcepath>
         </configuration>
       </plugin> 

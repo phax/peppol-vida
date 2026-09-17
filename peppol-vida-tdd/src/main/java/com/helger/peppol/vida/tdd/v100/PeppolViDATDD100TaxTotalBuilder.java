@@ -40,7 +40,12 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
  * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "TaxTotal".
  *
  * @author Philip Helger
+ * @deprecated Since 0.11.0 - use {@link com.helger.peppol.vida.tdd.v110.PeppolViDATDD110TaxTotalBuilder}
+ *             instead. This class is only kept around to create legacy TDD v1.0.0
+ *             documents. It still uses the Seller identifier (BT-29) for the UUID
+ *             calculation and does not know the Invoice Transmission UUID (TDT-018).
  */
+@Deprecated (since = "0.11.0", forRemoval = true)
 public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100TaxTotalBuilder.class);

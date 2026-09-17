@@ -16,9 +16,15 @@
  */
 package com.helger.peppol.vida.tdd;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.helger.annotation.concurrent.Immutable;
+import com.helger.base.uuid.UUID5Helper;
 
 /**
  * Peppol ViDA pilot TDD constants.
@@ -36,4 +42,44 @@ public final class CViDATDD
 
   private CViDATDD ()
   {}
+
+  @NonNull
+  private static String _trimmed (@Nullable final String s)
+  {
+    return s == null ? "" : s.trim ();
+  }
+
+  /**
+   * Calculate the Invoice UUID (TDT-017) as defined in the Peppol ViDA TDD v1.1.0 specification,
+   * chapter "Invoice UUID calculation". It is a version 5 UUID over {@link #PEPPOL_VIDA_NAMESPACE}
+   * and a name built from the four provided values. Each value is stripped of leading and trailing
+   * whitespace only - internal whitespace and casing are preserved - and the values are joined with
+   * exactly one space character.
+   *
+   * @param sSellerVATIdentifier
+   *        Seller VAT identifier (BT-31). May be <code>null</code>.
+   * @param sDocumentTypeCode
+   *        Invoice type code (BT-03). May be <code>null</code>.
+   * @param sDocumentNumber
+   *        Invoice number (BT-01). May be <code>null</code>.
+   * @param aIssueDate
+   *        Invoice issue date (BT-02). May be <code>null</code>. Formatted as "YYYY-MM-DD".
+   * @return The calculated Invoice UUID. Never <code>null</code>.
+   * @since 0.11.0
+   */
+  @NonNull
+  public static UUID createInvoiceUUID (@Nullable final String sSellerVATIdentifier,
+                                        @Nullable final String sDocumentTypeCode,
+                                        @Nullable final String sDocumentNumber,
+                                        @Nullable final LocalDate aIssueDate)
+  {
+    final String sName = _trimmed (sSellerVATIdentifier) +
+                         ' ' +
+                         _trimmed (sDocumentTypeCode) +
+                         ' ' +
+                         _trimmed (sDocumentNumber) +
+                         ' ' +
+                         (aIssueDate == null ? "" : DateTimeFormatter.ISO_LOCAL_DATE.format (aIssueDate));
+    return UUID5Helper.fromUTF8 (PEPPOL_VIDA_NAMESPACE, sName);
+  }
 }

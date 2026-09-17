@@ -38,7 +38,12 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.IDType;
  * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "BillingReference".
  *
  * @author Philip Helger
+ * @deprecated Since 0.11.0 - use {@link com.helger.peppol.vida.tdd.v110.PeppolViDATDD110BillingReferenceBuilder}
+ *             instead. This class is only kept around to create legacy TDD v1.0.0
+ *             documents. It still uses the Seller identifier (BT-29) for the UUID
+ *             calculation and does not know the Invoice Transmission UUID (TDT-018).
  */
+@Deprecated (since = "0.11.0", forRemoval = true)
 public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <BillingReferenceType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100BillingReferenceBuilder.class);

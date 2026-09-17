@@ -28,6 +28,7 @@ import com.helger.io.resource.ClassPathResource;
 import com.helger.io.resource.IReadableResource;
 import com.helger.peppol.vida.tdd.jaxb.CPeppolViDATDD;
 import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD100Marshaller;
+import com.helger.peppol.vida.tdd.jaxb.PeppolViDATDD110Marshaller;
 import com.helger.phive.api.execute.ValidationExecutionManager;
 import com.helger.phive.api.executorset.IValidationExecutorSet;
 import com.helger.phive.api.executorset.ValidationExecutorSetRegistry;
@@ -53,28 +54,65 @@ public final class PeppolViDATDDValidator
     return CPeppolViDATDD.class.getClassLoader ();
   }
 
-  // Aligned with phive-rules
-  public static final DVRCoordinate VID_TDD_VIDA_100 = new DVRCoordinate ("org.peppol.taxdata",
-                                                                          "vida",
+  public static final String GROUP_ID = "org.peppol.taxdata";
+  public static final String ARTIFACT_ID = "vida";
+
+  /**
+   * VES ID for the Peppol ViDA Pilot TDD v1.0.0 rules.
+   *
+   * @deprecated Since 0.11.0 - use {@link #VID_TDD_VIDA_110} instead. It is only kept around to be
+   *             able to validate legacy documents.
+   */
+  @Deprecated (since = "0.11.0", forRemoval = true)
+  public static final DVRCoordinate VID_TDD_VIDA_100 = new DVRCoordinate (GROUP_ID,
+                                                                          ARTIFACT_ID,
                                                                           DVRVersion.of (new Version (1, 0, 0)));
   private static final String PREFIX_100 = "external/schematron/2026-06-02/";
+
+  /**
+   * @deprecated Since 0.11.0 - use {@link #XSLT_CEN_TDD_110} instead
+   */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public static final IReadableResource XSLT_CEN_TDD_100 = new ClassPathResource (PREFIX_100 + "CEN-EN16931-UBL.xslt",
                                                                                   _getCL ());
+  /**
+   * @deprecated Since 0.11.0 - use {@link #XSLT_BILLING_TDD_110} instead
+   */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public static final IReadableResource XSLT_BILLING_TDD_100 = new ClassPathResource (PREFIX_100 +
                                                                                       "PEPPOL-EN16931-UBL.xslt",
                                                                                       _getCL ());
+  /**
+   * @deprecated Since 0.11.0 - use {@link #XSLT_VIDA_TDD_110} instead
+   */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public static final IReadableResource XSLT_VIDA_TDD_100 = new ClassPathResource (PREFIX_100 + "Peppol-ViDA-TDD.xslt",
+                                                                                   _getCL ());
+
+  // Aligned with phive-rules
+  public static final DVRCoordinate VID_TDD_VIDA_110 = new DVRCoordinate (GROUP_ID,
+                                                                          ARTIFACT_ID,
+                                                                          DVRVersion.of (new Version (1, 1, 0)));
+  private static final String PREFIX_110 = "external/schematron/2026-09-14/";
+  public static final IReadableResource XSLT_CEN_TDD_110 = new ClassPathResource (PREFIX_110 + "CEN-EN16931-UBL.xslt",
+                                                                                  _getCL ());
+  public static final IReadableResource XSLT_BILLING_TDD_110 = new ClassPathResource (PREFIX_110 +
+                                                                                      "PEPPOL-EN16931-UBL.xslt",
+                                                                                      _getCL ());
+  public static final IReadableResource XSLT_VIDA_TDD_110 = new ClassPathResource (PREFIX_110 + "Peppol-ViDA-TDD.xslt",
                                                                                    _getCL ());
 
   public static final ValidationExecutorSetRegistry <IValidationSourceXML> VES_REGISTRY = new ValidationExecutorSetRegistry <> ();
 
   static
   {
-    final MapBasedNamespaceContext aNsCtx = PeppolViDATDD100Marshaller.createNamespaceContext ();
+    final MapBasedNamespaceContext aNsCtx = PeppolViDATDD110Marshaller.createNamespaceContext ();
+
+    // TDD v1.0.0 - deprecated, only kept around to be able to validate legacy documents
     VesXmlBuilder.builder ()
                  .vesID (VID_TDD_VIDA_100)
                  .displayName ("Peppol ViDA Pilot TDD 1.0.0")
-                 .notDeprecated ()
+                 .deprecated ()
                  .addXSD (PeppolViDATDD100Marshaller.getAllXSDs ())
                  .addSchematron (ValidationExecutorSchematronBuilder.xslt2 (XSLT_CEN_TDD_100)
                                                                     .namespaceContext (aNsCtx)
@@ -83,6 +121,22 @@ public final class PeppolViDATDDValidator
                                                                     .namespaceContext (aNsCtx)
                                                                     .build ())
                  .addSchematron (ValidationExecutorSchematronBuilder.xslt2 (XSLT_VIDA_TDD_100)
+                                                                    .namespaceContext (aNsCtx)
+                                                                    .build ())
+                 .registerInto (VES_REGISTRY);
+
+    VesXmlBuilder.builder ()
+                 .vesID (VID_TDD_VIDA_110)
+                 .displayName ("Peppol ViDA Pilot TDD 1.1.0")
+                 .notDeprecated ()
+                 .addXSD (PeppolViDATDD110Marshaller.getAllXSDs ())
+                 .addSchematron (ValidationExecutorSchematronBuilder.xslt2 (XSLT_CEN_TDD_110)
+                                                                    .namespaceContext (aNsCtx)
+                                                                    .build ())
+                 .addSchematron (ValidationExecutorSchematronBuilder.xslt2 (XSLT_BILLING_TDD_110)
+                                                                    .namespaceContext (aNsCtx)
+                                                                    .build ())
+                 .addSchematron (ValidationExecutorSchematronBuilder.xslt2 (XSLT_VIDA_TDD_110)
                                                                     .namespaceContext (aNsCtx)
                                                                     .build ())
                  .registerInto (VES_REGISTRY);
@@ -97,11 +151,32 @@ public final class PeppolViDATDDValidator
    * @param aXmlRes
    *        The XML resource to use. May not be <code>null</code>.
    * @return The Validation result list. Never <code>null</code>.
+   * @deprecated Since 0.11.0 - use {@link #validateViDA_TDD_110(IReadableResource)} instead. It is
+   *             only kept around to be able to validate legacy documents.
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public static ValidationResultList validateViDA_TDD_100 (@NonNull final IReadableResource aXmlRes)
   {
     final IValidationExecutorSet <IValidationSourceXML> aExecutors = VES_REGISTRY.getOfID (VID_TDD_VIDA_100);
+    final IValidationSourceXML aSource = ValidationSourceXML.create (aXmlRes);
+    return ValidationExecutionManager.executeValidation (IValidityDeterminator.createDefault (),
+                                                         aExecutors,
+                                                         aSource,
+                                                         Locale.US);
+  }
+
+  /**
+   * Validate against Schematron ViDA Pilot TDD v1.1.0 rules
+   *
+   * @param aXmlRes
+   *        The XML resource to use. May not be <code>null</code>.
+   * @return The Validation result list. Never <code>null</code>.
+   */
+  @NonNull
+  public static ValidationResultList validateViDA_TDD_110 (@NonNull final IReadableResource aXmlRes)
+  {
+    final IValidationExecutorSet <IValidationSourceXML> aExecutors = VES_REGISTRY.getOfID (VID_TDD_VIDA_110);
     final IValidationSourceXML aSource = ValidationSourceXML.create (aXmlRes);
     return ValidationExecutionManager.executeValidation (IValidityDeterminator.createDefault (),
                                                          aExecutors,
