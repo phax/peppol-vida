@@ -40,6 +40,7 @@ import com.helger.xml.namespace.MapBasedNamespaceContext;
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
 @NotThreadSafe
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100Marshaller extends GenericJAXBMarshaller <TaxDataType>
 {
   @Deprecated (since = "0.11.0", forRemoval = true)

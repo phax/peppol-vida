@@ -46,7 +46,7 @@ public final class PeppolViDATDD110MarshallerTest
    * with the TDD v1.1.0 marshaller.
    */
   @Test
-  @SuppressWarnings ("deprecation")
+  @SuppressWarnings ("removal")
   public void testCannotReadTDD100 ()
   {
     final ClassPathResource aRes = PeppolViDATestFiles.getAllGoodTDD100Files ().getFirstOrNull ();

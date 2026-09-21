@@ -47,6 +47,7 @@ import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.Tax
  *             Transmission UUID (TDT-018).
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100TaxTotalBuilder.class);
@@ -55,6 +56,7 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
   private BigDecimal m_aTaxAmount;
   private final ICommonsList <TaxSubtotalType> m_aSubtotals = new CommonsArrayList <> ();
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100TaxTotalBuilder (@NonNull final String sCurrencyCode)
   {
     m_sCurrencyCode = sCurrencyCode;
@@ -67,6 +69,7 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder initFromUBL (@NonNull final TaxTotalType aObj)
   {
@@ -79,12 +82,14 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal taxAmount ()
   {
     return m_aTaxAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder taxAmount (@Nullable final BigDecimal a)
   {
@@ -92,12 +97,14 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder taxAmount (final long n)
   {
     return taxAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <TaxSubtotalType> subtotals ()
@@ -105,6 +112,7 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
     return m_aSubtotals;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder subtotals (@Nullable final ICommonsList <TaxSubtotalType> a)
   {
@@ -112,6 +120,7 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder addTaxSubtotal (@Nullable final TaxSubtotalType a)
   {
@@ -120,12 +129,14 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder addTaxSubtotal (@Nullable final PeppolViDATDD100TaxSubtotalBuilder a)
   {
     return addTaxSubtotal (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxTotalBuilder addTaxSubtotal (@NonNull final Consumer <? super PeppolViDATDD100TaxSubtotalBuilder> aBuilderConsumer)
   {
@@ -149,12 +160,14 @@ public class PeppolViDATDD100TaxTotalBuilder implements IBuilder <TaxTotalType>
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxTotalType build ()
   {

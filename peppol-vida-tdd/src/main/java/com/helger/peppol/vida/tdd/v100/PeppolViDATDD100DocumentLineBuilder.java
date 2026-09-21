@@ -61,6 +61,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.NoteTyp
  *             Transmission UUID (TDT-018).
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLineType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100DocumentLineBuilder.class);
@@ -79,6 +80,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
   private BigDecimal m_aPriceAmount;
   private BigDecimal m_aPriceBaseQuantity;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100DocumentLineBuilder (@Nullable final String sDocumentCurrencyCode)
   {
     m_sDocumentCurrencyCode = sDocumentCurrencyCode;
@@ -91,6 +93,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
    *        The Invoice line to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder initFromInvoice (@NonNull final InvoiceLineType aLine)
   {
@@ -140,6 +143,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
    *        The CreditNote line to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder initFromCreditNote (@NonNull final CreditNoteLineType aLine)
   {
@@ -182,12 +186,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String id ()
   {
     return m_sID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder id (@Nullable final String s)
   {
@@ -195,12 +201,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String note ()
   {
     return m_sNote;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder note (@Nullable final String s)
   {
@@ -208,12 +216,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal quantity ()
   {
     return m_aQuantity;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder quantity (@Nullable final BigDecimal a)
   {
@@ -221,18 +231,21 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder quantity (final long n)
   {
     return quantity (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String quantityUnit ()
   {
     return m_sQuantityUnit;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder quantityUnit (@Nullable final String s)
   {
@@ -240,12 +253,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal lineExtensionAmount ()
   {
     return m_aLineExtensionAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder lineExtensionAmount (@Nullable final BigDecimal a)
   {
@@ -253,18 +268,21 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder lineExtensionAmount (final long n)
   {
     return lineExtensionAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate invoicePeriodStart ()
   {
     return m_aInvoicePeriodStart;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder invoicePeriodStart (@Nullable final LocalDate a)
   {
@@ -272,12 +290,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate invoicePeriodEnd ()
   {
     return m_aInvoicePeriodEnd;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder invoicePeriodEnd (@Nullable final LocalDate a)
   {
@@ -285,12 +305,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String invoicePeriodDescriptionCode ()
   {
     return m_sInvoicePeriodDescriptionCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder invoicePeriodDescriptionCode (@Nullable final String s)
   {
@@ -298,6 +320,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <AllowanceChargeType> allowanceCharges ()
@@ -305,6 +328,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return m_aAllowanceCharges;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder allowanceCharges (@Nullable final ICommonsList <AllowanceChargeType> a)
   {
@@ -312,6 +336,7 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder addAllowanceCharge (@Nullable final AllowanceChargeType a)
   {
@@ -320,12 +345,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder addAllowanceCharge (@Nullable final PeppolViDATDD100AllowanceChargeBuilder a)
   {
     return addAllowanceCharge (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder addAllowanceCharge (@NonNull final Consumer <PeppolViDATDD100AllowanceChargeBuilder> aBuilderConsumer)
   {
@@ -334,12 +361,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return addAllowanceCharge (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public ItemType item ()
   {
     return m_aItem;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder item (@Nullable final ItemType a)
   {
@@ -347,12 +376,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder item (@Nullable final PeppolViDATDD100ItemBuilder a)
   {
     return item (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder item (@NonNull final Consumer <PeppolViDATDD100ItemBuilder> aBuilderConsumer)
   {
@@ -361,12 +392,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return item (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal priceAmount ()
   {
     return m_aPriceAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder priceAmount (@Nullable final BigDecimal a)
   {
@@ -374,24 +407,28 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder priceAmount (final long n)
   {
     return priceAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal priceBaseQuantity ()
   {
     return m_aPriceBaseQuantity;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder priceBaseQuantity (final long n)
   {
     return priceBaseQuantity (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100DocumentLineBuilder priceBaseQuantity (@Nullable final BigDecimal a)
   {
@@ -444,12 +481,14 @@ public class PeppolViDATDD100DocumentLineBuilder implements IBuilder <DocumentLi
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public DocumentLineType build ()
   {

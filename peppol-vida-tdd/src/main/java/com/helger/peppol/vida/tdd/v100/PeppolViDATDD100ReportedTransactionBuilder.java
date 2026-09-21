@@ -98,6 +98,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  *             the Invoice Transmission UUID (TDT-018).
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <ReportedTransactionType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100ReportedTransactionBuilder.class);
@@ -146,6 +147,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
 
   private final ICommonsList <DocumentLineType> m_aDocumentLines = new CommonsArrayList <> ();
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100ReportedTransactionBuilder (@NonNull final EViDATDDTaxDataTypeCode eDocumentTypeCode)
   {
     ValueEnforcer.notNull (eDocumentTypeCode, "DocumentTypeCode");
@@ -159,6 +161,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
    *        The Invoice to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder initFromInvoice (@NonNull final InvoiceType aInv)
   {
@@ -330,6 +333,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
    *        The CreditNote to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder initFromCreditNote (@NonNull final CreditNoteType aCN)
   {
@@ -494,12 +498,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String customizationID ()
   {
     return m_sCustomizationID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder customizationID (@Nullable final String s)
   {
@@ -507,12 +513,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String profileID ()
   {
     return m_sProfileID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder profileID (@Nullable final String s)
   {
@@ -520,12 +528,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String id ()
   {
     return m_sID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder id (@Nullable final String s)
   {
@@ -533,12 +543,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate issueDate ()
   {
     return m_aIssueDate;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder issueDate (@Nullable final LocalDate a)
   {
@@ -546,18 +558,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public OffsetTime issueTime ()
   {
     return m_aIssueTime;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder issueTime (@Nullable final XMLOffsetTime a)
   {
     return issueTime (a == null ? null : a.toOffsetTime ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder issueTime (@Nullable final OffsetTime a)
   {
@@ -566,6 +581,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder issueDateTime (@Nullable final OffsetDateTime a)
   {
@@ -574,12 +590,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return issueDate (a.toLocalDate ()).issueTime (a.toOffsetTime ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String documentTypeCode ()
   {
     return m_sDocumentTypeCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder documentTypeCode (@Nullable final String s)
   {
@@ -587,12 +605,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String note ()
   {
     return m_sNote;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder note (@Nullable final String s)
   {
@@ -600,12 +620,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String documentCurrencyCode ()
   {
     return m_sDocumentCurrencyCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder documentCurrencyCode (@Nullable final String s)
   {
@@ -613,12 +635,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxCurrencyCode ()
   {
     return m_sTaxCurrencyCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxCurrencyCode (@Nullable final String s)
   {
@@ -626,12 +650,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate invoicePeriodStart ()
   {
     return m_aInvoicePeriodStart;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder invoicePeriodStart (@Nullable final LocalDate a)
   {
@@ -639,12 +665,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate invoicePeriodEnd ()
   {
     return m_aInvoicePeriodEnd;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder invoicePeriodEnd (@Nullable final LocalDate a)
   {
@@ -652,12 +680,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String invoicePeriodDescriptionCode ()
   {
     return m_sInvoicePeriodDescriptionCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder invoicePeriodDescriptionCode (@Nullable final String s)
   {
@@ -665,6 +695,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <BillingReferenceType> billingReferences ()
@@ -672,6 +703,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return m_aBillingReferences;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder billingReferences (@Nullable final ICommonsList <BillingReferenceType> a)
   {
@@ -679,6 +711,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addBillingReference (@Nullable final BillingReferenceType a)
   {
@@ -687,12 +720,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addBillingReference (@Nullable final PeppolViDATDD100BillingReferenceBuilder a)
   {
     return addBillingReference (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addBillingReference (@NonNull final Consumer <PeppolViDATDD100BillingReferenceBuilder> a)
   {
@@ -701,12 +736,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return addBillingReference (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String sellerEndpointIDSchemeID ()
   {
     return m_sSellerEndpointIDSchemeID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder sellerEndpointIDSchemeID (@Nullable final String s)
   {
@@ -714,12 +751,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String sellerEndpointID ()
   {
     return m_sSellerEndpointID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder sellerEndpointID (@Nullable final String s)
   {
@@ -727,12 +766,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String sellerIDSchemeID ()
   {
     return m_sSellerIDSchemeID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder sellerIDSchemeID (@Nullable final String s)
   {
@@ -740,12 +781,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String sellerID ()
   {
     return m_sSellerID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder sellerID (@Nullable final String s)
   {
@@ -753,12 +796,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String sellerTaxID ()
   {
     return m_sSellerTaxID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder sellerTaxID (@Nullable final String s)
   {
@@ -766,12 +811,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String sellerCountryCode ()
   {
     return m_sSellerCountryCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder sellerCountryCode (@Nullable final String s)
   {
@@ -779,12 +826,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String buyerTaxID ()
   {
     return m_sBuyerTaxID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder buyerTaxID (@Nullable final String s)
   {
@@ -792,12 +841,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String buyerCountryCode ()
   {
     return m_sBuyerCountryCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder buyerCountryCode (@Nullable final String s)
   {
@@ -805,12 +856,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String buyerName ()
   {
     return m_sBuyerName;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder buyerName (@Nullable final String s)
   {
@@ -818,12 +871,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxRepresentativeID ()
   {
     return m_sTaxRepresentativeID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxRepresentativeID (@Nullable final String s)
   {
@@ -831,12 +886,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxRepresentativeCountryCode ()
   {
     return m_sTaxRepresentativeCountryCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxRepresentativeCountryCode (@Nullable final String s)
   {
@@ -844,12 +901,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate deliveryDate ()
   {
     return m_aDeliveryDate;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder deliveryDate (@Nullable final LocalDate a)
   {
@@ -857,6 +916,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <PaymentMeansType> paymentMeans ()
@@ -864,6 +924,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return m_aPaymentMeans;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder paymentMeans (@Nullable final ICommonsList <PaymentMeansType> a)
   {
@@ -871,6 +932,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addPaymentMeans (@Nullable final PaymentMeansType a)
   {
@@ -879,12 +941,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addPaymentMeans (@Nullable final PeppolViDATDD100PaymentMeansBuilder a)
   {
     return addPaymentMeans (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addPaymentMeans (@NonNull final Consumer <PeppolViDATDD100PaymentMeansBuilder> a)
   {
@@ -893,6 +957,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return addPaymentMeans (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <AllowanceChargeType> allowanceCharges ()
@@ -900,6 +965,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return m_aAllowanceCharges;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder allowanceCharges (@Nullable final ICommonsList <AllowanceChargeType> a)
   {
@@ -907,6 +973,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addAllowanceCharge (@Nullable final AllowanceChargeType a)
   {
@@ -915,12 +982,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addAllowanceCharge (@Nullable final PeppolViDATDD100AllowanceChargeBuilder a)
   {
     return addAllowanceCharge (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addAllowanceCharge (@NonNull final Consumer <PeppolViDATDD100AllowanceChargeBuilder> a)
   {
@@ -929,12 +998,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return addAllowanceCharge (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxTotalType taxTotalDocumentCurrency ()
   {
     return m_aTaxTotalDocumentCurrency;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxTotalDocumentCurrency (@Nullable final TaxTotalType a)
   {
@@ -942,12 +1013,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxTotalDocumentCurrency (@Nullable final PeppolViDATDD100TaxTotalBuilder a)
   {
     return taxTotalDocumentCurrency (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxTotalDocumentCurrency (@NonNull final Consumer <PeppolViDATDD100TaxTotalBuilder> a)
   {
@@ -958,12 +1031,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return taxTotalDocumentCurrency (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxTotalType taxTotalTaxCurrency ()
   {
     return m_aTaxTotalTaxCurrency;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxTotalTaxCurrency (@Nullable final TaxTotalType a)
   {
@@ -971,12 +1046,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxTotalTaxCurrency (@Nullable final PeppolViDATDD100TaxTotalBuilder a)
   {
     return taxTotalTaxCurrency (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxTotalTaxCurrency (@Nullable final Consumer <PeppolViDATDD100TaxTotalBuilder> a)
   {
@@ -987,12 +1064,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return taxTotalTaxCurrency (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal lineExtensionAmount ()
   {
     return m_aLineExtensionAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder lineExtensionAmount (@Nullable final BigDecimal a)
   {
@@ -1000,18 +1079,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder lineExtensionAmount (final long n)
   {
     return lineExtensionAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal taxExclusiveTotalAmount ()
   {
     return m_aTaxExclusiveTotalAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxExclusiveTotalAmount (@Nullable final BigDecimal a)
   {
@@ -1019,18 +1101,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxExclusiveTotalAmount (final long n)
   {
     return taxExclusiveTotalAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal taxInclusiveTotalAmount ()
   {
     return m_aTaxInclusiveTotalAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxInclusiveTotalAmount (@Nullable final BigDecimal a)
   {
@@ -1038,18 +1123,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder taxInclusiveTotalAmount (final long n)
   {
     return taxInclusiveTotalAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal allowanceTotalAmount ()
   {
     return m_aAllowanceTotalAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder allowanceTotalAmount (@Nullable final BigDecimal a)
   {
@@ -1057,18 +1145,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder allowanceTotalAmount (final long n)
   {
     return allowanceTotalAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal chargeTotalAmount ()
   {
     return m_aChargeTotalAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder chargeTotalAmount (@Nullable final BigDecimal a)
   {
@@ -1076,18 +1167,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder chargeTotalAmount (final long n)
   {
     return chargeTotalAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal prepaidAmount ()
   {
     return m_aPrepaidAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder prepaidAmount (@Nullable final BigDecimal a)
   {
@@ -1095,18 +1189,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder prepaidAmount (final long n)
   {
     return prepaidAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal payableRoundingAmount ()
   {
     return m_aPayableRoundingAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder payableRoundingAmount (@Nullable final BigDecimal a)
   {
@@ -1114,18 +1211,21 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder payableRoundingAmount (final long n)
   {
     return payableRoundingAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal payableAmount ()
   {
     return m_aPayableAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder payableAmount (@Nullable final BigDecimal a)
   {
@@ -1133,12 +1233,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder payableAmount (final long n)
   {
     return payableAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <DocumentLineType> documentLines ()
@@ -1146,6 +1248,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return m_aDocumentLines;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder documentLines (@Nullable final ICommonsList <DocumentLineType> a)
   {
@@ -1153,6 +1256,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addDocumentLine (@Nullable final DocumentLineType a)
   {
@@ -1161,12 +1265,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addDocumentLine (@Nullable final PeppolViDATDD100DocumentLineBuilder a)
   {
     return addDocumentLine (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ReportedTransactionBuilder addDocumentLine (@NonNull final Consumer <PeppolViDATDD100DocumentLineBuilder> a)
   {
@@ -1318,12 +1424,14 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return nErrs == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public ReportedTransactionType build ()
   {

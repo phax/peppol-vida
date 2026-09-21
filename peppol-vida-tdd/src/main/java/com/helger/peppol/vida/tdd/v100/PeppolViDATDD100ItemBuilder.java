@@ -48,6 +48,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Descrip
  *             Transmission UUID (TDT-018).
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100ItemBuilder.class);
@@ -57,6 +58,7 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
   private final ICommonsList <CommodityClassificationType> m_aCommodityClassifications = new CommonsArrayList <> ();
   private TaxCategoryType m_aClassifiedTaxCategory;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100ItemBuilder ()
   {}
 
@@ -67,6 +69,7 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder initFromUBL (@NonNull final ItemType aObj)
   {
@@ -85,12 +88,14 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String description ()
   {
     return m_sDescription;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder description (@Nullable final String s)
   {
@@ -98,12 +103,14 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String name ()
   {
     return m_sName;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder name (@Nullable final String s)
   {
@@ -111,6 +118,7 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   @ReturnsMutableObject
   public ICommonsList <CommodityClassificationType> commodityClassifications ()
@@ -118,6 +126,7 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return m_aCommodityClassifications;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder commodityClassifications (@Nullable final ICommonsList <CommodityClassificationType> a)
   {
@@ -125,6 +134,7 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder addCommodityClassification (@Nullable final CommodityClassificationType a)
   {
@@ -133,12 +143,14 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder addCommodityClassification (@Nullable final PeppolViDATDD100CommodityClassificationBuilder a)
   {
     return addCommodityClassification (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder addCommodityClassification (@NonNull final Consumer <PeppolViDATDD100CommodityClassificationBuilder> aBuilderConsumer)
   {
@@ -147,12 +159,14 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return addCommodityClassification (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxCategoryType classifiedTaxCategory ()
   {
     return m_aClassifiedTaxCategory;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder classifiedTaxCategory (@Nullable final TaxCategoryType a)
   {
@@ -160,12 +174,14 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder classifiedTaxCategory (@Nullable final PeppolViDATDD100TaxCategoryBuilder a)
   {
     return classifiedTaxCategory (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100ItemBuilder classifiedTaxCategory (@NonNull final Consumer <PeppolViDATDD100TaxCategoryBuilder> aBuilderConsumer)
   {
@@ -195,12 +211,14 @@ public class PeppolViDATDD100ItemBuilder implements IBuilder <ItemType>
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public ItemType build ()
   {

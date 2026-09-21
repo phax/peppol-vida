@@ -30,7 +30,7 @@ import com.helger.peppol.vida.tdd.v2026_03_18.TaxDataType;
  *
  * @author Philip Helger
  */
-@SuppressWarnings ("deprecation")
+@SuppressWarnings ("removal")
 public final class PeppolViDATDD100MarshallerTest
 {
   @Test

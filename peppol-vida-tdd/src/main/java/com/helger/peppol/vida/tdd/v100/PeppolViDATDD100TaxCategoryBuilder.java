@@ -18,7 +18,6 @@ package com.helger.peppol.vida.tdd.v100;
 
 import java.math.BigDecimal;
 
-import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -33,6 +32,7 @@ import com.helger.base.string.StringHelper;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 
 /**
  * Builder for Peppol ViDA pilot TDD 1.0.0 sub element called "TaxCategory".
@@ -55,6 +55,7 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
   private String m_sTaxExemptionReason;
   private String m_sTaxExemptionReasonCode;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100TaxCategoryBuilder ()
   {}
 
@@ -65,6 +66,7 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder initFromUBL (@NonNull final TaxCategoryType aObj)
   {
@@ -78,7 +80,7 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
 
     if (!aObj.getTaxExemptionReason ().isEmpty ())
     {
-      for (var taxExemptionReason : aObj.getTaxExemptionReason ())
+      for (final var taxExemptionReason : aObj.getTaxExemptionReason ())
       {
         if (!StringHelper.isEmpty (taxExemptionReason.getValue ()))
         {
@@ -95,12 +97,14 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String id ()
   {
     return m_sID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder id (@Nullable final String s)
   {
@@ -108,12 +112,14 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal percentage ()
   {
     return m_aPerc;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder percentage (@Nullable final BigDecimal a)
   {
@@ -121,18 +127,21 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder percentage (final long n)
   {
     return percentage (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxSchemeID ()
   {
     return m_sTaxSchemeID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder taxSchemeID (@Nullable final String s)
   {
@@ -140,18 +149,21 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder taxSchemeID_VAT ()
   {
     return taxSchemeID ("VAT");
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxExemptionReason ()
   {
     return m_sTaxExemptionReason;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder taxExemptionReason (@Nullable final String s)
   {
@@ -159,12 +171,14 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxExemptionReasonCode ()
   {
     return m_sTaxExemptionReasonCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100TaxCategoryBuilder taxExemptionReasonCode (@Nullable final String s)
   {
@@ -192,12 +206,14 @@ public class PeppolViDATDD100TaxCategoryBuilder implements IBuilder <TaxCategory
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxCategoryType build ()
   {

@@ -52,7 +52,7 @@ import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
  *
  * @author Philip Helger
  */
-@SuppressWarnings ("deprecation")
+@SuppressWarnings ("removal")
 public final class PeppolViDATDD100BuilderTest
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100BuilderTest.class);

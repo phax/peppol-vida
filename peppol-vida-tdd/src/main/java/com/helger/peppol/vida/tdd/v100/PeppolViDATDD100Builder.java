@@ -66,9 +66,12 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.UUIDTyp
  *             the Invoice Transmission UUID (TDT-018).
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
 {
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public static final String DEFAULT_CUSTOMIZATION_ID = "urn:peppol:taxdata:vida-1";
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public static final String DEFAULT_PROFILE_ID = "urn:peppol:taxreporting";
 
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100Builder.class);
@@ -88,6 +91,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
   private IParticipantIdentifier m_aReportersRepresentative;
   private ReportedTransactionType m_aReportedTransaction;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100Builder ()
   {
     customizationID (DEFAULT_CUSTOMIZATION_ID);
@@ -96,12 +100,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     issueDateTimeNow ();
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String customizationID ()
   {
     return m_sCustomizationID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder customizationID (@Nullable final String s)
   {
@@ -109,12 +115,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String profileID ()
   {
     return m_sProfileID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder profileID (@Nullable final String s)
   {
@@ -122,12 +130,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String uuid ()
   {
     return m_sUUID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder uuid (@Nullable final String s)
   {
@@ -135,24 +145,28 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder randomUUID ()
   {
     return uuid (UUID.randomUUID ().toString ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate issueDate ()
   {
     return m_aIssueDate;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder issueDateNow ()
   {
     return issueDate (PDTFactory.getCurrentLocalDate ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder issueDate (@Nullable final LocalDate a)
   {
@@ -160,18 +174,21 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public OffsetTime issueTime ()
   {
     return m_aIssueTime;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder issueTimeNow ()
   {
     return issueTime (PDTFactory.getCurrentOffsetTime ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder issueTime (@Nullable final OffsetTime a)
   {
@@ -180,6 +197,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder issueDateTime (@Nullable final OffsetDateTime a)
   {
@@ -188,18 +206,21 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return issueDate (a.toLocalDate ()).issueTime (a.toOffsetTime ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder issueDateTimeNow ()
   {
     return issueDateTime (PDTFactory.getCurrentOffsetDateTime ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public EViDATDDTaxDataTypeCode taxDataTypeCode ()
   {
     return m_eTaxDataTypeCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder taxDataTypeCode (@Nullable final EViDATDDTaxDataTypeCode e)
   {
@@ -207,12 +228,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public EViDATDDDocumentScope documentScope ()
   {
     return m_eDocumentScope;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder documentScope (@Nullable final EViDATDDDocumentScope e)
   {
@@ -220,12 +243,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public EViDATDDReporterRole reporterRole ()
   {
     return m_eReporterRole;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder reporterRole (@Nullable final EViDATDDReporterRole e)
   {
@@ -233,12 +258,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxAuthorityID ()
   {
     return m_sTaxAuthorityID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder taxAuthorityID (@Nullable final String s)
   {
@@ -246,12 +273,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String taxAuthorityName ()
   {
     return m_sTaxAuthorityName;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder taxAuthorityName (@Nullable final String s)
   {
@@ -259,6 +288,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public IParticipantIdentifier reportingParty ()
   {
@@ -270,6 +300,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
    *        Peppol Participant ID of C1/C4 of the business document.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder reportingParty (@Nullable final IParticipantIdentifier a)
   {
@@ -277,6 +308,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public IParticipantIdentifier receivingParty ()
   {
@@ -288,6 +320,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
    *        Peppol Participant ID of C5 of the TDD.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder receivingParty (@Nullable final IParticipantIdentifier a)
   {
@@ -295,6 +328,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public IParticipantIdentifier reportersRepresentative ()
   {
@@ -306,6 +340,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
    *        Peppol Participant ID of C2/C3 of the business document. Must use the SPIS scheme.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder reportersRepresentative (@Nullable final IParticipantIdentifier a)
   {
@@ -313,12 +348,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public ReportedTransactionType reportedTransaction ()
   {
     return m_aReportedTransaction;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder reportedTransaction (@Nullable final ReportedTransactionType a)
   {
@@ -326,12 +363,14 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder reportedTransaction (@Nullable final PeppolViDATDD100ReportedTransactionBuilder a)
   {
     return reportedTransaction (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100Builder reportedTransaction (@NonNull final Consumer <PeppolViDATDD100ReportedTransactionBuilder> aBuilderConsumer)
   {
@@ -342,6 +381,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return reportedTransaction (aBuilder);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     int nErrs = 0;
@@ -510,6 +550,7 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     return nErrs == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxDataType build ()
   {

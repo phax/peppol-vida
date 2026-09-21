@@ -80,7 +80,7 @@ public final class PeppolViDADDValidatorTest
    * read with {@link PeppolViDATDD110Marshaller}, because that one binds the TDD v1.1.0 XSD.
    */
   @Test
-  @SuppressWarnings ("deprecation")
+  @SuppressWarnings ("removal")
   public void testValidateTDD100GoodWithDeprecatedRules ()
   {
     for (final IReadableResource aRes : PeppolViDATestFiles.getAllGoodTDD100Files ())
@@ -98,7 +98,7 @@ public final class PeppolViDADDValidatorTest
    * TDD v1.1.0 XSD validation.
    */
   @Test
-  @SuppressWarnings ("deprecation")
+  @SuppressWarnings ("removal")
   public void testTDD100IsInvalidAgainstTDD110 ()
   {
     final IReadableResource aRes = PeppolViDATestFiles.getAllGoodTDD100Files ().getFirstOrNull ();

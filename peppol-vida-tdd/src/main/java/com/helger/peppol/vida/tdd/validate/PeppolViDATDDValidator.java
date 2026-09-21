@@ -46,6 +46,7 @@ import com.helger.xml.namespace.MapBasedNamespaceContext;
  * @author Philip Helger
  */
 @Immutable
+@SuppressWarnings ("removal")
 public final class PeppolViDATDDValidator
 {
   @NonNull

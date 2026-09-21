@@ -62,6 +62,7 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
   private String m_sPayeeFinancialInstitutionBranchIDScheme;
   // PaymentMandate has no type in 1.0.0
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100PaymentMeansBuilder ()
   {}
 
@@ -72,6 +73,7 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder initFromUBL (@NonNull final PaymentMeansType aObj)
   {
@@ -120,12 +122,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String paymentMeansCode ()
   {
     return m_sPaymentMeansCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder paymentMeansCode (@Nullable final String s)
   {
@@ -133,12 +137,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String paymentMeansCodeName ()
   {
     return m_sPaymentMeansCodeName;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder paymentMeansCodeName (@Nullable final String s)
   {
@@ -146,12 +152,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String paymentID ()
   {
     return m_sPaymentID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder paymentID (@Nullable final String s)
   {
@@ -159,12 +167,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String cardPrimaryAccountNumberID ()
   {
     return m_sCardPrimaryAccountNumberID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder cardPrimaryAccountNumberID (@Nullable final String s)
   {
@@ -172,12 +182,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String cardNetworkID ()
   {
     return m_sCardNetworkID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder cardNetworkID (@Nullable final String s)
   {
@@ -185,12 +197,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String cardHolderName ()
   {
     return m_sCardHolderName;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder cardHolderName (@Nullable final String s)
   {
@@ -198,12 +212,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String payeeFinancialAccountID ()
   {
     return m_sPayeeFinancialAccountID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder payeeFinancialAccountID (@Nullable final String s)
   {
@@ -211,12 +227,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String payeeFinancialAccountIDScheme ()
   {
     return m_sPayeeFinancialAccountIDScheme;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder payeeFinancialAccountIDScheme (@Nullable final String s)
   {
@@ -224,12 +242,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String payeeFinancialInstitutionBranchID ()
   {
     return m_sPayeeFinancialInstitutionBranchID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder payeeFinancialInstitutionBranchID (@Nullable final String s)
   {
@@ -237,12 +257,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String payeeFinancialInstitutionBranchIDScheme ()
   {
     return m_sPayeeFinancialInstitutionBranchIDScheme;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100PaymentMeansBuilder payeeFinancialInstitutionBranchIDScheme (@Nullable final String s)
   {
@@ -273,12 +295,14 @@ public class PeppolViDATDD100PaymentMeansBuilder implements IBuilder <PaymentMea
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public PaymentMeansType build ()
   {

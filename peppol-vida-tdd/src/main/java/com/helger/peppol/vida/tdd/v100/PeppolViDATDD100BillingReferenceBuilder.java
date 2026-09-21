@@ -53,6 +53,7 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
   private String m_sIDScheme;
   private LocalDate m_aIssueDate;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100BillingReferenceBuilder ()
   {}
 
@@ -63,6 +64,7 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100BillingReferenceBuilder initFromUBL (@NonNull final BillingReferenceType aObj)
   {
@@ -82,12 +84,14 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String id ()
   {
     return m_sID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100BillingReferenceBuilder id (@Nullable final String s)
   {
@@ -95,12 +99,14 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String idScheme ()
   {
     return m_sIDScheme;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100BillingReferenceBuilder idScheme (@Nullable final String s)
   {
@@ -108,12 +114,14 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public LocalDate issueDate ()
   {
     return m_aIssueDate;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100BillingReferenceBuilder issueDate (@Nullable final LocalDate a)
   {
@@ -137,12 +145,14 @@ public class PeppolViDATDD100BillingReferenceBuilder implements IBuilder <Billin
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BillingReferenceType build ()
   {

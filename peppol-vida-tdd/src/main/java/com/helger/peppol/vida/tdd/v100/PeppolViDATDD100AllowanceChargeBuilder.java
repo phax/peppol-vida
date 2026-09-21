@@ -46,6 +46,7 @@ import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.Allowan
  *             the Invoice Transmission UUID (TDT-018).
  */
 @Deprecated (since = "0.11.0", forRemoval = true)
+@SuppressWarnings ("removal")
 public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <AllowanceChargeType>
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100AllowanceChargeBuilder.class);
@@ -59,6 +60,7 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
   private BigDecimal m_aBaseAmount;
   private TaxCategoryType m_aTaxCategory;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100AllowanceChargeBuilder (@Nullable final String sDocumentCurrencyCode)
   {
     m_sDocumentCurrencyCode = sDocumentCurrencyCode;
@@ -71,6 +73,7 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder initFromUBL (@NonNull final AllowanceChargeType aObj)
   {
@@ -90,11 +93,13 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean charge ()
   {
     return m_bCharge;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder charge (final boolean b)
   {
@@ -102,12 +107,14 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String reasonCode ()
   {
     return m_sReasonCode;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder reasonCode (@Nullable final String s)
   {
@@ -115,12 +122,14 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String reason ()
   {
     return m_sReason;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder reason (@Nullable final String s)
   {
@@ -128,12 +137,14 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal multiplicationFactor ()
   {
     return m_aMultFactor;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder multiplicationFactor (@Nullable final BigDecimal a)
   {
@@ -141,18 +152,21 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder multiplicationFactor (final long n)
   {
     return multiplicationFactor (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal amount ()
   {
     return m_aAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder amount (@Nullable final BigDecimal a)
   {
@@ -160,18 +174,21 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder amount (final long n)
   {
     return amount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public BigDecimal baseAmount ()
   {
     return m_aBaseAmount;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder baseAmount (@Nullable final BigDecimal a)
   {
@@ -179,18 +196,21 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder baseAmount (final long n)
   {
     return baseAmount (BigHelper.toBigDecimal (n));
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public TaxCategoryType taxCategory ()
   {
     return m_aTaxCategory;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder taxCategory (@Nullable final TaxCategoryType a)
   {
@@ -198,12 +218,14 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder taxCategory (@Nullable final PeppolViDATDD100TaxCategoryBuilder a)
   {
     return taxCategory (a == null ? null : a.build ());
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100AllowanceChargeBuilder taxCategory (@NonNull final Consumer <PeppolViDATDD100TaxCategoryBuilder> aBuilderConsumer)
   {
@@ -231,12 +253,14 @@ public class PeppolViDATDD100AllowanceChargeBuilder implements IBuilder <Allowan
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public AllowanceChargeType build ()
   {

@@ -49,6 +49,7 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
   private String m_sItemClassificationListID;
   private String m_sItemClassificationListVersionID;
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public PeppolViDATDD100CommodityClassificationBuilder ()
   {}
 
@@ -59,6 +60,7 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
    *        The UBL object to read from. May not be <code>null</code>.
    * @return this for chaining
    */
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100CommodityClassificationBuilder initFromUBL (@NonNull final CommodityClassificationType aObj)
   {
@@ -74,12 +76,14 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String itemClassification ()
   {
     return m_sItemClassification;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100CommodityClassificationBuilder itemClassification (@Nullable final String s)
   {
@@ -87,12 +91,14 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String itemClassificationListID ()
   {
     return m_sItemClassificationListID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100CommodityClassificationBuilder itemClassificationListID (@Nullable final String s)
   {
@@ -100,12 +106,14 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
     return this;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public String itemClassificationListVersionID ()
   {
     return m_sItemClassificationListVersionID;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @NonNull
   public PeppolViDATDD100CommodityClassificationBuilder itemClassificationListVersionID (@Nullable final String s)
   {
@@ -133,12 +141,14 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
     return aErrorCount.intValue () == 0;
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
     return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
   }
 
+  @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public CommodityClassificationType build ()
   {
