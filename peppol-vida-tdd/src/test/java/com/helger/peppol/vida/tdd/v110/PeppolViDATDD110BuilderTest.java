@@ -114,41 +114,82 @@ public final class PeppolViDATDD110BuilderTest
   public void testMinimumTDDForC2 () throws Exception
   {
     final TaxDataType aTDD = _createEnvelope (EViDATDDReporterRole.SENDER).reportedTransaction (rt -> rt.transmissionUUID (TRANSMISSION_UUID)
-                                                                                                       .customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
-                                                                                                       .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
-                                                                                                       .id ("INV-2025-0046")
-                                                                                                       .issueDate (PDTFactory.createLocalDate (2025,
-                                                                                                                                               Month.FEBRUARY,
-                                                                                                                                               10))
-                                                                                                       .documentTypeCode ("380")
-                                                                                                       .documentCurrencyCode ("EUR")
-                                                                                                       // BT-31 and BT-48
-                                                                                                       .sellerTaxID ("DE811569869")
-                                                                                                       .buyerTaxID ("SE556677889901")
-                                                                                                       // Exactly one VAT breakdown is needed
-                                                                                                       // (PEPPOL-EN16931-R053). BT-110 and BT-117
-                                                                                                       // are mandatory in UBL 2.1 and BT-119 is
-                                                                                                       // required by BR-48, so only BT-118 may be
-                                                                                                       // left out by the sell side
-                                                                                                       .taxTotalDocumentCurrency (x -> x.taxAmount (0)
-                                                                                                                                        .addTaxSubtotal (y -> y.taxableAmount (100)
-                                                                                                                                                               .taxAmount (0)
-                                                                                                                                                               .taxCategory (z -> z.percentage (0)
-                                                                                                                                                                                   .taxSchemeID ("VAT"))))
-                                                                                                       // BT-106, BT-109 and BT-115. BT-112 is
-                                                                                                       // needed because BR-CO-15 always applies
-                                                                                                       // once BT-110 is present
-                                                                                                       .lineExtensionAmount (100)
-                                                                                                       .taxExclusiveTotalAmount (100)
-                                                                                                       .taxInclusiveTotalAmount (100)
-                                                                                                       .payableAmount (100)
-                                                                                                       .addDocumentLine (x -> x.id ("1")
-                                                                                                                               .quantity (1)
-                                                                                                                               .quantityUnit ("H87")
-                                                                                                                               .lineExtensionAmount (100)
-                                                                                                                               .item (y -> y.name ("Great Good"))
-                                                                                                                               .priceAmount (100)))
-                                                                         .build ();
+                                                                                                        .customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
+                                                                                                        .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
+                                                                                                        .id ("INV-2025-0046")
+                                                                                                        .issueDate (PDTFactory.createLocalDate (2025,
+                                                                                                                                                Month.FEBRUARY,
+                                                                                                                                                10))
+                                                                                                        .documentTypeCode ("380")
+                                                                                                        .documentCurrencyCode ("EUR")
+                                                                                                        // BT-31
+                                                                                                        // and
+                                                                                                        // BT-48
+                                                                                                        .sellerTaxID ("DE811569869")
+                                                                                                        .buyerTaxID ("SE556677889901")
+                                                                                                        // Exactly
+                                                                                                        // one
+                                                                                                        // VAT
+                                                                                                        // breakdown
+                                                                                                        // is
+                                                                                                        // needed
+                                                                                                        // (PEPPOL-EN16931-R053).
+                                                                                                        // BT-110
+                                                                                                        // and
+                                                                                                        // BT-117
+                                                                                                        // are
+                                                                                                        // mandatory
+                                                                                                        // in
+                                                                                                        // UBL
+                                                                                                        // 2.1
+                                                                                                        // and
+                                                                                                        // BT-119
+                                                                                                        // is
+                                                                                                        // required
+                                                                                                        // by
+                                                                                                        // BR-48,
+                                                                                                        // so
+                                                                                                        // only
+                                                                                                        // BT-118
+                                                                                                        // may
+                                                                                                        // be
+                                                                                                        // left
+                                                                                                        // out
+                                                                                                        // by
+                                                                                                        // the
+                                                                                                        // sell
+                                                                                                        // side
+                                                                                                        .taxTotalDocumentCurrency (x -> x.taxAmount (0)
+                                                                                                                                         .addTaxSubtotal (y -> y.taxableAmount (100)
+                                                                                                                                                                .taxAmount (0)
+                                                                                                                                                                .taxCategory (z -> z.percentage (0)
+                                                                                                                                                                                    .taxSchemeID ("VAT"))))
+                                                                                                        // BT-106,
+                                                                                                        // BT-109
+                                                                                                        // and
+                                                                                                        // BT-115.
+                                                                                                        // BT-112
+                                                                                                        // is
+                                                                                                        // needed
+                                                                                                        // because
+                                                                                                        // BR-CO-15
+                                                                                                        // always
+                                                                                                        // applies
+                                                                                                        // once
+                                                                                                        // BT-110
+                                                                                                        // is
+                                                                                                        // present
+                                                                                                        .lineExtensionAmount (100)
+                                                                                                        .taxExclusiveTotalAmount (100)
+                                                                                                        .taxInclusiveTotalAmount (100)
+                                                                                                        .payableAmount (100)
+                                                                                                        .addDocumentLine (x -> x.id ("1")
+                                                                                                                                .quantity (1)
+                                                                                                                                .quantityUnit ("H87")
+                                                                                                                                .lineExtensionAmount (100)
+                                                                                                                                .item (y -> y.name ("Great Good"))
+                                                                                                                                .priceAmount (100)))
+                                                                          .build ();
     assertNotNull (aTDD);
     _validate (aTDD);
   }
@@ -165,42 +206,58 @@ public final class PeppolViDATDD110BuilderTest
   public void testMinimumTDDForC3 () throws Exception
   {
     final TaxDataType aTDD = _createEnvelope (EViDATDDReporterRole.RECEIVER).reportedTransaction (rt -> rt.transmissionUUID (TRANSMISSION_UUID)
-                                                                                                         .customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
-                                                                                                         .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
-                                                                                                         .id ("INV-2025-0046")
-                                                                                                         .issueDate (PDTFactory.createLocalDate (2025,
-                                                                                                                                                 Month.FEBRUARY,
-                                                                                                                                                 10))
-                                                                                                         .documentTypeCode ("380")
-                                                                                                         .documentCurrencyCode ("EUR")
-                                                                                                         // BT-31 and BT-48 are needed for the reverse charge
-                                                                                                         .sellerTaxID ("DE811569869")
-                                                                                                         .sellerCountryCode ("DE")
-                                                                                                         .buyerTaxID ("SE556677889901")
-                                                                                                         .buyerCountryCode ("SE")
-                                                                                                         // BT-110, BT-117, BT-118 and BT-119
-                                                                                                         .taxTotalDocumentCurrency (x -> x.taxAmount (0)
-                                                                                                                                          .addTaxSubtotal (y -> y.taxableAmount (100)
-                                                                                                                                                                 .taxAmount (0)
-                                                                                                                                                                 .taxCategory (z -> z.id ("AE")
-                                                                                                                                                                                     .percentage (0)
-                                                                                                                                                                                     .taxSchemeID ("VAT")
-                                                                                                                                                                                     .taxExemptionReason ("Reverse charge"))))
-                                                                                                         // BT-106, BT-109, BT-112 and BT-115
-                                                                                                         .lineExtensionAmount (100)
-                                                                                                         .taxExclusiveTotalAmount (100)
-                                                                                                         .taxInclusiveTotalAmount (100)
-                                                                                                         .payableAmount (100)
-                                                                                                         .addDocumentLine (x -> x.id ("1")
-                                                                                                                                 .quantity (1)
-                                                                                                                                 .quantityUnit ("H87")
-                                                                                                                                 .lineExtensionAmount (100)
-                                                                                                                                 .item (y -> y.name ("Great Good")
-                                                                                                                                              .classifiedTaxCategory (z -> z.id ("AE")
-                                                                                                                                                                            .percentage (0)
-                                                                                                                                                                            .taxSchemeID ("VAT")))
-                                                                                                                                 .priceAmount (100)))
-                                                                           .build ();
+                                                                                                          .customizationID ("urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0")
+                                                                                                          .profileID ("urn:fdc:peppol.eu:2017:poacc:billing:01:1.0")
+                                                                                                          .id ("INV-2025-0046")
+                                                                                                          .issueDate (PDTFactory.createLocalDate (2025,
+                                                                                                                                                  Month.FEBRUARY,
+                                                                                                                                                  10))
+                                                                                                          .documentTypeCode ("380")
+                                                                                                          .documentCurrencyCode ("EUR")
+                                                                                                          // BT-31
+                                                                                                          // and
+                                                                                                          // BT-48
+                                                                                                          // are
+                                                                                                          // needed
+                                                                                                          // for
+                                                                                                          // the
+                                                                                                          // reverse
+                                                                                                          // charge
+                                                                                                          .sellerTaxID ("DE811569869")
+                                                                                                          .sellerCountryCode ("DE")
+                                                                                                          .buyerTaxID ("SE556677889901")
+                                                                                                          .buyerCountryCode ("SE")
+                                                                                                          // BT-110,
+                                                                                                          // BT-117,
+                                                                                                          // BT-118
+                                                                                                          // and
+                                                                                                          // BT-119
+                                                                                                          .taxTotalDocumentCurrency (x -> x.taxAmount (0)
+                                                                                                                                           .addTaxSubtotal (y -> y.taxableAmount (100)
+                                                                                                                                                                  .taxAmount (0)
+                                                                                                                                                                  .taxCategory (z -> z.id ("AE")
+                                                                                                                                                                                      .percentage (0)
+                                                                                                                                                                                      .taxSchemeID ("VAT")
+                                                                                                                                                                                      .taxExemptionReason ("Reverse charge"))))
+                                                                                                          // BT-106,
+                                                                                                          // BT-109,
+                                                                                                          // BT-112
+                                                                                                          // and
+                                                                                                          // BT-115
+                                                                                                          .lineExtensionAmount (100)
+                                                                                                          .taxExclusiveTotalAmount (100)
+                                                                                                          .taxInclusiveTotalAmount (100)
+                                                                                                          .payableAmount (100)
+                                                                                                          .addDocumentLine (x -> x.id ("1")
+                                                                                                                                  .quantity (1)
+                                                                                                                                  .quantityUnit ("H87")
+                                                                                                                                  .lineExtensionAmount (100)
+                                                                                                                                  .item (y -> y.name ("Great Good")
+                                                                                                                                               .classifiedTaxCategory (z -> z.id ("AE")
+                                                                                                                                                                             .percentage (0)
+                                                                                                                                                                             .taxSchemeID ("VAT")))
+                                                                                                                                  .priceAmount (100)))
+                                                                            .build ();
     assertNotNull (aTDD);
     _validate (aTDD);
   }
@@ -362,7 +419,8 @@ public final class PeppolViDATDD110BuilderTest
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                              .taxAuthorityID ("XX")
                                                              // Read from pre-parsed UBL Invoice
-                                                             .reportedTransaction (rt -> rt.initFromInvoice (aInvoice).transmissionUUID (TRANSMISSION_UUID))
+                                                             .reportedTransaction (rt -> rt.initFromInvoice (aInvoice)
+                                                                                           .transmissionUUID (TRANSMISSION_UUID))
                                                              .build ();
       assertNotNull (aTDD);
 
@@ -402,7 +460,8 @@ public final class PeppolViDATDD110BuilderTest
                                                              .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                              .taxAuthorityID ("XX")
                                                              // Read from pre-parsed UBL CreditNote
-                                                             .reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote).transmissionUUID (TRANSMISSION_UUID))
+                                                             .reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote)
+                                                                                           .transmissionUUID (TRANSMISSION_UUID))
                                                              .build ();
       assertNotNull (aTDD);
 
@@ -441,7 +500,8 @@ public final class PeppolViDATDD110BuilderTest
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            .taxAuthorityID ("XX")
                                                            // It's not really an invalid invoice
-                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice).transmissionUUID (TRANSMISSION_UUID))
+                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice)
+                                                                                         .transmissionUUID (TRANSMISSION_UUID))
                                                            .build ();
     assertNotNull (aTDD);
 
@@ -485,7 +545,8 @@ public final class PeppolViDATDD110BuilderTest
                                                            .reportersRepresentative (aIF.createParticipantIdentifierWithDefaultScheme ("0242:987654"))
                                                            .taxAuthorityID ("XX")
                                                            // This Invoice is really broken
-                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice).transmissionUUID (TRANSMISSION_UUID))
+                                                           .reportedTransaction (rt -> rt.initFromInvoice (aInvoice)
+                                                                                         .transmissionUUID (TRANSMISSION_UUID))
                                                            .build ();
     assertNotNull (aTDD);
 

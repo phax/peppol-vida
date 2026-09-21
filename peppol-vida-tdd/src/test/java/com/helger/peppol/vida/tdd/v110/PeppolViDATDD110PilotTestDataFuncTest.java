@@ -92,8 +92,7 @@ public final class PeppolViDATDD110PilotTestDataFuncTest
       {
         final CreditNoteType aCreditNote = UBL21Marshaller.creditNote ().read (aTestData.getSourceRes ());
         assertNotNull (aCreditNote);
-        aBuilder.reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote)
-                                              .transmissionUUID (sTransmissionUUID));
+        aBuilder.reportedTransaction (rt -> rt.initFromCreditNote (aCreditNote).transmissionUUID (sTransmissionUUID));
       }
       else
       {

@@ -144,7 +144,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
   private final ICommonsList <DocumentLineType> m_aDocumentLines = new CommonsArrayList <> ();
 
   public PeppolViDATDD110ReportedTransactionBuilder (@NonNull final EViDATDDTaxDataTypeCode eDocumentTypeCode,
-                                                    @NonNull final EViDATDDReporterRole eReporterRole)
+                                                     @NonNull final EViDATDDReporterRole eReporterRole)
   {
     ValueEnforcer.notNull (eDocumentTypeCode, "DocumentTypeCode");
     ValueEnforcer.notNull (eReporterRole, "ReporterRole");
@@ -1261,8 +1261,8 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
    *        The ReportedDocument error counter to increment. May not be <code>null</code>.
    */
   private void _checkBuySideFields (@NonNull final ConditionalLogger aCondLog,
-                                                @NonNull final String sErrorPrefix,
-                                                @NonNull final MutableInt aErrorCount)
+                                    @NonNull final String sErrorPrefix,
+                                    @NonNull final MutableInt aErrorCount)
   {
     // BT-110 - ibr-tdd-90
     if (m_aTaxTotalDocumentCurrency == null || m_aTaxTotalDocumentCurrency.getTaxAmount () == null)
@@ -1392,8 +1392,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     // (PEPPOL-EN16931-R053)
     if (m_aTaxTotalDocumentCurrency == null || m_aTaxTotalDocumentCurrency.getTaxSubtotal ().isEmpty ())
     {
-      aCondLog.error (sErrorPrefix +
-                      "TaxTotalDocumentCurrency with at least one VAT breakdown (BG-23) is missing");
+      aCondLog.error (sErrorPrefix + "TaxTotalDocumentCurrency with at least one VAT breakdown (BG-23) is missing");
       aErrorCount.inc ();
     }
     if (m_aTaxTotalTaxCurrency != null)
@@ -1477,10 +1476,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     if (m_eDocumentTypeCode != EViDATDDTaxDataTypeCode.DISREGARD || aReportedDocErrs.is0 ())
     {
       // TDT-017 is calculated from BT-31, BT-03, BT-01 and BT-02
-      final UUID aRepDocUUID = CViDATDD.createInvoiceUUID (m_sSellerTaxID,
-                                                           m_sDocumentTypeCode,
-                                                           m_sID,
-                                                           m_aIssueDate);
+      final UUID aRepDocUUID = CViDATDD.createInvoiceUUID (m_sSellerTaxID, m_sDocumentTypeCode, m_sID, m_aIssueDate);
 
       final ReportedDocumentType a = new ReportedDocumentType ();
       if (StringHelper.isNotEmpty (m_sCustomizationID))
