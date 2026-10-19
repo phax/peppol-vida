@@ -40,6 +40,8 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.peppol.vida.tdd.CViDATDD;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDTaxDataTypeCode;
@@ -1253,30 +1255,30 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
    * the Schematron rules ibr-tdd-90, ibr-tdd-91 and ibr-tdd-92. For the Reporter role "C2" - the
    * Seller, who is not liable for the VAT of the reported transaction - all of them are optional.
    *
-   * @param aCondLog
-   *        The logger to use. May not be <code>null</code>.
+   * @param aErrorHandler
+   *        The error message consumer to use. May not be <code>null</code>.
    * @param sErrorPrefix
    *        The error message prefix to use. May not be <code>null</code>.
    * @param aErrorCount
    *        The ReportedDocument error counter to increment. May not be <code>null</code>.
    */
-  private void _checkBuySideFields (@NonNull final ConditionalLogger aCondLog,
+  private void _checkBuySideFields (@NonNull final Consumer <String> aErrorHandler,
                                     @NonNull final String sErrorPrefix,
                                     @NonNull final MutableInt aErrorCount)
   {
     // BT-110 - ibr-tdd-90
     if (m_aTaxTotalDocumentCurrency == null || m_aTaxTotalDocumentCurrency.getTaxAmount () == null)
     {
-      aCondLog.error (sErrorPrefix +
-                      "Invoice total VAT amount (BT-110) is missing - it is mandatory for the Reporter role 'C3'");
+      aErrorHandler.accept (sErrorPrefix +
+                            "Invoice total VAT amount (BT-110) is missing - it is mandatory for the Reporter role 'C3'");
       aErrorCount.inc ();
     }
 
     // BT-112 - ibr-tdd-91
     if (m_aTaxInclusiveTotalAmount == null)
     {
-      aCondLog.error (sErrorPrefix +
-                      "Invoice total amount with VAT (BT-112) is missing - it is mandatory for the Reporter role 'C3'");
+      aErrorHandler.accept (sErrorPrefix +
+                            "Invoice total amount with VAT (BT-112) is missing - it is mandatory for the Reporter role 'C3'");
       aErrorCount.inc ();
     }
 
@@ -1292,10 +1294,10 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
             aTaxCategory.getID () == null ||
             aTaxCategory.getPercent () == null)
         {
-          aCondLog.error (sErrorPrefix +
-                          "The VAT breakdown (BG-23) at index " +
-                          nIndex +
-                          " must contain the VAT category tax amount (BT-117), the VAT category code (BT-118) and the VAT category rate (BT-119) for the Reporter role 'C3'");
+          aErrorHandler.accept (sErrorPrefix +
+                                "The VAT breakdown (BG-23) at index " +
+                                nIndex +
+                                " must contain the VAT category tax amount (BT-117), the VAT category code (BT-118) and the VAT category rate (BT-119) for the Reporter role 'C3'");
           aErrorCount.inc ();
         }
         nIndex++;
@@ -1303,51 +1305,50 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     }
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
+  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
   {
     int nErrs = 0;
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.1.0 ReportedTransaction builder: ";
 
     // TDT-018 belongs to the ReportedTransaction and is therefore also needed for "failed" TDDs
     if (StringHelper.isEmpty (m_sTransmissionUUID))
     {
-      aCondLog.error (sErrorPrefix + "Invoice Transmission UUID (TDT-018) is missing");
+      aErrorHandler.accept (sErrorPrefix + "Invoice Transmission UUID (TDT-018) is missing");
       nErrs++;
     }
 
     // Check all ReportedDocument fields
     if (StringHelper.isEmpty (m_sCustomizationID))
     {
-      aCondLog.error (sErrorPrefix + "CustomizationID is missing");
+      aErrorHandler.accept (sErrorPrefix + "CustomizationID is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sProfileID))
     {
-      aCondLog.error (sErrorPrefix + "ProfileID is missing");
+      aErrorHandler.accept (sErrorPrefix + "ProfileID is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sID))
     {
-      aCondLog.error (sErrorPrefix + "ID is missing");
+      aErrorHandler.accept (sErrorPrefix + "ID is missing");
       aErrorCount.inc ();
     }
     if (m_aIssueDate == null)
     {
-      aCondLog.error (sErrorPrefix + "IssueDate is missing");
+      aErrorHandler.accept (sErrorPrefix + "IssueDate is missing");
       aErrorCount.inc ();
     }
     // IssueTime is optional
     if (StringHelper.isEmpty (m_sDocumentTypeCode))
     {
-      aCondLog.error (sErrorPrefix + "DocumentTypeCode is missing");
+      aErrorHandler.accept (sErrorPrefix + "DocumentTypeCode is missing");
       aErrorCount.inc ();
     }
     // Note is optional
     // TaxPointDate is optional
     if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
     {
-      aCondLog.error (sErrorPrefix + "DocumentCurrencyCode is missing");
+      aErrorHandler.accept (sErrorPrefix + "DocumentCurrencyCode is missing");
       aErrorCount.inc ();
     }
     // InvoicePeriod is optional
@@ -1362,7 +1363,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
       // Without BT-31 no meaningful Invoice UUID (TDT-017) can be calculated, and without that no
       // TDD can be created at all. The only exception is the VAT category "Not subject to VAT",
       // for which BR-O-02 forbids BT-31.
-      aCondLog.error (sErrorPrefix + "Seller VAT identifier (BT-31) is missing");
+      aErrorHandler.accept (sErrorPrefix + "Seller VAT identifier (BT-31) is missing");
       aErrorCount.inc ();
     }
     // m_sSellerCountryCode is optional
@@ -1375,8 +1376,8 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
         StringHelper.isEmpty (m_sBuyerName))
     {
       // The BUYER (BG-07) is mandatory (ibr-tdd-36) and must not be empty (PEPPOL-EN16931-R008)
-      aCondLog.error (sErrorPrefix +
-                      "The BUYER (BG-07) needs at least one of BuyerTaxID (BT-48), BuyerCountryCode (BT-55) or BuyerName (BT-44)");
+      aErrorHandler.accept (sErrorPrefix +
+                            "The BUYER (BG-07) needs at least one of BuyerTaxID (BT-48), BuyerCountryCode (BT-55) or BuyerName (BT-44)");
       aErrorCount.inc ();
     }
 
@@ -1392,15 +1393,15 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     // (PEPPOL-EN16931-R053)
     if (m_aTaxTotalDocumentCurrency == null || m_aTaxTotalDocumentCurrency.getTaxSubtotal ().isEmpty ())
     {
-      aCondLog.error (sErrorPrefix + "TaxTotalDocumentCurrency with at least one VAT breakdown (BG-23) is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxTotalDocumentCurrency with at least one VAT breakdown (BG-23) is missing");
       aErrorCount.inc ();
     }
     if (m_aTaxTotalTaxCurrency != null)
     {
       if (StringHelper.isEmpty (m_sTaxCurrencyCode))
       {
-        aCondLog.error (sErrorPrefix +
-                        "If TaxTotalAmountTaxCurrency is provided, TaxCurrencyCode must also be provided");
+        aErrorHandler.accept (sErrorPrefix +
+                              "If TaxTotalAmountTaxCurrency is provided, TaxCurrencyCode must also be provided");
         aErrorCount.inc ();
       }
     }
@@ -1408,19 +1409,19 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     {
       if (StringHelper.isNotEmpty (m_sTaxCurrencyCode))
       {
-        aCondLog.error (sErrorPrefix +
-                        "If TaxCurrencyCode is provided, TaxTotalAmountTaxCurrency must also be provided");
+        aErrorHandler.accept (sErrorPrefix +
+                              "If TaxCurrencyCode is provided, TaxTotalAmountTaxCurrency must also be provided");
         aErrorCount.inc ();
       }
     }
     if (m_aLineExtensionAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "LineExtensionAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "LineExtensionAmount is missing");
       aErrorCount.inc ();
     }
     if (m_aTaxExclusiveTotalAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
       aErrorCount.inc ();
     }
     // m_aTaxInclusiveTotalAmount is optional - only the Reporter role "C3" needs the Invoice total
@@ -1431,17 +1432,17 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     // m_aPayableRoundingAmount is optional
     if (m_aPayableAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "PayableAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "PayableAmount is missing");
       aErrorCount.inc ();
     }
     if (m_aDocumentLines.isEmpty ())
     {
-      aCondLog.error (sErrorPrefix + "At least one DocumentLine is needed");
+      aErrorHandler.accept (sErrorPrefix + "At least one DocumentLine is needed");
       aErrorCount.inc ();
     }
 
     if (m_eReporterRole == EViDATDDReporterRole.RECEIVER)
-      _checkBuySideFields (aCondLog, sErrorPrefix, aErrorCount);
+      _checkBuySideFields (aErrorHandler, sErrorPrefix, aErrorCount);
 
     // Failed TDDs don't need this
     // TODO missing in 1.0.0
@@ -1453,15 +1454,23 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
+    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
+    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
+  }
+
+  public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
+  {
+    ValueEnforcer.notNull (aErrorList, "ErrorList");
+    final MutableInt aReportedDocErrs = new MutableInt (0);
+    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
   }
 
   @Nullable
   public ReportedTransactionType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
+    if (!_isEveryRequiredFieldSet (sError -> LOGGER.error (sError), aReportedDocErrs))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD ReportedTransaction cannot be build.");
       return null;

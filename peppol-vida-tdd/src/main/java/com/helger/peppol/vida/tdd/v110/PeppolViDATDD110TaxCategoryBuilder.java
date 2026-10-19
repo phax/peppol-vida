@@ -17,6 +17,7 @@
 package com.helger.peppol.vida.tdd.v110;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.TaxExemptionReasonType;
 import org.jspecify.annotations.NonNull;
@@ -30,6 +31,8 @@ import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
@@ -166,9 +169,8 @@ public class PeppolViDATDD110TaxCategoryBuilder implements IBuilder <TaxCategory
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
+  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
   {
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.1.0 TaxCategory builder: ";
 
     // m_sID (BT-118) is optional - it is only mandatory if the Reporter role is "C3" (ibr-tdd-92)
@@ -176,7 +178,7 @@ public class PeppolViDATDD110TaxCategoryBuilder implements IBuilder <TaxCategory
     // (ibr-tdd-92)
     if (StringHelper.isEmpty (m_sTaxSchemeID))
     {
-      aCondLog.error (sErrorPrefix + "TaxSchemeID is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxSchemeID is missing");
       aErrorCount.inc ();
     }
 
@@ -185,15 +187,22 @@ public class PeppolViDATDD110TaxCategoryBuilder implements IBuilder <TaxCategory
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
+    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
+    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
+  }
+
+  public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
+  {
+    ValueEnforcer.notNull (aErrorList, "ErrorList");
+    final MutableInt aReportedDocErrs = new MutableInt (0);
+    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
   }
 
   @Nullable
   public TaxCategoryType build ()
   {
-    final MutableInt aReportedDocErrs = new MutableInt (0);
-    if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
+    if (!isEveryRequiredFieldSet (true))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD TaxCategory cannot be build.");
       return null;

@@ -28,11 +28,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.base.builder.IBuilder;
+import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.string.StringHelper;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDDocumentScope;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDTaxDataTypeCode;
@@ -382,110 +385,109 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
   }
 
   @Deprecated (since = "0.11.0", forRemoval = true)
-  public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
+  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler)
   {
     int nErrs = 0;
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final IIdentifierFactory aIF = PeppolIdentifierFactory.INSTANCE;
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 builder: ";
 
     if (StringHelper.isEmpty (m_sCustomizationID))
     {
-      aCondLog.error (sErrorPrefix + "CustomizationID is missing");
+      aErrorHandler.accept (sErrorPrefix + "CustomizationID is missing");
       nErrs++;
     }
     if (StringHelper.isEmpty (m_sProfileID))
     {
-      aCondLog.error (sErrorPrefix + "ProfileID is missing");
+      aErrorHandler.accept (sErrorPrefix + "ProfileID is missing");
       nErrs++;
     }
     if (StringHelper.isEmpty (m_sUUID))
     {
-      aCondLog.error (sErrorPrefix + "UUID is missing");
+      aErrorHandler.accept (sErrorPrefix + "UUID is missing");
       nErrs++;
     }
     if (m_aIssueDate == null)
     {
-      aCondLog.error (sErrorPrefix + "IssueDate is missing");
+      aErrorHandler.accept (sErrorPrefix + "IssueDate is missing");
       nErrs++;
     }
     if (m_aIssueTime == null)
     {
-      aCondLog.error (sErrorPrefix + "IssueTime is missing");
+      aErrorHandler.accept (sErrorPrefix + "IssueTime is missing");
       nErrs++;
     }
     if (m_eTaxDataTypeCode == null)
     {
-      aCondLog.error (sErrorPrefix + "DocumentTypeCode is missing");
+      aErrorHandler.accept (sErrorPrefix + "DocumentTypeCode is missing");
       nErrs++;
     }
     if (m_eDocumentScope == null)
     {
-      aCondLog.error (sErrorPrefix + "DocumentScope is missing");
+      aErrorHandler.accept (sErrorPrefix + "DocumentScope is missing");
       nErrs++;
     }
     if (m_eReporterRole == null)
     {
-      aCondLog.error (sErrorPrefix + "ReporterRole is missing");
+      aErrorHandler.accept (sErrorPrefix + "ReporterRole is missing");
       nErrs++;
     }
 
     if (StringHelper.isEmpty (m_sTaxAuthorityID))
     {
-      aCondLog.error (sErrorPrefix + "TaxAuthority ID is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxAuthority ID is missing");
       nErrs++;
     }
     // m_sTaxAuthorityName is optional
 
     if (m_aReportingParty == null)
     {
-      aCondLog.error (sErrorPrefix + "ReportingParty is missing");
+      aErrorHandler.accept (sErrorPrefix + "ReportingParty is missing");
       nErrs++;
     }
     else
       if (!aIF.isParticipantIdentifierSchemeValid (m_aReportingParty.getScheme ()))
       {
-        aCondLog.error (sErrorPrefix +
-                        "ReportingParty identifier scheme '" +
-                        m_aReportingParty.getScheme () +
-                        "' is invalid");
+        aErrorHandler.accept (sErrorPrefix +
+                              "ReportingParty identifier scheme '" +
+                              m_aReportingParty.getScheme () +
+                              "' is invalid");
         nErrs++;
       }
       else
         if (!aIF.isParticipantIdentifierValueValid (m_aReportingParty.getScheme (), m_aReportingParty.getValue ()))
         {
-          aCondLog.error (sErrorPrefix +
-                          "ReportingParty identifier value '" +
-                          m_aReportingParty.getValue () +
-                          "' is invalid for scheme '" +
-                          m_aReportingParty.getScheme () +
-                          "'");
+          aErrorHandler.accept (sErrorPrefix +
+                                "ReportingParty identifier value '" +
+                                m_aReportingParty.getValue () +
+                                "' is invalid for scheme '" +
+                                m_aReportingParty.getScheme () +
+                                "'");
           nErrs++;
         }
 
     if (m_aReceivingParty == null)
     {
-      aCondLog.error (sErrorPrefix + "ReceivingParty is missing");
+      aErrorHandler.accept (sErrorPrefix + "ReceivingParty is missing");
       nErrs++;
     }
     else
       if (!aIF.isParticipantIdentifierSchemeValid (m_aReceivingParty.getScheme ()))
       {
-        aCondLog.error (sErrorPrefix +
-                        "ReceivingParty identifier scheme '" +
-                        m_aReceivingParty.getScheme () +
-                        "' is invalid");
+        aErrorHandler.accept (sErrorPrefix +
+                              "ReceivingParty identifier scheme '" +
+                              m_aReceivingParty.getScheme () +
+                              "' is invalid");
         nErrs++;
       }
       else
         if (!aIF.isParticipantIdentifierValueValid (m_aReceivingParty.getScheme (), m_aReceivingParty.getValue ()))
         {
-          aCondLog.error (sErrorPrefix +
-                          "ReceivingParty identifier value '" +
-                          m_aReceivingParty.getValue () +
-                          "' is invalid for scheme '" +
-                          m_aReceivingParty.getScheme () +
-                          "'");
+          aErrorHandler.accept (sErrorPrefix +
+                                "ReceivingParty identifier value '" +
+                                m_aReceivingParty.getValue () +
+                                "' is invalid for scheme '" +
+                                m_aReceivingParty.getScheme () +
+                                "'");
           nErrs++;
         }
         else
@@ -493,38 +495,38 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
           final String [] aParts = StringHelper.getExplodedArray (':', m_aReceivingParty.getValue (), 2);
           if (!"0242".equals (aParts[0]))
           {
-            aCondLog.error (sErrorPrefix +
-                            "ReceivingParty identifier value '" +
-                            m_aReceivingParty.getValue () +
-                            "' must use the 0242 identifier scheme");
+            aErrorHandler.accept (sErrorPrefix +
+                                  "ReceivingParty identifier value '" +
+                                  m_aReceivingParty.getValue () +
+                                  "' must use the 0242 identifier scheme");
             nErrs++;
           }
         }
 
     if (m_aReportersRepresentative == null)
     {
-      aCondLog.error (sErrorPrefix + "ReportersRepresentative is missing");
+      aErrorHandler.accept (sErrorPrefix + "ReportersRepresentative is missing");
       nErrs++;
     }
     else
       if (!aIF.isParticipantIdentifierSchemeValid (m_aReportersRepresentative.getScheme ()))
       {
-        aCondLog.error (sErrorPrefix +
-                        "ReportersRepresentative identifier meta scheme '" +
-                        m_aReportersRepresentative.getScheme () +
-                        "' is invalid");
+        aErrorHandler.accept (sErrorPrefix +
+                              "ReportersRepresentative identifier meta scheme '" +
+                              m_aReportersRepresentative.getScheme () +
+                              "' is invalid");
         nErrs++;
       }
       else
         if (!aIF.isParticipantIdentifierValueValid (m_aReportersRepresentative.getScheme (),
                                                     m_aReportersRepresentative.getValue ()))
         {
-          aCondLog.error (sErrorPrefix +
-                          "ReportersRepresentative identifier value '" +
-                          m_aReportersRepresentative.getValue () +
-                          "' is invalid for meta scheme '" +
-                          m_aReportersRepresentative.getScheme () +
-                          "'");
+          aErrorHandler.accept (sErrorPrefix +
+                                "ReportersRepresentative identifier value '" +
+                                m_aReportersRepresentative.getValue () +
+                                "' is invalid for meta scheme '" +
+                                m_aReportersRepresentative.getScheme () +
+                                "'");
           nErrs++;
         }
         else
@@ -532,10 +534,10 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
           final String [] aParts = StringHelper.getExplodedArray (':', m_aReportersRepresentative.getValue (), 2);
           if (!"0242".equals (aParts[0]))
           {
-            aCondLog.error (sErrorPrefix +
-                            "ReportersRepresentative identifier value '" +
-                            m_aReportersRepresentative.getValue () +
-                            "' must use the 0242 identifier scheme");
+            aErrorHandler.accept (sErrorPrefix +
+                                  "ReportersRepresentative identifier value '" +
+                                  m_aReportersRepresentative.getValue () +
+                                  "' must use the 0242 identifier scheme");
             nErrs++;
           }
         }
@@ -543,11 +545,23 @@ public class PeppolViDATDD100Builder implements IBuilder <TaxDataType>
     // ViDA must have exactly one reported transaction (according to the Schematron)
     if (m_aReportedTransaction == null)
     {
-      aCondLog.error (sErrorPrefix + "ReportedTransaction is missing");
+      aErrorHandler.accept (sErrorPrefix + "ReportedTransaction is missing");
       nErrs++;
     }
 
     return nErrs == 0;
+  }
+
+  public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
+  {
+    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
+    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError));
+  }
+
+  public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
+  {
+    ValueEnforcer.notNull (aErrorList, "ErrorList");
+    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()));
   }
 
   @Deprecated (since = "0.11.0", forRemoval = true)

@@ -32,6 +32,8 @@ import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.collection.commons.CommonsArrayList;
 import com.helger.collection.commons.ICommonsList;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSubtotalType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxTotalType;
@@ -128,9 +130,8 @@ public class PeppolViDATDD110TaxTotalBuilder implements IBuilder <TaxTotalType>
     return addTaxSubtotal (aBuilder);
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
+  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
   {
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.1.0 TaxTotal builder: ";
 
     if (m_aTaxAmount == null)
@@ -138,7 +139,7 @@ public class PeppolViDATDD110TaxTotalBuilder implements IBuilder <TaxTotalType>
       // BT-110 is 0..1 in the TDD semantic model and only mandatory for the Reporter role "C3"
       // (ibr-tdd-90), but cbc:TaxAmount is mandatory inside cac:TaxTotal in UBL 2.1. Use "0" if
       // there is nothing to report.
-      aCondLog.error (sErrorPrefix + "TaxAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxAmount is missing");
       aErrorCount.inc ();
     }
     // m_aSubtotals may be empty
@@ -148,15 +149,22 @@ public class PeppolViDATDD110TaxTotalBuilder implements IBuilder <TaxTotalType>
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
+    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
+    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
+  }
+
+  public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
+  {
+    ValueEnforcer.notNull (aErrorList, "ErrorList");
+    final MutableInt aReportedDocErrs = new MutableInt (0);
+    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
   }
 
   @Nullable
   public TaxTotalType build ()
   {
-    final MutableInt aReportedDocErrs = new MutableInt (0);
-    if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
+    if (!isEveryRequiredFieldSet (true))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD TaxTotal cannot be build.");
       return null;

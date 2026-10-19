@@ -122,6 +122,9 @@ to build the solution.
 
 # News and noteworthy
 
+v0.11.1 - work in progress
+* Added the overload `isEveryRequiredFieldSet (ErrorList)` to `PeppolViDATDD110Builder` and to all sub-builders (also for the `PeppolViDATDD100*Builder` classes). It collects the reasons why a builder is incomplete in an `ErrorList` instead of only logging them, so that callers can pass them on
+
 v0.11.0 - 2026-09-17
 * Updated to the Peppol ViDA TDD **v1.1.0** specification - XSD and Schematron from 2026-09-14. See https://test-docs.peppol.eu/vida/2026-v1.1.0/Vida-tdd/
 * **Incompatible change**: the Invoice UUID (TDT-017) is now calculated from the Seller VAT identifier (BT-31), the invoice type code (BT-03), the invoice number (BT-01) and the invoice issue date (BT-02), each trimmed and joined with a single space character. Previously the Seller identifier (BT-29) and its scheme (BT-29-1) were used instead of BT-31, so Invoice UUIDs created with earlier versions differ

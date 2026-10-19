@@ -43,6 +43,8 @@ import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.datetime.xml.XMLOffsetDate;
 import com.helger.datetime.xml.XMLOffsetTime;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 import com.helger.peppol.vida.tdd.CViDATDD;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDTaxDataTypeCode;
 import com.helger.peppol.vida.tdd.v2026_03_18.DocumentLineType;
@@ -1283,10 +1285,9 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     return addDocumentLine (aBuilder);
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
+  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
   {
     int nErrs = 0;
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 ReportedTransaction builder: ";
 
     // TransportHeaderID is optional
@@ -1294,35 +1295,35 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     // Check all ReportedDocument fields
     if (StringHelper.isEmpty (m_sCustomizationID))
     {
-      aCondLog.error (sErrorPrefix + "CustomizationID is missing");
+      aErrorHandler.accept (sErrorPrefix + "CustomizationID is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sProfileID))
     {
-      aCondLog.error (sErrorPrefix + "ProfileID is missing");
+      aErrorHandler.accept (sErrorPrefix + "ProfileID is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sID))
     {
-      aCondLog.error (sErrorPrefix + "ID is missing");
+      aErrorHandler.accept (sErrorPrefix + "ID is missing");
       aErrorCount.inc ();
     }
     if (m_aIssueDate == null)
     {
-      aCondLog.error (sErrorPrefix + "IssueDate is missing");
+      aErrorHandler.accept (sErrorPrefix + "IssueDate is missing");
       aErrorCount.inc ();
     }
     // IssueTime is optional
     if (StringHelper.isEmpty (m_sDocumentTypeCode))
     {
-      aCondLog.error (sErrorPrefix + "DocumentTypeCode is missing");
+      aErrorHandler.accept (sErrorPrefix + "DocumentTypeCode is missing");
       aErrorCount.inc ();
     }
     // Note is optional
     // TaxPointDate is optional
     if (StringHelper.isEmpty (m_sDocumentCurrencyCode))
     {
-      aCondLog.error (sErrorPrefix + "DocumentCurrencyCode is missing");
+      aErrorHandler.accept (sErrorPrefix + "DocumentCurrencyCode is missing");
       aErrorCount.inc ();
     }
     // InvoicePeriod is optional
@@ -1331,18 +1332,18 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
 
     if (StringHelper.isEmpty (m_sSellerEndpointIDSchemeID))
     {
-      aCondLog.error (sErrorPrefix + "Seller EndpointID Scheme ID is missing");
+      aErrorHandler.accept (sErrorPrefix + "Seller EndpointID Scheme ID is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sSellerEndpointID))
     {
-      aCondLog.error (sErrorPrefix + "Seller EndpointID is missing");
+      aErrorHandler.accept (sErrorPrefix + "Seller EndpointID is missing");
       aErrorCount.inc ();
     }
     // m_sSellerIDSchemeID is optional
     if (StringHelper.isEmpty (m_sSellerID))
     {
-      aCondLog.error (sErrorPrefix + "Seller ID is missing");
+      aErrorHandler.accept (sErrorPrefix + "Seller ID is missing");
       aErrorCount.inc ();
     }
     // m_sSellerTaxID is optional (needed in all cases except if TaxCategory is "O")
@@ -1352,7 +1353,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     // m_sBuyerCountryCode is optional
     if (StringHelper.isEmpty (m_sBuyerName))
     {
-      aCondLog.error (sErrorPrefix + "BuyerName is missing");
+      aErrorHandler.accept (sErrorPrefix + "BuyerName is missing");
       aErrorCount.inc ();
     }
 
@@ -1365,15 +1366,15 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
 
     if (m_aTaxTotalDocumentCurrency == null)
     {
-      aCondLog.error (sErrorPrefix + "TaxTotalDocumentCurrency is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxTotalDocumentCurrency is missing");
       aErrorCount.inc ();
     }
     if (m_aTaxTotalTaxCurrency != null)
     {
       if (StringHelper.isEmpty (m_sTaxCurrencyCode))
       {
-        aCondLog.error (sErrorPrefix +
-                        "If TaxTotalAmountTaxCurrency is provided, TaxCurrencyCode must also be provided");
+        aErrorHandler.accept (sErrorPrefix +
+                              "If TaxTotalAmountTaxCurrency is provided, TaxCurrencyCode must also be provided");
         aErrorCount.inc ();
       }
     }
@@ -1381,24 +1382,24 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     {
       if (StringHelper.isNotEmpty (m_sTaxCurrencyCode))
       {
-        aCondLog.error (sErrorPrefix +
-                        "If TaxCurrencyCode is provided, TaxTotalAmountTaxCurrency must also be provided");
+        aErrorHandler.accept (sErrorPrefix +
+                              "If TaxCurrencyCode is provided, TaxTotalAmountTaxCurrency must also be provided");
         aErrorCount.inc ();
       }
     }
     if (m_aLineExtensionAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "LineExtensionAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "LineExtensionAmount is missing");
       aErrorCount.inc ();
     }
     if (m_aTaxExclusiveTotalAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxExclusiveTotalAmount is missing");
       aErrorCount.inc ();
     }
     if (m_aTaxInclusiveTotalAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "TaxInclusiveTotalAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "TaxInclusiveTotalAmount is missing");
       aErrorCount.inc ();
     }
     // m_aAllowanceTotalAmount is optional
@@ -1407,12 +1408,12 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
     // m_aPayableRoundingAmount is optional
     if (m_aPayableAmount == null)
     {
-      aCondLog.error (sErrorPrefix + "PayableAmount is missing");
+      aErrorHandler.accept (sErrorPrefix + "PayableAmount is missing");
       aErrorCount.inc ();
     }
     if (m_aDocumentLines.isEmpty ())
     {
-      aCondLog.error (sErrorPrefix + "At least one DocumentLine is needed");
+      aErrorHandler.accept (sErrorPrefix + "At least one DocumentLine is needed");
       aErrorCount.inc ();
     }
 
@@ -1427,8 +1428,16 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   @Deprecated (since = "0.11.0", forRemoval = true)
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
+    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
+    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
+  }
+
+  public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
+  {
+    ValueEnforcer.notNull (aErrorList, "ErrorList");
+    final MutableInt aReportedDocErrs = new MutableInt (0);
+    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
   }
 
   @Deprecated (since = "0.11.0", forRemoval = true)
@@ -1436,7 +1445,7 @@ public class PeppolViDATDD100ReportedTransactionBuilder implements IBuilder <Rep
   public ReportedTransactionType build ()
   {
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
+    if (!_isEveryRequiredFieldSet (sError -> LOGGER.error (sError), aReportedDocErrs))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD ReportedTransaction cannot be build.");
       return null;

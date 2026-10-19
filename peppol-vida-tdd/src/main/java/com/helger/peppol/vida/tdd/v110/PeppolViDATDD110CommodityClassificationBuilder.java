@@ -16,6 +16,8 @@
  */
 package com.helger.peppol.vida.tdd.v110;
 
+import java.util.function.Consumer;
+
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -26,6 +28,8 @@ import com.helger.base.enforce.ValueEnforcer;
 import com.helger.base.log.ConditionalLogger;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
+import com.helger.diagnostics.error.SingleError;
+import com.helger.diagnostics.error.list.ErrorList;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CommodityClassificationType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemClassificationCodeType;
@@ -107,19 +111,18 @@ public class PeppolViDATDD110CommodityClassificationBuilder implements IBuilder 
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (final boolean bDoLogOnError, @NonNull final MutableInt aErrorCount)
+  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
   {
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.1.0 CommodityClassification builder: ";
 
     if (StringHelper.isEmpty (m_sItemClassification))
     {
-      aCondLog.error (sErrorPrefix + "ItemClassification is missing");
+      aErrorHandler.accept (sErrorPrefix + "ItemClassification is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sItemClassificationListID))
     {
-      aCondLog.error (sErrorPrefix + "ItemClassificationListID is missing");
+      aErrorHandler.accept (sErrorPrefix + "ItemClassificationListID is missing");
       aErrorCount.inc ();
     }
     // m_sItemClassificationListVersionID is optional
@@ -129,15 +132,22 @@ public class PeppolViDATDD110CommodityClassificationBuilder implements IBuilder 
 
   public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
   {
+    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (bDoLogOnError, aReportedDocErrs);
+    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
+  }
+
+  public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
+  {
+    ValueEnforcer.notNull (aErrorList, "ErrorList");
+    final MutableInt aReportedDocErrs = new MutableInt (0);
+    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
   }
 
   @Nullable
   public CommodityClassificationType build ()
   {
-    final MutableInt aReportedDocErrs = new MutableInt (0);
-    if (!_isEveryRequiredFieldSet (true, aReportedDocErrs))
+    if (!isEveryRequiredFieldSet (true))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD CommodityClassification cannot be build.");
       return null;
