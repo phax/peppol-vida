@@ -17,7 +17,6 @@
 package com.helger.peppol.vida.tdd.v110;
 
 import java.time.LocalDate;
-import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -26,12 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.base.log.ConditionalLogger;
+import com.helger.base.log.ILogHandler;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
 import com.helger.datetime.xml.XMLOffsetDate;
-import com.helger.diagnostics.error.SingleError;
 import com.helger.diagnostics.error.list.ErrorList;
+import com.helger.diagnostics.log.ErrorListLogHandler;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.BillingReferenceType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.DocumentReferenceType;
@@ -46,6 +45,7 @@ public class PeppolViDATDD110BillingReferenceBuilder implements IBuilder <Billin
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD110BillingReferenceBuilder.class);
 
+  private ILogHandler m_aLogHandler = ILogHandler.createForLogger (LOGGER);
   private String m_sID;
   private String m_sIDScheme;
   private LocalDate m_aIssueDate;
@@ -118,13 +118,46 @@ public class PeppolViDATDD110BillingReferenceBuilder implements IBuilder <Billin
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
+  /**
+   * @return The log handler that receives the messages of the required field checks - errors for
+   *         missing or invalid fields. Never <code>null</code>.
+   */
+  @NonNull
+  public ILogHandler logHandler ()
+  {
+    return m_aLogHandler;
+  }
+
+  /**
+   * Set the log handler that receives the messages of the required field checks, when calling
+   * {@link #build()}. It is not used by
+   * {@link #isEveryRequiredFieldSet(ErrorList)}. Missing or invalid required fields are
+   * reported as errors. The default handler logs to the logger of this class, use
+   * {@link ILogHandler#createForConsumer(java.util.function.Consumer)} or
+   * {@link ILogHandler#createNoOp()} to redirect or discard them. The handler is passed on to all
+   * sub-builders that are created via a lambda <b>after</b> this call, so call this method before
+   * adding any sub-elements. Sub-builders that are created externally and passed in are not
+   * changed.
+   *
+   * @param aLogHandler
+   *        The log handler to use. May not be <code>null</code>.
+   * @return this for chaining
+   */
+  @NonNull
+  public PeppolViDATDD110BillingReferenceBuilder logHandler (@NonNull final ILogHandler aLogHandler)
+  {
+    ValueEnforcer.notNull (aLogHandler, "LogHandler");
+    m_aLogHandler = aLogHandler;
+    return this;
+  }
+
+  private boolean _isEveryRequiredFieldSet (@NonNull final ILogHandler aLogHandler, @NonNull final MutableInt aErrorCount)
   {
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.1.0 BillingReference builder: ";
 
     if (StringHelper.isEmpty (m_sID))
     {
-      aErrorHandler.accept (sErrorPrefix + "ID is missing");
+      aLogHandler.error (sErrorPrefix + "ID is missing");
       aErrorCount.inc ();
     }
     // m_sIDScheme is optional
@@ -133,24 +166,18 @@ public class PeppolViDATDD110BillingReferenceBuilder implements IBuilder <Billin
     return aErrorCount.intValue () == 0;
   }
 
-  public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
-  {
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
-  }
-
   public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
   {
     ValueEnforcer.notNull (aErrorList, "ErrorList");
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
+    return _isEveryRequiredFieldSet (new ErrorListLogHandler (aErrorList), aReportedDocErrs);
   }
 
   @Nullable
   public BillingReferenceType build ()
   {
-    if (!isEveryRequiredFieldSet (true))
+    final MutableInt aErrorCount = new MutableInt (0);
+    if (!_isEveryRequiredFieldSet (m_aLogHandler, aErrorCount))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD BillingReference cannot be build.");
       return null;

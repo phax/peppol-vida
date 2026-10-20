@@ -19,6 +19,7 @@ package com.helger.peppol.vida.tdd.v100;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.charset.StandardCharsets;
@@ -29,6 +30,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.base.log.ILogHandler;
+import com.helger.collection.commons.CommonsArrayList;
+import com.helger.collection.commons.ICommonsList;
 import com.helger.datetime.helper.PDTFactory;
 import com.helger.diagnostics.error.IError;
 import com.helger.diagnostics.error.list.ErrorList;
@@ -158,12 +162,34 @@ public final class PeppolViDATDD100BuilderTest
   public void testIsEveryRequiredFieldSetErrorList ()
   {
     final PeppolViDATDD100Builder aBuilder = new PeppolViDATDD100Builder ();
-    assertFalse (aBuilder.isEveryRequiredFieldSet (false));
+    assertFalse (aBuilder.isEveryRequiredFieldSet (new ErrorList ()));
 
     final ErrorList aErrorList = new ErrorList ();
     assertFalse (aBuilder.isEveryRequiredFieldSet (aErrorList));
     assertFalse (aErrorList.isEmpty ());
     assertEquals (aErrorList.size (), aErrorList.getAllErrors ().size ());
     assertTrue (aErrorList.getAllTexts (Locale.ROOT).get (0).contains ("is missing"));
+  }
+
+  @Test
+  public void testLogHandler ()
+  {
+    final ICommonsList <String> aErrors = new CommonsArrayList <> ();
+    final PeppolViDATDD100Builder aBuilder = new PeppolViDATDD100Builder ().logHandler (ILogHandler.createForConsumer (aErrors::add)).taxDataTypeCode (EViDATDDTaxDataTypeCode.SUBMIT);
+
+    // The handler receives the messages of build()
+    assertNull (aBuilder.build ());
+    assertFalse (aErrors.isEmpty ());
+
+    // The ErrorList variant is independent of the handler
+    aErrors.clear ();
+    assertFalse (aBuilder.isEveryRequiredFieldSet (new ErrorList ()));
+    assertTrue (aErrors.isEmpty ());
+
+    // Sub-builders created via lambda inherit the handler
+    aBuilder.reportedTransaction (aRT -> {
+      assertNull (aRT.build ());
+      assertFalse (aErrors.isEmpty ());
+    });
   }
 }

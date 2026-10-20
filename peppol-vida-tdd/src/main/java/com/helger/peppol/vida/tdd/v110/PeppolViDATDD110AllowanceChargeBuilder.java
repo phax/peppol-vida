@@ -26,12 +26,12 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.base.log.ConditionalLogger;
+import com.helger.base.log.ILogHandler;
 import com.helger.base.numeric.BigHelper;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.diagnostics.error.SingleError;
 import com.helger.diagnostics.error.list.ErrorList;
+import com.helger.diagnostics.log.ErrorListLogHandler;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.AllowanceChargeType;
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxCategoryType;
@@ -46,6 +46,7 @@ public class PeppolViDATDD110AllowanceChargeBuilder implements IBuilder <Allowan
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD110AllowanceChargeBuilder.class);
 
+  private ILogHandler m_aLogHandler = ILogHandler.createForLogger (LOGGER);
   private final String m_sDocumentCurrencyCode;
   private boolean m_bCharge;
   private String m_sReasonCode;
@@ -204,11 +205,45 @@ public class PeppolViDATDD110AllowanceChargeBuilder implements IBuilder <Allowan
   public PeppolViDATDD110AllowanceChargeBuilder taxCategory (@NonNull final Consumer <PeppolViDATDD110TaxCategoryBuilder> aBuilderConsumer)
   {
     final PeppolViDATDD110TaxCategoryBuilder aBuilder = new PeppolViDATDD110TaxCategoryBuilder ();
+    aBuilder.logHandler (m_aLogHandler);
     aBuilderConsumer.accept (aBuilder);
     return taxCategory (aBuilder);
   }
 
-  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
+  /**
+   * @return The log handler that receives the messages of the required field checks - errors for
+   *         missing or invalid fields. Never <code>null</code>.
+   */
+  @NonNull
+  public ILogHandler logHandler ()
+  {
+    return m_aLogHandler;
+  }
+
+  /**
+   * Set the log handler that receives the messages of the required field checks, when calling
+   * {@link #build()}. It is not used by
+   * {@link #isEveryRequiredFieldSet(ErrorList)}. Missing or invalid required fields are
+   * reported as errors. The default handler logs to the logger of this class, use
+   * {@link ILogHandler#createForConsumer(java.util.function.Consumer)} or
+   * {@link ILogHandler#createNoOp()} to redirect or discard them. The handler is passed on to all
+   * sub-builders that are created via a lambda <b>after</b> this call, so call this method before
+   * adding any sub-elements. Sub-builders that are created externally and passed in are not
+   * changed.
+   *
+   * @param aLogHandler
+   *        The log handler to use. May not be <code>null</code>.
+   * @return this for chaining
+   */
+  @NonNull
+  public PeppolViDATDD110AllowanceChargeBuilder logHandler (@NonNull final ILogHandler aLogHandler)
+  {
+    ValueEnforcer.notNull (aLogHandler, "LogHandler");
+    m_aLogHandler = aLogHandler;
+    return this;
+  }
+
+  private boolean _isEveryRequiredFieldSet (@NonNull final ILogHandler aLogHandler, @NonNull final MutableInt aErrorCount)
   {
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.1.0 AllowanceCharge builder: ";
 
@@ -217,7 +252,7 @@ public class PeppolViDATDD110AllowanceChargeBuilder implements IBuilder <Allowan
     // m_aMultFactor is optional
     if (m_aAmount == null)
     {
-      aErrorHandler.accept (sErrorPrefix + "Amount is missing");
+      aLogHandler.error (sErrorPrefix + "Amount is missing");
       aErrorCount.inc ();
     }
     // m_aBaseAmount is optional
@@ -226,24 +261,18 @@ public class PeppolViDATDD110AllowanceChargeBuilder implements IBuilder <Allowan
     return aErrorCount.intValue () == 0;
   }
 
-  public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
-  {
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
-  }
-
   public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
   {
     ValueEnforcer.notNull (aErrorList, "ErrorList");
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
+    return _isEveryRequiredFieldSet (new ErrorListLogHandler (aErrorList), aReportedDocErrs);
   }
 
   @Nullable
   public AllowanceChargeType build ()
   {
-    if (!isEveryRequiredFieldSet (true))
+    final MutableInt aErrorCount = new MutableInt (0);
+    if (!_isEveryRequiredFieldSet (m_aLogHandler, aErrorCount))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD AllowanceCharge cannot be build.");
       return null;

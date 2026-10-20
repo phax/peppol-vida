@@ -123,7 +123,10 @@ to build the solution.
 # News and noteworthy
 
 v0.11.1 - work in progress
-* Added the overload `isEveryRequiredFieldSet (ErrorList)` to `PeppolViDATDD110Builder` and to all sub-builders (also for the `PeppolViDATDD100*Builder` classes). It collects the reasons why a builder is incomplete in an `ErrorList` instead of only logging them, so that callers can pass them on
+* Updated to ph-commons 12.5.2
+* Added `logHandler (ILogHandler)` to `PeppolViDATDD110Builder` and all sub-builders (including the `PeppolViDATDD100*Builder` classes). It receives the message of each missing or invalid required field (as error) when calling `build ()`; the default handler logs to the logger of the builder class. Use `ILogHandler.createForConsumer`, `ILogHandler.createForBiConsumer` or `ErrorListLogHandler` to redirect the messages, and `ILogHandler.createNoOp ()` to discard them. Call it first, because it is passed on to sub-builders created via lambda afterwards
+* Added `isEveryRequiredFieldSet (ErrorList)` which collects the messages in an `ErrorList`, independent of the log handler
+* Removed the public `isEveryRequiredFieldSet ()` and `isEveryRequiredFieldSet (boolean)` methods; use `isEveryRequiredFieldSet (ErrorList)` or `build ()` instead
 
 v0.11.0 - 2026-09-17
 * Updated to the Peppol ViDA TDD **v1.1.0** specification - XSD and Schematron from 2026-09-14. See https://test-docs.peppol.eu/vida/2026-v1.1.0/Vida-tdd/

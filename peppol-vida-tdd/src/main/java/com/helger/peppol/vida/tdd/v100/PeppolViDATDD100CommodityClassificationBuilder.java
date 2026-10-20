@@ -16,7 +16,6 @@
  */
 package com.helger.peppol.vida.tdd.v100;
 
-import java.util.function.Consumer;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -25,11 +24,11 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.base.builder.IBuilder;
 import com.helger.base.enforce.ValueEnforcer;
-import com.helger.base.log.ConditionalLogger;
+import com.helger.base.log.ILogHandler;
 import com.helger.base.numeric.mutable.MutableInt;
 import com.helger.base.string.StringHelper;
-import com.helger.diagnostics.error.SingleError;
 import com.helger.diagnostics.error.list.ErrorList;
+import com.helger.diagnostics.log.ErrorListLogHandler;
 
 import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.CommodityClassificationType;
 import oasis.names.specification.ubl.schema.xsd.commonbasiccomponents_21.ItemClassificationCodeType;
@@ -49,6 +48,7 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
 {
   private static final Logger LOGGER = LoggerFactory.getLogger (PeppolViDATDD100CommodityClassificationBuilder.class);
 
+  private ILogHandler m_aLogHandler = ILogHandler.createForLogger (LOGGER);
   private String m_sItemClassification;
   private String m_sItemClassificationListID;
   private String m_sItemClassificationListVersionID;
@@ -125,18 +125,51 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
     return this;
   }
 
-  private boolean _isEveryRequiredFieldSet (@NonNull final Consumer <String> aErrorHandler, @NonNull final MutableInt aErrorCount)
+  /**
+   * @return The log handler that receives the messages of the required field checks - errors for
+   *         missing or invalid fields. Never <code>null</code>.
+   */
+  @NonNull
+  public ILogHandler logHandler ()
+  {
+    return m_aLogHandler;
+  }
+
+  /**
+   * Set the log handler that receives the messages of the required field checks, when calling
+   * {@link #build()}. It is not used by
+   * {@link #isEveryRequiredFieldSet(ErrorList)}. Missing or invalid required fields are
+   * reported as errors. The default handler logs to the logger of this class, use
+   * {@link ILogHandler#createForConsumer(java.util.function.Consumer)} or
+   * {@link ILogHandler#createNoOp()} to redirect or discard them. The handler is passed on to all
+   * sub-builders that are created via a lambda <b>after</b> this call, so call this method before
+   * adding any sub-elements. Sub-builders that are created externally and passed in are not
+   * changed.
+   *
+   * @param aLogHandler
+   *        The log handler to use. May not be <code>null</code>.
+   * @return this for chaining
+   */
+  @NonNull
+  public PeppolViDATDD100CommodityClassificationBuilder logHandler (@NonNull final ILogHandler aLogHandler)
+  {
+    ValueEnforcer.notNull (aLogHandler, "LogHandler");
+    m_aLogHandler = aLogHandler;
+    return this;
+  }
+
+  private boolean _isEveryRequiredFieldSet (@NonNull final ILogHandler aLogHandler, @NonNull final MutableInt aErrorCount)
   {
     final String sErrorPrefix = "Error in Peppol ViDA pilot TDD 1.0.0 CommodityClassification builder: ";
 
     if (StringHelper.isEmpty (m_sItemClassification))
     {
-      aErrorHandler.accept (sErrorPrefix + "ItemClassification is missing");
+      aLogHandler.error (sErrorPrefix + "ItemClassification is missing");
       aErrorCount.inc ();
     }
     if (StringHelper.isEmpty (m_sItemClassificationListID))
     {
-      aErrorHandler.accept (sErrorPrefix + "ItemClassificationListID is missing");
+      aLogHandler.error (sErrorPrefix + "ItemClassificationListID is missing");
       aErrorCount.inc ();
     }
     // m_sItemClassificationListVersionID is optional
@@ -145,25 +178,19 @@ public class PeppolViDATDD100CommodityClassificationBuilder implements IBuilder 
   }
 
   @Deprecated (since = "0.11.0", forRemoval = true)
-  public boolean isEveryRequiredFieldSet (final boolean bDoLogOnError)
-  {
-    final ConditionalLogger aCondLog = new ConditionalLogger (LOGGER, bDoLogOnError);
-    final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (sError -> aCondLog.error (sError), aReportedDocErrs);
-  }
-
   public boolean isEveryRequiredFieldSet (@NonNull final ErrorList aErrorList)
   {
     ValueEnforcer.notNull (aErrorList, "ErrorList");
     final MutableInt aReportedDocErrs = new MutableInt (0);
-    return _isEveryRequiredFieldSet (sError -> aErrorList.add (SingleError.builderError ().errorText (sError).build ()), aReportedDocErrs);
+    return _isEveryRequiredFieldSet (new ErrorListLogHandler (aErrorList), aReportedDocErrs);
   }
 
   @Deprecated (since = "0.11.0", forRemoval = true)
   @Nullable
   public CommodityClassificationType build ()
   {
-    if (!isEveryRequiredFieldSet (true))
+    final MutableInt aErrorCount = new MutableInt (0);
+    if (!_isEveryRequiredFieldSet (m_aLogHandler, aErrorCount))
     {
       LOGGER.error ("At least one mandatory field is not set and therefore the TDD CommodityClassification cannot be build.");
       return null;
