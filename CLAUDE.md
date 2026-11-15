@@ -29,6 +29,8 @@ mvn test -pl peppol-vida-tdd -Dtest=PeppolViDATDD110BuilderTest#testBasicMinimal
 
 ## Module Structure
 
+`peppol-vida-bom` is a BOM (`dependencyManagement` only) listing all artifacts below with `${project.version}`; it has no dependencies of its own. Any new artifact module must be added to it.
+
 Three Maven modules with strict build order (each depends on the previous):
 
 1. **`peppol-vida-testfiles`** — Bundles test XML files as classpath resources. `PeppolViDATestFiles` provides programmatic access to valid UBL invoices, credit notes, and TDD documents, as well as to a subset of the official OpenPeppol ViDA Pilot Testing data packages (`PeppolViDAPilotTestData`).

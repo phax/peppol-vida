@@ -32,6 +32,7 @@ The backing specifications are:
 
 This project consists of the following submodules (in alphabetic order)
 
+* `peppol-vida-bom` - the Bill of Materials (BOM) with the managed versions of all artifacts of this project (since v0.11.2)
 * `peppol-vida-tdd` - contains the main logic to create Peppol ViDA pilot TDD documents based on the Peppol ViDA pilot documents as well as documentation
     * Main class to build a complete TDD from scratch is `PeppolViDATDD110Builder`
     * To run the Schematron validation, use class `PeppolViDATDDValidator`
@@ -52,6 +53,20 @@ Add the following to your `pom.xml` to use this artifact, replacing `x.y.z` with
   <version>x.y.z</version>
 </dependency>
 ```
+
+Alternatively use the following code in your `dependencyManagement` section to use it as a BOM:
+
+```xml
+<dependency>
+  <groupId>com.helger.peppol</groupId>
+  <artifactId>peppol-vida-bom</artifactId>
+  <version>x.y.z</version>
+  <type>pom</type>
+  <scope>import</scope>
+</dependency>
+```
+
+Note: prior to v0.11.2 there was no dedicated BOM and `peppol-vida-parent-pom` had to be imported instead, which also carries the build configuration of this project.
 
 # Usage example
 
@@ -121,6 +136,13 @@ mvn clean install
 to build the solution.
 
 # News and noteworthy
+
+v0.11.2 - 2026-11-15
+* Requires at least ph-commons 12.7.1
+* Requires at least peppol-commons 13.2.3
+* Updated to phive 12.3.0, ph-schematron 10.3.2 and ph-ubl 10.3.0
+* Added the new module `peppol-vida-bom` as a Maven BOM (Bill of Materials) for all peppol-vida artifacts.
+  Use it instead of `peppol-vida-parent-pom` when importing the managed versions
 
 v0.11.1 - 2026-10-22
 * Requires ph-commons 12.5.2
