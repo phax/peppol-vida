@@ -41,7 +41,7 @@ public enum EViDATDDDocumentScope implements IHasID <String>
   /**
    * Reporting on an international invoice exchanged through the Peppol/non-Peppol network.
    */
-  INTERNATIONAL ("Intl");
+  INTERNATIONAL ("INTL");
 
   private final String m_sID;
 
