@@ -137,6 +137,11 @@ to build the solution.
 
 # News and noteworthy
 
+v0.11.3 - work in progress
+* `initFromInvoice` and `initFromCreditNote` of all ReportedTransaction builders now only take the `cac:PartyTaxScheme` with the TaxScheme ID `VAT` for the Seller VAT identifier (BT-31), the Buyer VAT identifier (BT-48) and the Seller tax representative VAT identifier (BT-63).
+  Previously the first one was used, so e.g. a Seller tax registration identifier (BT-32) listed first resulted in a wrong Invoice UUID (TDT-017).
+  If no such entry is present, the value stays `null`.
+
 v0.11.2 - 2026-11-15
 * Requires at least ph-commons 12.7.1
 * Requires at least peppol-commons 13.2.3

@@ -27,9 +27,17 @@ import org.jspecify.annotations.NonNull;
 import org.junit.Test;
 
 import com.helger.datetime.helper.PDTFactory;
+import com.helger.io.resource.ClassPathResource;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDReporterRole;
 import com.helger.peppol.vida.tdd.codelist.EViDATDDTaxDataTypeCode;
 import com.helger.peppol.vida.tdd.v2026_09_14.ReportedTransactionType;
+import com.helger.ubl21.UBL21Marshaller;
+
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyTaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.PartyType;
+import oasis.names.specification.ubl.schema.xsd.commonaggregatecomponents_21.TaxSchemeType;
+import oasis.names.specification.ubl.schema.xsd.creditnote_21.CreditNoteType;
+import oasis.names.specification.ubl.schema.xsd.invoice_21.InvoiceType;
 
 /**
  * Test class for class {@link PeppolViDATDD110ReportedTransactionBuilder}.
@@ -103,6 +111,42 @@ public final class PeppolViDATDD110ReportedTransactionBuilderTest
   }
 
   /**
+   * Create a PartyTaxScheme with the provided values.
+   *
+   * @param sCompanyID
+   *        Company ID to use. May not be <code>null</code>.
+   * @param sTaxSchemeID
+   *        Tax scheme ID to use. May not be <code>null</code>.
+   * @return The new PartyTaxScheme.
+   */
+  @NonNull
+  private static PartyTaxSchemeType _createPartyTaxScheme (@NonNull final String sCompanyID,
+                                                           @NonNull final String sTaxSchemeID)
+  {
+    final PartyTaxSchemeType ret = new PartyTaxSchemeType ();
+    ret.setCompanyID (sCompanyID);
+    final TaxSchemeType aTS = new TaxSchemeType ();
+    aTS.setID (sTaxSchemeID);
+    ret.setTaxScheme (aTS);
+    return ret;
+  }
+
+  /**
+   * Put a non-VAT PartyTaxScheme (like BT-32) in front of the existing VAT PartyTaxScheme of Seller
+   * and Buyer, and add a Tax representative whose VAT PartyTaxScheme is also not the first one.
+   */
+  private static void _prependNonVATPartyTaxSchemes (@NonNull final PartyType aSeller,
+                                                     @NonNull final PartyType aBuyer,
+                                                     @NonNull final PartyType aTaxRep)
+  {
+    aSeller.getPartyTaxScheme ().add (0, _createPartyTaxScheme ("SellerTaxRegistration", "TAX"));
+    aBuyer.getPartyTaxScheme ().add (0, _createPartyTaxScheme ("BuyerTaxRegistration", "TAX"));
+    aTaxRep.addPartyTaxScheme (_createPartyTaxScheme ("TaxRepTaxRegistration", "TAX"));
+    // The TaxScheme ID is compared case insensitive and trimmed
+    aTaxRep.addPartyTaxScheme (_createPartyTaxScheme ("DE123456789", " vat "));
+  }
+
+  /**
    * Verify the Invoice UUID (TDT-017) calculation against the test vectors of the Peppol ViDA TDD
    * v1.1.0 specification, chapter "Invoice UUID calculation".
    */
@@ -170,5 +214,70 @@ public final class PeppolViDATDD110ReportedTransactionBuilderTest
                                                                                    .percentage (0)
                                                                                    .taxSchemeID ("VAT"))));
     assertNotNull (aC3.build ());
+  }
+
+  /**
+   * Only the PartyTaxScheme with the TaxScheme ID "VAT" may be used for the Seller VAT identifier
+   * (BT-31), the Buyer VAT identifier (BT-48) and the Seller tax representative VAT identifier
+   * (BT-63) - never e.g. the Seller tax registration identifier (BT-32), even if it comes first.
+   */
+  @Test
+  public void testInitFromInvoiceUsesVATPartyTaxSchemeOnly ()
+  {
+    final InvoiceType aInv = UBL21Marshaller.invoice ()
+                                            .read (new ClassPathResource ("external/invoice/good/base-example.xml"));
+    assertNotNull (aInv);
+    final PartyType aTaxRep = new PartyType ();
+    aInv.setTaxRepresentativeParty (aTaxRep);
+    _prependNonVATPartyTaxSchemes (aInv.getAccountingSupplierParty ().getParty (),
+                                   aInv.getAccountingCustomerParty ().getParty (),
+                                   aTaxRep);
+
+    final PeppolViDATDD110ReportedTransactionBuilder aBuilder = new PeppolViDATDD110ReportedTransactionBuilder (EViDATDDTaxDataTypeCode.SUBMIT,
+                                                                                                                 EViDATDDReporterRole.SENDER).initFromInvoice (aInv);
+    assertEquals ("GB1232434", aBuilder.sellerTaxID ());
+    assertEquals ("SE4598375937", aBuilder.buyerTaxID ());
+    assertEquals ("DE123456789", aBuilder.taxRepresentativeID ());
+  }
+
+  /**
+   * Same as {@link #testInitFromInvoiceUsesVATPartyTaxSchemeOnly()} but for a Credit Note.
+   */
+  @Test
+  public void testInitFromCreditNoteUsesVATPartyTaxSchemeOnly ()
+  {
+    final CreditNoteType aCN = UBL21Marshaller.creditNote ()
+                                              .read (new ClassPathResource ("external/creditnote/good/base-creditnote-correction.xml"));
+    assertNotNull (aCN);
+    final PartyType aTaxRep = new PartyType ();
+    aCN.setTaxRepresentativeParty (aTaxRep);
+    _prependNonVATPartyTaxSchemes (aCN.getAccountingSupplierParty ().getParty (),
+                                   aCN.getAccountingCustomerParty ().getParty (),
+                                   aTaxRep);
+
+    final PeppolViDATDD110ReportedTransactionBuilder aBuilder = new PeppolViDATDD110ReportedTransactionBuilder (EViDATDDTaxDataTypeCode.SUBMIT,
+                                                                                                                 EViDATDDReporterRole.SENDER).initFromCreditNote (aCN);
+    assertEquals ("GB1232434", aBuilder.sellerTaxID ());
+    assertEquals ("SE4598375937", aBuilder.buyerTaxID ());
+    assertEquals ("DE123456789", aBuilder.taxRepresentativeID ());
+  }
+
+  /**
+   * Without a PartyTaxScheme with the TaxScheme ID "VAT" no Seller VAT identifier (BT-31) is taken
+   * over, so no TDD with a wrong Invoice UUID (TDT-017) can be created.
+   */
+  @Test
+  public void testInitFromInvoiceWithoutVATPartyTaxScheme ()
+  {
+    final InvoiceType aInv = UBL21Marshaller.invoice ()
+                                            .read (new ClassPathResource ("external/invoice/good/base-example.xml"));
+    assertNotNull (aInv);
+    final PartyType aSeller = aInv.getAccountingSupplierParty ().getParty ();
+    aSeller.getPartyTaxScheme ().clear ();
+    aSeller.addPartyTaxScheme (_createPartyTaxScheme ("SellerTaxRegistration", "TAX"));
+
+    final PeppolViDATDD110ReportedTransactionBuilder aBuilder = new PeppolViDATDD110ReportedTransactionBuilder (EViDATDDTaxDataTypeCode.SUBMIT,
+                                                                                                                 EViDATDDReporterRole.SENDER).initFromInvoice (aInv);
+    assertNull (aBuilder.sellerTaxID ());
   }
 }
