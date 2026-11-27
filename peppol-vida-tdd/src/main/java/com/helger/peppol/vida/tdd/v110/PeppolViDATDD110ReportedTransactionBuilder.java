@@ -176,6 +176,30 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
     return m_sTransmissionUUID;
   }
 
+
+  /**
+   * Get the company ID of the first cac:PartyTaxScheme of the provided party, that has the
+   * TaxScheme ID "VAT". Other tax schemes (e.g. BT-32 - Seller tax registration identifier) must
+   * not be used as VAT identifier. The TaxScheme ID is compared like in the EN 16931 Schematron
+   * (<code>normalize-space(upper-case(cbc:ID)) = 'VAT'</code>), so "vat" or " Vat " also match.
+   *
+   * @param aParty
+   *        The party to search in. May not be <code>null</code>.
+   * @return <code>null</code> if no such party tax scheme exists.
+   */
+  @Nullable
+  private static String _getVATCompanyID (@NonNull final PartyType aParty)
+  {
+    for (final PartyTaxSchemeType aPTS : aParty.getPartyTaxScheme ())
+    {
+      final TaxSchemeType aTS = aPTS.getTaxScheme ();
+      if (aTS != null && "VAT".equalsIgnoreCase (StringHelper.trim (aTS.getIDValue ())))
+        return aPTS.getCompanyIDValue ();
+    }
+    return null;
+  }
+
+
   /**
    * Set the Invoice Transmission UUID (TDT-018). This identifies one single exchange of the
    * reported Invoice or Credit Note across the network. It is not derived from the document
@@ -253,8 +277,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
 
         if (aParty.hasPartyTaxSchemeEntries ())
         {
-          final PartyTaxSchemeType aPTS = aParty.getPartyTaxSchemeAtIndex (0);
-          sellerTaxID (aPTS.getCompanyIDValue ());
+          sellerTaxID (_getVATCompanyID (aParty));
         }
 
         final AddressType aPA = aParty.getPostalAddress ();
@@ -271,8 +294,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
       {
         if (aParty.hasPartyTaxSchemeEntries ())
         {
-          final PartyTaxSchemeType aPTS = aParty.getPartyTaxSchemeAtIndex (0);
-          buyerTaxID (aPTS.getCompanyIDValue ());
+          buyerTaxID (_getVATCompanyID (aParty));
         }
 
         final AddressType aPA = aParty.getPostalAddress ();
@@ -417,8 +439,7 @@ public class PeppolViDATDD110ReportedTransactionBuilder implements IBuilder <Rep
 
         if (aParty.hasPartyTaxSchemeEntries ())
         {
-          final PartyTaxSchemeType aPTS = aParty.getPartyTaxSchemeAtIndex (0);
-          sellerTaxID (aPTS.getCompanyIDValue ());
+           sellerTaxID (_getVATCompanyID (aParty));
         }
 
         final AddressType aPA = aParty.getPostalAddress ();
